@@ -160,53 +160,38 @@ Contas a pagar:
 
 ## 3. Requisitos do Sistema
 
-
 ### 3.1 Requisitos Funcionais
 
-- O sistema deve cadastrar dados incluindo as informações: nome, CPF/CNPJ, telefone, endereço,e-mail, cidade e estado. Gerador: número de série, marca, modelo, status e potência. Manutenções: data da manutenção, tipo de manutenção, serviço realizado, status e valor. Serviços: nome do serviço,descrição,e valor base. Técnicos: nome, cpf, telefone e email.
-
-- O sistema deve permitir o registro de apenas um gerador por número de série, permitindo a inclusão letras e números.
-
-- O sistema deve permitir cadastrar mais de um gerador por cliente, dependendo do porte e necessidade.
-
-- O sistema deve permitir que exista apenas um técnico por CPF, sendo digitado apenas com números e tendo tamanho exato de 11 dígitos.
-
-- O sistema deve permitir que haja o cadastro de mais de um serviço por cliente, de forma ilimitada.
-
-- O sistema deve cadastrar apenas quando todos os requisitos obrigatórios estiverem preenchidos (estes que foram citados no primeiro requisito funcional).
-
-- O sistema deve permitir que uma manutenção tenha mais de um técnico vinculado, a manutenção precisa ser digitada somente em números, pois trata-se de código único e exclusivo.
-
-- O sistema deve permitir que o usuário cadastre, consulte e busque os históricos dos clientes.
-
-- O sistema deve dar a opção de guardar os RASCUNHOS dos cadastros incompletos, para que o usuario consiga retornar depois para finaliza-lo.
+- RF01: cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios.
+- RF02: consultar e buscar clientes e o histórico de manutenções de cada um.
+- RF03: cadastrar geradores vinculados a um cliente, com número de série, marca, modelo, status, potência (kVA) e horímetro; um cliente pode ter mais de um gerador.
+- RF04: criar, no cadastro do gerador, o cronograma preventivo (um por peça) e atualizar a data da última troca quando uma manutenção trocar a peça.
+- RF05: listar as peças vencidas ou a vencer em cada gerador.
+- RF06: cadastrar contratos de manutenção com cliente, data de início, data de fim (opcional), valor mensal, tipo de periodicidade e status, e vincular a eles geradores do mesmo cliente.
+- RF07: registrar orçamentos por gerador, com data, valor orçado, status e data de aprovação.
+- RF08: registrar manutenções preventivas e corretivas com gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado e data de conclusão; o código da manutenção é gerado pelo sistema.
+- RF09: vincular a cada manutenção ao menos um técnico e ao menos um serviço e, opcionalmente, peças, informando valor unitário aplicado e quantidade.
+- RF10: controlar o status da manutenção (aberta, em andamento, concluída) e bloquear a alteração de itens depois que ela sair de "aberta".
+- RF11: calcular o valor da manutenção pela soma de (valor unitário × quantidade) dos serviços e peças aplicados, sem gravá-lo; manutenção coberta por contrato tem valor zero.
+- RF12: manter o catálogo de serviços (nome, descrição e valor base).
+- RF13: cadastrar técnicos (nome, CPF, telefone e e-mail) e suas escalas de plantão (período e turno).
+- RF14: gerar e controlar parcelas de pagamento de manutenções e de contratos (vencimento, valor previsto, data, forma, status e valor pago), com cancelamento e correção apenas pelo administrador.
+- RF15: cadastrar peças e controlar o estoque, que não pode ficar negativo.
+- RF16: cadastrar fornecedores e registrar compras de peças com seus itens; compra recebida repõe o estoque e o uso em manutenção o baixa.
+- RF17: gerenciar usuários com perfil (administrador, atendimento, técnico ou financeiro), sem excluí-los, apenas desativá-los.
+- RF18: registrar em log todo acesso e operação, inclusive tentativas de login negadas.
 
 ### 3.2 Requisitos Não Funcionais
 
-- Criptografia: todos os dados sensíveis: CPF, endereço, valores; devem ser criptografados, visando a segurança e intgegridade dos usuários. Considerar a criptografia desses itens em todos os atributos que coincidirem com as nomenclaturas citadas.
-
-- Acessibilidade: o sistema deve se adequar às normas impostas pela WCAG 2.1 nível AA, em todas as páginas.
-
-- Tempo de resposta: O sistema deve cadastrar e carregar as respostas em até 5 segundos em todos os dispositivos de acesso.
-
-- Portabilidade e Compatibilidade: O sistema deve estar compatível com os sistemas operacionais populares, desde sua instalação até as suas atualizações.
-
-- Transparência: O programa deve se comportar de maneira acessível, simples e compreensível para todos os usuários.  
-
-## 4. Regras de Negócio
-
-Regras operacionais:
-- Toda manutenção deve ter, no mínimo, um serviço vinculado no momento do seu registro; uma manutenção pode envolver mais de um serviço, e o valor final cobrado é a soma dos valores desses serviços.
-
-- Toda manutenção deve ter, no mínimo, um técnico vinculado no momento do seu registro; uma manutenção pode envolver mais de um técnico.
-
-- O gerador necessariamente tem que pertencer a um cliente.
-
-- Dependendo do tipo de manutenção, muda a ordem do pagamento: no caso de uma manutenção corretiva, que impede o funcionamento do gerador, pode haver a troca antes de pagar, mas apenas se o orçamento for confirmado pelo cliente e ele estiver de acordo. Já no caso de uma manutenção preventiva, que não impede o funcionamento do gerador, a manutenção é realizada após o pagamento.
-
-- Os geradores precisam ter um cronograma de inspeção de manutenção preventiva.
-
-- Algumas informações não podem se repetir: são únicas para cada cliente, gerador ou técnico — respectivamente, o CPF/CNPJ, o número de série e o CPF.
+- Segurança e criptografia: CPF/CNPJ, endereço e valores confidenciais devem ser protegidos por criptografia em repouso no banco de dados.
+- Controle de acesso e LGPD: as permissões seguem o perfil do usuário, e o acesso a dados pessoais registra a finalidade.
+- Auditoria: o log de acesso só recebe inserções; nenhum perfil pode alterá-lo ou excluí-lo.
+- Integridade dos dados: o banco deve garantir chaves estrangeiras, unicidades e restrições de valores (InnoDB, CHECK e transações).
+- Disponibilidade: o sistema deve aceitar registros em qualquer horário, por causa do plantão de 24 h.
+- Desempenho: cadastros e consultas devem responder em até 5 segundos em qualquer dispositivo.
+- Acessibilidade: o sistema deve seguir a WCAG 2.1 nível AA em todas as páginas.
+- Portabilidade e compatibilidade: o sistema deve funcionar nos sistemas operacionais populares, da instalação às atualizações.
+- Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
 
 Restrições organizacionais:
 - Os serviços correspondem e respeitam as normas regulamentadoras NR-10 (elétrica), NR-12 (máquinas), NR-20 (inflamáveis e combustíveis) e NR-6 (EPI), justamente por envolver riscos elétricos, uso de máquinas e manuseio de combustível.
