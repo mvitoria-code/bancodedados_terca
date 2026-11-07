@@ -174,8 +174,8 @@ Contas a pagar:
 - RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e aplicar restrições de edição de itens conforme a RN06.
 - RF11 - Cálculo Dinâmico de Valores: O sistema deve calcular o valor total da manutenção somando (valor unitário × quantidade) dos serviços e peças aplicados, mantendo o cálculo dinâmico sem gravá-lo de forma estática; manutenções cobertas por contrato ativo devem ter valor final zerado para o cliente.
 - RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
-- RF13: cadastrar técnicos (nome, CPF, telefone e e-mail) e suas escalas de plantão (período e turno).
-- RF14: gerar e controlar parcelas de pagamento de manutenções e de contratos (vencimento, valor previsto, data, forma, status e valor pago), com cancelamento e correção apenas pelo administrador.
+- RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão (definindo período e turno de atendimento).
+- RF14 - Gestão de Parcelas de Pagamento: O sistema deve gerar e controlar parcelas financeiras referentes a manutenções avulsas e contratos (registrando vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago), permitindo cancelamentos ou correções estritamente por usuários com perfil de administrador.
 - RF15: cadastrar peças e controlar o estoque, que não pode ficar negativo.
 - RF16: cadastrar fornecedores e registrar compras de peças com seus itens; compra recebida repõe o estoque e o uso em manutenção o baixa.
 - RF17: gerenciar usuários com perfil (administrador, atendimento, técnico ou financeiro), sem excluí-los, apenas desativá-los.
