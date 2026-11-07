@@ -196,36 +196,63 @@ Contas a pagar:
 ### 3.1 Requisitos Funcionais
 
 - RF01 - Cadastro de clientes: O sistema deve permitir cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios.
+  
 - RF02 - Consulta de clientes e histórico: O sistema deve permitir consultar e buscar clientes, exibindo em seu perfil o histórico completo de manutenções vinculadas.
+  
 - RF03 - Cadastro de Geradores: O sistema deve permitir cadastrar geradores vinculados a um cliente, registrando número de série, marca, modelo, status operacional, potência em kVA e horímetro atual. Um cliente pode possuir um ou mais geradores cadastrados.
+  
 - RF04 - Cronograma Preventivo: O sistema deve gerar automaticamente, no cadastro do gerador, um cronograma de inspeção preventiva por peça crítica (ex: bateria, óleo, filtros, tanque) e atualizar a data e o horímetro da última troca sempre que uma manutenção substituir ou limpar o item.
+  
 - RF05 - Alerta de Peças Vencidas/A Vencer: O sistema deve listar as peças com manutenção preventiva vencida ou próxima do vencimento para cada gerador
+  
 - RF06 - Cadastro de Contratos de Manutenção: O sistema deve permitir cadastrar contratos de manutenção vinculados a um cliente, informando data de início, data de término (opcional), valor mensal, tipo de periodicidade e status, permitindo associar múltiplos geradores do mesmo cliente ao contrato.
+  
 - RF07 - Registro de Orçamentos: O sistema deve permitir registrar orçamentos por gerador, detalhando data, valor orçado, status (ex: pendente, aprovado, rejeitado) e data de aprovação.
+
 - RF08 - Gestão de Ordens de Manutenção: O sistema deve permitir registrar manutenções preventivas e corretivas vinculadas ao gerador, ao contrato vigente e ao orçamento (quando aplicável), registrando data, tipo, status, número da nota fiscal, problema relatado e data de conclusão. O código identificador da manutenção deve ser gerado automaticamente pelo sistema.
+  
 - RF09 - Composição da Manutenção: O sistema deve permitir vincular a cada manutenção ao menos um técnico responsável, ao menos um serviço executado e, opcionalmente, peças aplicadas (informando valor unitário aplicado e quantidade).
+  
 - RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e permitir a alteração de serviços, peças e técnicos apenas enquanto ela estiver aberta ou em andamento. Após a conclusão, as alterações somente poderão ser feitas por usuários autorizados, com registro do histórico, conforme a RN16.
+  
 - RF11 - Cálculo Dinâmico de Valores: O sistema deve calcular o valor total da manutenção somando (valor unitário × quantidade) dos serviços e peças aplicados, mantendo o cálculo dinâmico sem gravá-lo de forma estática; manutenções cobertas por contrato ativo devem ter valor final zerado para o cliente.
+  
 - RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
+  
 - RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão e folga (definindo período e turno de atendimento).
+  
 - RF14 - Gestão de Parcelas de Pagamento: O sistema deve gerar e controlar parcelas financeiras referentes a manutenções avulsas e contratos (registrando vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago), permitindo cancelamentos ou correções estritamente por usuários com perfil de administrador.
+  
 - RF15 - Controle de Estoque de Peças: O sistema deve permitir cadastrar peças com seus prazos de troca em dias e/ou em horas, e controlar o saldo de estoque em tempo real, bloqueando movimentações que resultem em saldo negativo, conforme a RN23.
+  
 - RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve atualizar o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
+  
 - RF17 - Gestão de Usuários e Perfis: O sistema deve gerenciar usuários do sistema associados a perfis de acesso (Administrador, Atendimento, Técnico ou Financeiro), adotando exclusão lógica (desativação) em vez de remoção física do banco de dados.
+  
 - RF18 - Trilha de Auditoria (Logs): O sistema deve registrar em log de auditoria imutável todas as tentativas de acesso, operações de escrita e tentativas de login negadas.
+  
 - RF19 – Aditivos Contratuais: O sistema deve permitir registrar aditivos sempre que as condições de um contrato forem alteradas, informando o contrato, a data do aditivo, a descrição da alteração e as condições anteriores. Um contrato pode ter vários aditivos, e o histórico não pode ser excluído, conforme a RN27.
+  
 - RF20 - Gestão de Contas a Pagar: O sistema deve permitir registrar contas a pagar vinculadas a um fornecedor cadastrado, informando descrição, valor total, valor pago, vencimento, número do boleto (quando houver) e data de pagamento, e alterar a situação da conta para paga somente quando o valor pago for igual ao valor total, conforme a RN24.
   
 ### 3.2 Requisitos Não Funcionais
 
 - RNF01 - Segurança e criptografia: CPF/CNPJ e endereço dos clientes devem ser protegidos por criptografia em repouso no banco de dados, com acesso restrito a usuários autorizados, conforme as diretrizes da LGPD.
+ 
 - RNF02 - Controle de acesso e LGPD:  sistema deverá permitir o acesso às funcionalidades e informações conforme o nível de autorização de cada usuário. As operações realizadas deverão ser registradas em um histórico de auditoria, contendo identificação do usuário, data, horário e ação executada.
+
 - RNF03 - Integridade e imutabilidade de Auditoria: o log de acesso só recebe inserções; nenhum perfil pode alterá-lo ou excluí-lo.
+  
 - RNF04 - Integridade relacional: o banco deve garantir chaves estrangeiras, unicidades e restrições de valores (InnoDB, CHECK e transações).
+  
 - RNF05 - Disponibilidade 24/7: o sistema deve aceitar registros em qualquer horário, por causa do plantão de 24 h.
+  
 - RNF06 - Desempenho do sistema: cadastros e consultas devem responder em até 5 segundos em qualquer dispositivo.
+  
 - RNF07 - Acessibilidade: o sistema deve seguir a WCAG 2.1 nível AA em todas as páginas.
+  
 - RNF08 - Portabilidade e compatibilidade: o sistema deve funcionar nos sistemas operacionais populares, da instalação às atualizações.
+  
 - RNF09 - Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
 
 ### 3.3 Restrições organizacionais:
