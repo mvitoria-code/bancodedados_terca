@@ -705,6 +705,17 @@ O atendimento não deve possuir limitação de horário devido ao plantão de 24
 
 ## 8. Proposta de Arquitetura Analítica para BI e IA
 
+# A. Informações Estratégicas
+A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a diretoria e os gestores da empresa conseguem extrair informações cruciais para a tomada de decisão, tais como:
+
+- O volume de atendimentos de emergência realizados no plantão 24h por região e período.
+
+- O controle rigoroso do desgaste de peças críticas para evitar falhas em campo.
+
+- A saúde financeira do negócio com base no recebimento de contratos fixos e manutenções avulsas.
+
+- O desempenho e a carga de trabalho dos técnicos escalados nos plantões.
+
 ## 9. Justificativa Técnica
 - Entidades: Separamos Cliente, Gerador, Manutenção, Técnico e Serviço porque cada uma tem ciclo de vida próprio — um cliente existe sem gerador, um gerador passa por várias manutenções, um técnico atende várias manutenções, e um serviço é um catálogo reutilizável. Se juntasse manutenção e gerador ficaria duplicando dados a cada manutenção assim também como serviço é uma entidade separada para evitar repetição de dados.
 
