@@ -848,6 +848,8 @@ A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a
 | :--- | :--- | :--- | :--- |
 | **Manutenções por Mês** | Total de Ordens de Serviço (OS) concluídas no período. | Mensal | Estabilidade ou crescimento conforme a demanda. |
 | **Tempo Médio de Atendimento** | (Soma da Data de Conclusão - Data de Abertura) / Total de OS | Mensal | Fechar chamados em até 24h para emergências. |
+| **Taxa de Inadimplência** | (Parcelas Vencidas e Não Pagas / Total de Parcelas Emitidas) * 100 | Mensal | Manter abaixo de 5%. |
+| **Peças Vencidas** | Contagem de peças no cronograma com data de troca ultrapassada. | Diário | Zero peças vencidas sem OS aberta. |
 
 
 ## 9. Justificativa Técnica
