@@ -950,3 +950,13 @@ Cardinalidade:
 | *Trechos rejeitados ou corrigidos* | 	Não houveram rejeições, apenas correções para que coubessem corretamente no cenário e no que já estava pronto na entrega 1. |
 | *Justificativa da escolha final* | As observações e sugestões aplicadas pela IA auxiliaram o entendimento do grupo para a importância da numeração e identificação, para realizar a interligação com os problemas e resultados, assim cedendo a oportunidade do grupo apresentar metricas reais, sempre ligando as partes importantes com soluções. |
 | *Reflexão crítica* | Após a utilização da IA nesse processo, o grupo conseguiu entender e identificar o uso das identificações, assim tendo a oportunidade de utiliza-los em outros tópicos, mantendo o trabalho mais organizado.|
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 7 | Gemini Flash, utilizado para pedir sugestões de formatações markdown.|
+| *Motivação* | O auxilio foi solicitado para melhorar a apresentação do README com ferramentas de texto que a plataforma oferece. |
+| *Prompt(s) utilizados* |“Envie alguns codigos e caracteres para a formatação de textos e tabelas no markdown no github ” |
+| *Resposta recebida* | Recebemos da IA algumas dicas a respeito da formatação dos textos com os caracteres especiais (#) (##) (*) e outros. Também a respeito das tabelas e como podemos deixar o conteúdo mais apresentável, separado e agradável para ser lido.|
+| *Trechos rejeitados ou corrigidos* | 	Não houveram rejeições, pois se tratou apenas da estética opcional da estetica do documento apresentado aqui. |
+| *Justificativa da escolha final* | Conseguimos conhecer estratégias e macetes para manter o documento mais bonito e em distribuido. |
+| *Reflexão crítica* | Nesse uso, conseguimos administrar melhor a maneira como iriamos organizar os documentos e o que seria destacado durante a leitura, para melhor entendimento. Além de deixá-lo mais limpo e organizado com prioridades.|
