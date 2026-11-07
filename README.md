@@ -68,12 +68,24 @@ Solicitação de atendimento e orçamento:
 - Resultado: orçamento aprovado e ligado à manutenção, ou encerrado sem atendimento.
 
 
-Manutenção:
-- Objetivo: registrar cada atendimento, preventivo ou corretivo.
-- Quando ocorre: em três situações: (1) após a aprovação de um orçamento, incluindo a emergência, que é executada antes do pagamento; (2) na manutenção preventiva prevista em contrato, sem orçamento, pois já está paga pela mensalidade; (3) na manutenção preventiva programada pelo cronograma, quando a peça precisa de troca ou limpeza.
-- Dados registrados: id manutenção, gerador, contrato e orçamento (se houver), data, tipo, status (aberta, em andamento ou concluída), nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça aplicados, o valor unitário aplicado e a quantidade.
-- Regras: vinculada a exatamente um gerador; exige ao menos um técnico e ao menos um serviço; peças são opcionais; status segue aberta → em andamento → concluída; itens só mudam enquanto aberta; o valor não é gravado, é calculado pela soma de (valor unitário × quantidade) dos serviços e peças aplicados; a manutenção coberta por contrato é registrada com os itens a valor aplicado zero, portanto o valor calculado é zero e não gera cobrança.
-- Resultado: histórico completo do gerador e do cliente.
+Manutenção
+- Objetivo: Registrar cada atendimento, preventivo ou corretivo.
+- Quando ocorre: Em três situações:
+  1. Após a aprovação de um orçamento, incluindo emergências, que podem ser executadas antes do pagamento.
+  2. Na manutenção preventiva prevista em contrato, sem necessidade de orçamento, pois já está coberta pela mensalidade.
+  3. Na manutenção preventiva programada pelo cronograma, quando uma peça precisa ser substituída ou algum procedimento de limpeza precisa ser realizado.
+- Dados registrados: ID da manutenção, gerador, contrato e orçamento (quando houver), data, tipo, status (aberta, em andamento ou concluída), nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça aplicados, o valor unitário aplicado e a quantidade.
+- Regras:
+  1. Cada manutenção deverá estar vinculada a exatamente um gerador.
+  2. Cada manutenção deverá possuir pelo menos um técnico responsável e pelo menos um serviço.
+  3. A utilização de peças será opcional.
+  4. O status deverá seguir a sequência: aberta → em andamento → concluída.
+  5. Os itens da manutenção somente poderão ser alterados enquanto ela estiver aberta.
+  6. O valor total não será armazenado, mas calculado pela soma de (valor unitário × quantidade) dos serviços e peças aplicados.
+  7. A manutenção coberta por contrato deverá registrar os itens com valor aplicado igual a zero, portanto, o valor calculado será zero e não haverá cobrança adicional.
+  8. Ao registrar uma peça utilizada na manutenção, o sistema deverá realizar automaticamente a baixa da quantidade correspondente no estoque.
+  9. O sistema deverá verificar a disponibilidade da peça antes de realizar a baixa, impedindo que o estoque fique negativo.
+- Resultado: Histórico completo das manutenções realizadas em cada gerador e cliente, permitindo consultar os serviços executados, as peças utilizadas, os responsáveis e os valores aplicados.
 
 
 Serviço (catálogo):
@@ -92,7 +104,6 @@ Técnicos:
 - Resultado: técnicos disponiveis serão apresentados, assim como seus dados cadastrais. 
 
 Escala:
-
 - Objetivo: Manter a escala correta de trabalho de cada tecnico.
 - Quando ocorre: após a contratação de cada tecnico, a sua escala de trabalho é montada.
 - Dados registrados: id escala, período (início e fim) e turno (manhã, tarde, noite ou integral) e folga. 
@@ -100,12 +111,18 @@ Escala:
 - Resultado: técnicos disponíveis para alocação e plantão coberto com limite de horário.
 
 
-Cadastro de peças:
-- Objetivo: manter o catálogo das peças usadas nas manutenções e nos cronogramas preventivos (bateria, óleo, filtro de ar e tanque).
-- Quando ocorre: quando a empresa passa a usar uma peça nova.
-- Dados registrados: id peça, nome, descrição, valor, prazo de troca, e estoque.
-- Regras: o nome da peça é único; o prazo de troca alimenta o cronograma preventivo; a quantidade em estoque nunca fica negativa.
-- Resultado: catálogo que alimenta cronogramas, manutenções e compras.
+Cadastro de peças
+- Objetivo: Manter o catálogo das peças utilizadas nas manutenções dos geradores e nos cronogramas preventivos, incluindo baterias, óleos, filtros de ar e outros componentes.
+- Quando ocorre: Quando a empresa passa a utilizar uma peça nova ou precisa atualizar as informações de uma peça já cadastrada.
+- Dados registrados: ID da peça, nome, descrição, valor, prazo ou intervalo de substituição e quantidade disponível em estoque.
+- Regras:
+  A. O nome da peça deverá ser único.
+  B. O prazo ou intervalo de substituição deverá servir de referência para a elaboração dos cronogramas preventivos.
+  C. A entrada de peças no estoque deverá ocorrer automaticamente após o recebimento e registro de uma compra no sistema.
+  D. A utilização de uma peça em uma manutenção deverá gerar automaticamente a baixa da quantidade correspondente no estoque.
+  E. O sistema deverá impedir movimentações que resultem em quantidade negativa no estoque.
+  F. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque.
+- Resultado: Catálogo de peças atualizado, utilizado como referência para os cronogramas preventivos, registros de manutenção e processos de compra, com controle automatizado das entradas e saídas do estoque.
 
 
 Controle de acesso e auditoria:
@@ -123,12 +140,20 @@ Pagamento:
 - Regras: cada parcela tem exatamente uma origem; só há cobrança de manutenção se o valor calculado for maior que zero (manutenção coberta por contrato tem valor zero, paga pela mensalidade); fora de contrato, na preventiva as parcelas são quitadas antes da execução, e na corretiva a execução pode vir antes do pagamento só se houver orçamento aprovado; caso haja pendencia de valor, será somado, caso haja, com outros pagamentos pendentes do mesmo cliente dentro de outros serviços. a soma das parcelas é igual ao valor calculado; pagamento nunca é excluído, só cancelado ou corrigido pelo administrador com registro no log.
 - Resultado: contas a receber controladas.
 
-Compra
-- Objetivo: Manter o fluxo de informações a respeito de tudo o que é comprado para o uso da empresa, de forma interna ou externa.
-- Quando ocorre: quando é necessário realizar a compra de materiais para a empresa, tanto para uso interno quanto externo. 
-- Dados registrados: id compra, data da compra, status (não recebido ou recebido) numero da nota fiscal.
-- Regras: Ccompra com ao menos um material; status só muda enquanto a compra está pedida; compra recebida repõe o estoque, que nunca fica negativo; o uso de itens baixa o estoque.
-- Resultado: estoque atualizado e rastreabilidade de quem forneceu cada item.
+
+Compra:
+- Objetivo: Manter o registro das compras de peças, materiais e outros itens adquiridos para utilização nas atividades internas e externas da empresa.
+- Quando ocorre: Quando existe a necessidade de adquirir peças ou materiais para as atividades da empresa, incluindo manutenções de geradores e uso interno.
+- Dados registrados: ID da compra, data da compra, fornecedor, situação (não recebido ou recebido), número da nota fiscal e itens adquiridos, incluindo quantidade e custo unitário.
+- Regras:
+  1. Toda compra deverá conter pelo menos um item.
+  2. Toda compra deverá estar vinculada a um fornecedor cadastrado.
+  3. A situação da compra poderá ser alterada enquanto estiver pendente de recebimento.
+  4. Após a confirmação do recebimento, o sistema deverá atualizar automaticamente a quantidade disponível dos itens correspondentes no estoque.
+  5. O recebimento de uma compra já processada não poderá gerar uma segunda entrada dos mesmos itens no estoque.
+  6. A quantidade disponível em estoque nunca poderá ser negativa.
+- Resultado: Registro das compras realizadas, permitindo rastrear os fornecedores, consultar os itens adquiridos e atualizar automaticamente as quantidades disponíveis em estoque após o recebimento.
+
 
 Fornecedor:
 - Objetivo: Manter registrado os dados de cada fornecedor da empresa.
@@ -136,6 +161,7 @@ Fornecedor:
 - Dados registrados: nome, CNPJ, telefone e e-mail;
 - Regras: CNPJ e telefone unicos. 
 - Resultado: Controle e registros de fornecedores sempre atualizados.
+
 
 Contas a pagar:
 - Objetivo: Manter registrado o histórico de contas pendentes e pagas da empresa.
