@@ -167,10 +167,10 @@ Contas a pagar:
 - RF03 - Cadastro de Geradores: O sistema deve permitir cadastrar geradores vinculados a um cliente, registrando número de série, marca, modelo, status operacional, potência em kVA e horímetro atual. Um cliente pode possuir um ou mais geradores cadastrados.
 - RF04 - Cronograma Preventivo: O sistema deve gerar automaticamente no cadastro do gerograma um cronograma de inspeção preventiva por peça crítica (ex: bateria, óleo, filtros, tanque) e atualizar a data da última troca sempre que uma manutenção substituir o item.
 - RF05 - Alerta de Peças Vencidas/A Vencer: O sistema deve listar as peças com manutenção preventiva vencida ou próxima do vencimento para cada gerador
-- RF06: cadastrar contratos de manutenção com cliente, data de início, data de fim (opcional), valor mensal, tipo de periodicidade e status, e vincular a eles geradores do mesmo cliente.
-- RF07: registrar orçamentos por gerador, com data, valor orçado, status e data de aprovação.
-- RF08: registrar manutenções preventivas e corretivas com gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado e data de conclusão; o código da manutenção é gerado pelo sistema.
-- RF09: vincular a cada manutenção ao menos um técnico e ao menos um serviço e, opcionalmente, peças, informando valor unitário aplicado e quantidade.
+- RF06 - Cadastro de Contratos de Manutenção: O sistema deve permitir cadastrar contratos de manutenção vinculados a um cliente, informando data de início, data de término (opcional), valor mensal, tipo de periodicidade e status, permitindo associar múltiplos geradores do mesmo cliente ao contrato.
+- RF07 - Registro de Orçamentos: O sistema deve permitir registrar orçamentos por gerador, detalhando data, valor orçado, status (ex: pendente, aprovado, rejeitado) e data de aprovação.
+- RF08 - Gestão de Ordens de Manutenção: O sistema deve permitir registrar manutenções preventivas e corretivas vinculadas ao gerador, ao contrato vigente e ao orçamento (quando aplicável), registrando data, tipo, status, número da nota fiscal, problema relatado e data de conclusão. O código identificador da manutenção deve ser gerado automaticamente pelo sistema.
+- RF09 - Composição da Manutenção: O sistema deve permitir vincular a cada manutenção ao menos um técnico responsável, ao menos um serviço executado e, opcionalmente, peças aplicadas (informando valor unitário aplicado e quantidade).
 - RF10: controlar o status da manutenção (aberta, em andamento, concluída) e bloquear a alteração de itens depois que ela sair de "aberta".
 - RF11: calcular o valor da manutenção pela soma de (valor unitário × quantidade) dos serviços e peças aplicados, sem gravá-lo; manutenção coberta por contrato tem valor zero.
 - RF12: manter o catálogo de serviços (nome, descrição e valor base).
