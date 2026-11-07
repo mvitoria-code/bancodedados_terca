@@ -198,13 +198,13 @@ Restrições organizacionais:
 
 - REST02 - Regime de Operação Ininterrupto: Devido à natureza dos serviços de emergência e ao regime de plantão 24/7 da empresa, o sistema não poderá passar por rotinas de manutenção programada que bloqueiem a inserção de dados em horários comerciais ou noturnos.
 
-REST03 - Diretrizes de Manutenção Preventiva: O sistema avisa quando peças importantes (como bateria, óleo, filtros e tanque) precisam ser trocadas ou limpas, baseando-se no desgaste natural de uso.
+- REST03 - Diretrizes de Manutenção Preventiva: O sistema avisa quando peças importantes (como bateria, óleo, filtros e tanque) precisam ser trocadas ou limpas, baseando-se no desgaste natural de uso.
 
-REST04 - Suporte a Operação Offline em Campo: Como o técnico pode atender em locais sem sinal (como subsolos), o sistema permite anotar os dados da manutenção e sincroniza tudo com o servidor assim que a internet voltar.
+- REST04 - Suporte a Operação Offline em Campo: Como o técnico pode atender em locais sem sinal (como subsolos), o sistema permite anotar os dados da manutenção e sincroniza tudo com o servidor assim que a internet voltar.
 
-REST05 - Imutabilidade e Rastreabilidade Financeira: Contas pagas e contratos não podem ser apagados do sistema; se houver algum erro, o administrador deve fazer um registro de correção para manter a contabilidade certa.
+- REST05 - Imutabilidade e Rastreabilidade Financeira: Contas pagas e contratos não podem ser apagados do sistema; se houver algum erro, o administrador deve fazer um registro de correção para manter a contabilidade certa.
 
-REST06 - Priorização de Chamados de Emergência: O sistema ajuda a identificar e priorizar os chamados mais urgentes para acionar rapidamente o técnico que estiver de plantão no turno.
+- REST06 - Priorização de Chamados de Emergência: O sistema ajuda a identificar e priorizar os chamados mais urgentes para acionar rapidamente o técnico que estiver de plantão no turno.
 
 ---
 
