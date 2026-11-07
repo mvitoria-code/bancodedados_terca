@@ -845,7 +845,8 @@ A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a
 ### B. Indicadores e Métricas Gerenciais (KPIs)
 
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
-
+| :--- | :--- | :--- | :--- |
+| **Manutenções por Mês** | Total de Ordens de Serviço (OS) concluídas no período. | Mensal | Estabilidade ou crescimento conforme a demanda. |
 
 
 ## 9. Justificativa Técnica
