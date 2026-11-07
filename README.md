@@ -164,7 +164,7 @@ Contas a pagar:
 
 - RF01 - Cadastro de clientes: O sistema deve permitir cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios.
 - RF02 - Consulta de clientes e histórico: O sistema deve permitir consultar e buscar clientes, exibindo em seu perfil o histórico completo de manutenções vinculadas.
-- RF03: cadastrar geradores vinculados a um cliente, com número de série, marca, modelo, status, potência (kVA) e horímetro; um cliente pode ter mais de um gerador.
+- RF03 - Cadastro de Geradores: O sistema deve permitir cadastrar geradores vinculados a um cliente, registrando número de série, marca, modelo, status operacional, potência em kVA e horímetro atual. Um cliente pode possuir um ou mais geradores cadastrados.
 - RF04: criar, no cadastro do gerador, o cronograma preventivo (um por peça) e atualizar a data da última troca quando uma manutenção trocar a peça.
 - RF05: listar as peças vencidas ou a vencer em cada gerador.
 - RF06: cadastrar contratos de manutenção com cliente, data de início, data de fim (opcional), valor mensal, tipo de periodicidade e status, e vincular a eles geradores do mesmo cliente.
