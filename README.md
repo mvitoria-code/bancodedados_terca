@@ -286,7 +286,7 @@ RN22 – Cadastro de fornecedores: Cada fornecedor deverá possuir um CNPJ únic
 
 RN23 – Compra de peças: Quando uma manutenção exigir a substituição de uma peça, deverá ser realizada uma compra diretamente com um fornecedor. A compra deverá registrar os itens adquiridos, suas respectivas quantidades e valores. O sistema não realizará baixa automática de estoque por utilização de peças.
 
-RN24 – Contas a pagar: Cada conta a pagar deverá possuir um identificador de boleto único. Uma conta somente poderá ser considerada quitada quando o valor pago corresponder ao valor total devido, permitindo o registro de pagamentos parciais enquanto houver saldo pendente.
+RN24 – Contas a pagar: Cada conta a pagar deve possuir um identificador único de boleto, quando aplicável. O pagamento deve corresponder ao valor total da conta, e seu status deve ser atualizado para "Paga" após a quitação integral.
 
 RN25 – Controle de usuários: Cada usuário deverá possuir um login único, credenciais próprias e um perfil de acesso definido conforme sua função no sistema.
 
