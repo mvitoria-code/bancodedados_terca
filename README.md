@@ -171,9 +171,9 @@ Contas a pagar:
 - RF07 - Registro de Orçamentos: O sistema deve permitir registrar orçamentos por gerador, detalhando data, valor orçado, status (ex: pendente, aprovado, rejeitado) e data de aprovação.
 - RF08 - Gestão de Ordens de Manutenção: O sistema deve permitir registrar manutenções preventivas e corretivas vinculadas ao gerador, ao contrato vigente e ao orçamento (quando aplicável), registrando data, tipo, status, número da nota fiscal, problema relatado e data de conclusão. O código identificador da manutenção deve ser gerado automaticamente pelo sistema.
 - RF09 - Composição da Manutenção: O sistema deve permitir vincular a cada manutenção ao menos um técnico responsável, ao menos um serviço executado e, opcionalmente, peças aplicadas (informando valor unitário aplicado e quantidade).
-- RF10: controlar o status da manutenção (aberta, em andamento, concluída) e bloquear a alteração de itens depois que ela sair de "aberta".
-- RF11: calcular o valor da manutenção pela soma de (valor unitário × quantidade) dos serviços e peças aplicados, sem gravá-lo; manutenção coberta por contrato tem valor zero.
-- RF12: manter o catálogo de serviços (nome, descrição e valor base).
+- RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e aplicar restrições de edição de itens conforme a RN06.
+- RF11 - Cálculo Dinâmico de Valores: O sistema deve calcular o valor total da manutenção somando (valor unitário × quantidade) dos serviços e peças aplicados, mantendo o cálculo dinâmico sem gravá-lo de forma estática; manutenções cobertas por contrato ativo devem ter valor final zerado para o cliente.
+- RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
 - RF13: cadastrar técnicos (nome, CPF, telefone e e-mail) e suas escalas de plantão (período e turno).
 - RF14: gerar e controlar parcelas de pagamento de manutenções e de contratos (vencimento, valor previsto, data, forma, status e valor pago), com cancelamento e correção apenas pelo administrador.
 - RF15: cadastrar peças e controlar o estoque, que não pode ficar negativo.
