@@ -176,22 +176,22 @@ Contas a pagar:
 - RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
 - RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão (definindo período e turno de atendimento).
 - RF14 - Gestão de Parcelas de Pagamento: O sistema deve gerar e controlar parcelas financeiras referentes a manutenções avulsas e contratos (registrando vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago), permitindo cancelamentos ou correções estritamente por usuários com perfil de administrador.
-- RF15: cadastrar peças e controlar o estoque, que não pode ficar negativo.
-- RF16: cadastrar fornecedores e registrar compras de peças com seus itens; compra recebida repõe o estoque e o uso em manutenção o baixa.
-- RF17: gerenciar usuários com perfil (administrador, atendimento, técnico ou financeiro), sem excluí-los, apenas desativá-los.
-- RF18: registrar em log todo acesso e operação, inclusive tentativas de login negadas.
-
+- RF15 - Controle de Estoque de Peças: O sistema deve permitir cadastrar peças e controlar o saldo de estoque em tempo real, respeitando o bloqueio de saldo negativo definido na RN04.
+- RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve repor o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
+- RF17 - Gestão de Usuários e Perfis: O sistema deve gerenciar usuários do sistema associados a perfis de acesso (Administrador, Atendimento, Técnico ou Financeiro), adotando exclusão lógica (desativação) em vez de remoção física do banco de dados.
+- RF18 - Trilha de Auditoria (Logs): O sistema deve registrar em log de auditoria imutável todas as tentativas de acesso, operações de escrita e tentativas de login negadas.
+  
 ### 3.2 Requisitos Não Funcionais
 
-- Segurança e criptografia: CPF/CNPJ, endereço e valores confidenciais devem ser protegidos por criptografia em repouso no banco de dados.
-- Controle de acesso e LGPD: as permissões seguem o perfil do usuário, e o acesso a dados pessoais registra a finalidade.
-- Auditoria: o log de acesso só recebe inserções; nenhum perfil pode alterá-lo ou excluí-lo.
-- Integridade dos dados: o banco deve garantir chaves estrangeiras, unicidades e restrições de valores (InnoDB, CHECK e transações).
-- Disponibilidade: o sistema deve aceitar registros em qualquer horário, por causa do plantão de 24 h.
-- Desempenho: cadastros e consultas devem responder em até 5 segundos em qualquer dispositivo.
-- Acessibilidade: o sistema deve seguir a WCAG 2.1 nível AA em todas as páginas.
-- Portabilidade e compatibilidade: o sistema deve funcionar nos sistemas operacionais populares, da instalação às atualizações.
-- Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
+- RNF01 - Segurança e criptografia: CPF/CNPJ, endereço e valores confidenciais devem ser protegidos por criptografia em repouso no banco de dados.
+- RNF02 - Controle de acesso e LGPD: as permissões seguem o perfil do usuário, e o acesso a dados pessoais registra a finalidade.
+- RNF03 - Integridade e imutabilidade de Auditoria: o log de acesso só recebe inserções; nenhum perfil pode alterá-lo ou excluí-lo.
+- RNF04 - Integridade relacional: o banco deve garantir chaves estrangeiras, unicidades e restrições de valores (InnoDB, CHECK e transações).
+- RNF05 - Disponibilidade 24/7: o sistema deve aceitar registros em qualquer horário, por causa do plantão de 24 h.
+- RNF06 - Desempenho do sistema: cadastros e consultas devem responder em até 5 segundos em qualquer dispositivo.
+- RNF07 - Acessibilidade: o sistema deve seguir a WCAG 2.1 nível AA em todas as páginas.
+- RNF08 - Portabilidade e compatibilidade: o sistema deve funcionar nos sistemas operacionais populares, da instalação às atualizações.
+- RNF09 - Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
 
 Restrições organizacionais:
 - Os serviços correspondem e respeitam as normas regulamentadoras NR-10 (elétrica), NR-12 (máquinas), NR-20 (inflamáveis e combustíveis) e NR-6 (EPI), justamente por envolver riscos elétricos, uso de máquinas e manuseio de combustível.
