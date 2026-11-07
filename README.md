@@ -847,6 +847,7 @@ A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
 | :--- | :--- | :--- | :--- |
 | **Manutenções por Mês** | Total de Ordens de Serviço (OS) concluídas no período. | Mensal | Estabilidade ou crescimento conforme a demanda. |
+| **Tempo Médio de Atendimento** | (Soma da Data de Conclusão - Data de Abertura) / Total de OS | Mensal | Fechar chamados em até 24h para emergências. |
 
 
 ## 9. Justificativa Técnica
