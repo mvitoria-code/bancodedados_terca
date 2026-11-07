@@ -846,10 +846,9 @@ A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a
 
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
 | :--- | :--- | :--- | :--- |
-| **Manutenções por Mês** | Total de Ordens de Serviço (OS) concluídas no período. | Mensal | Estabilidade ou crescimento conforme a demanda. |
-| **Tempo Médio de Atendimento** | (Soma da Data de Conclusão - Data de Abertura) / Total de OS | Mensal | Fechar chamados em até 24h para emergências. |
-| **Taxa de Inadimplência** | (Parcelas Vencidas e Não Pagas / Total de Parcelas Emitidas) * 100 | Mensal | Manter abaixo de 5%. |
-| **Peças Vencidas** | Contagem de peças no cronograma com data de troca ultrapassada. | Diário | Zero peças vencidas sem OS aberta. |
+| **MTTR (Tempo Médio de Reparo)** | Soma do tempo (início até o fim) dos chamados corretivos / Total de atendimentos corretivos | Mensal | Menor que 3 horas para emergências |
+| **MTBF (Tempo Médio Entre Falhas)** | Horas totais de funcionamento dos geradores / Número total de falhas corretivas | Mensal / Trimestral | Maximizar a vida útil entre as quebras |
+| **Taxa de Atendimento Preventivo vs. Corretivo** | (Total de Manutenções Preventivas / Total Geral de Manutenções) * 100 | Mensal | Acima de 70% (preventivas dominando as corretivas) |
 
 
 ## 9. Justificativa Técnica
