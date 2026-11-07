@@ -853,11 +853,11 @@ A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a
 | **Índice de Primeira Visita (First Fix Rate)** | (Chamados resolvidos na 1ª visita do técnico / Total de chamados) * 100 | Mensal | Acima de 85% (evitar voltar ao cliente por falta de peça) |
 
 ### C. Potencial dos Dados para Business Inteligence (BI)
-A arquitetura relacional estruturada no DER — integrando entidades como `Cliente`, `Gerador`, `Contrato`, `Manutencao`, `Pagamento` e `Peca` — suporta perfeitamente a extração de relatórios e a construção de painéis gerenciais (*dashboards*) dinâmicos:
+A arquitetura relacional estruturada no DER — integrando entidades como Cliente, Gerador, Contrato, Manutencao, Pagamento e Peca — suporta perfeitamente a extração de relatórios e a construção de painéis gerenciais (dashboards) dinâmicos:
 
-* **Painel Operacional de Campo:** Conecta as tabelas `Manutencao`, `Gerador` e `Tecnico` para monitorar chamados abertos em tempo real, o status operacional dos geradores em atendimento e a disponibilidade dos técnicos baseada na tabela `Escala`.
-* * **Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela `Manutencao` e os dados de horímetro da entidade `Gerador` para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
-* **Painel Financeiro e de Contratos:** Agrupa os dados das tabelas `Contrato`, `Pagamento` e `Manutencao` para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
+* **Painel Operacional de Campo:** Conecta as tabelas Manutencao, Gerador e Tecnico para monitorar chamados abertos em tempo real, o status operacional dos geradores em atendimento e a disponibilidade dos técnicos baseada na tabela Escala.
+* * **Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela Manutencao e os dados de horímetro da entidade Gerador para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
+* **Painel Financeiro e de Contratos:** Agrupa os dados das tabelas Contrato, Pagamento e Manutencao para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
 
 
 ## 9. Justificativa Técnica
