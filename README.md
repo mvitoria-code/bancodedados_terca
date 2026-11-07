@@ -1,12 +1,11 @@
-Nomes:
+## 👥 Integrantes do Grupo
 
-Kauan José da SIlva / RGM: 47346850
-
-Kauê Romaneto Machado / RGM: 47357304
-
-Kaylany Thayna de Oliveira de Paula / RGM: 47039035
-
-Maria Vitória Pereira Alves / RGM: 47230720
+| Nome | RGM | GitHub |
+| :--- | :---: | :--- |
+| Kauan José da Silva | 47346850 | [`@kauan221107-netizen`](https://github.com/kauan221107-netizen) |
+| Kauê Romaneto Machado | 47357304 | [`@MACHAD0Z`](https://github.com/MACHAD0Z) |
+| Kaylany Thayna de Oliveira de Paula | 47039035 | [`@kaayllany`](https://github.com/kaayllany) |
+| Maria Vitória Pereira Alves | 47230720 | [`@mvitoria-code`](https://github.com/mvitoria-code) |
 
 
 
