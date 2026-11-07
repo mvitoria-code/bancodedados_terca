@@ -193,7 +193,7 @@ Contas a pagar:
 - RNF08 - Portabilidade e compatibilidade: o sistema deve funcionar nos sistemas operacionais populares, da instalação às atualizações.
 - RNF09 - Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
 
-Restrições organizacionais:
+### 3.3 Restrições organizacionais:
 - REST01 - Conformidade com Normas Regulamentadoras: A execução e a parametrização do catálogo de serviços do sistema devem estar adequadas às diretrizes de segurança da NR-10 (Segurança em Instalações Elétricas), NR-12 (Segurança no Trabalho em Máquinas e Equipamentos), NR-20 (Manuseio de Inflamáveis e Combustíveis) e NR-6 (Equipamentos de Proteção Individual - EPI).
 
 - REST02 - Regime de Operação Ininterrupto: Devido à natureza dos serviços de emergência e ao regime de plantão 24/7 da empresa, o sistema não poderá passar por rotinas de manutenção programada que bloqueiem a inserção de dados em horários comerciais ou noturnos.
