@@ -829,9 +829,9 @@ O atendimento não deve possuir limitação de horário devido ao plantão de 24
 
 ---
 
-## 8. Proposta de Arquitetura Analítica para BI e IA
+### 8. Proposta de Arquitetura Analítica para BI e IA
 
-# A. Informações Estratégicas
+ A. Informações Estratégicas
 A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a diretoria e os gestores da empresa conseguem extrair informações cruciais para a tomada de decisão, tais como:
 
 - O volume de atendimentos de emergência realizados no plantão 24h por região e período.
