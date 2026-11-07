@@ -86,8 +86,8 @@ Manutenção
   5. Depois de concluída, só usuários autorizados podem alterar, e a alteração fica   registrada no histórico (RN16).
   6. O valor total não é armazenado. É calculado pela soma de (valor unitário ×     quantidade) dos serviços e peças.
   7. Manutenção coberta por contrato registra os itens com valor aplicado zero, então não há cobrança adicional.
-  8. Ao registrar uma peça utilizada, o sistema dá baixa automática no estoque. Se a peça   9. for removida ou alterada antes da conclusão, a baixa é estornada ou ajustada.
-  10.O sistema verifica a disponibilidade antes da baixa e impede estoque negativo.
+  8. Ao registrar uma peça utilizada, o sistema dá baixa automática no estoque. Se a peça for removida ou alterada antes da conclusão, a baixa é estornada ou ajustada.
+  9. O sistema verifica a disponibilidade antes da baixa e impede estoque negativo.
 - Resultado: histórico completo das manutenções por gerador e cliente, com serviços, peças, responsáveis e valores.
 
 
@@ -102,7 +102,7 @@ Serviço (catálogo):
 Técnicos:
 - Objetivo: Manter os tecnicos cadastrados.
 - Quando ocorre: após a contratação do técnico e a cada mudança de escala.
-- Dados registrados: nome, CPF, telefone e e-mail; da escala, período (início e fim) e turno (manhã, tarde, noite ou integral).
+- Dados registrados: nome, CPF, telefone e e-mail; da escala, período (início e fim) e turno (manhã, tarde, noite ou integral), dia da folga.
 - Regras: CPF único, 11 dígitos numéricos; 
 - Resultado: técnicos disponiveis serão apresentados, assim como seus dados cadastrais. 
 
@@ -117,14 +117,14 @@ Escala:
 Cadastro de peças
 - Objetivo: Manter o catálogo das peças utilizadas nas manutenções dos geradores e nos cronogramas preventivos, incluindo baterias, óleos, filtros de ar e outros componentes.
 - Quando ocorre: Quando a empresa passa a utilizar uma peça nova ou precisa atualizar as informações de uma peça já cadastrada.
-- Dados registrados: ID da peça, nome, descrição, valor, prazo ou intervalo de substituição e quantidade disponível em estoque.
+- Dados registrados: ID da peça, nome, descrição, valor, prazo de troca em dias, prazo de troca em horas (ambos opcionais) e quantidade disponível em estoque.
 - Regras:
   1. O nome da peça deverá ser único.
-  2. O prazo ou intervalo de substituição deverá servir de referência para a elaboração dos cronogramas preventivos.
-  3. A entrada de peças no estoque deverá ocorrer automaticamente após o recebimento e registro de uma compra no sistema.
+  2. Os prazos de troca (em dias e/ou em horas) deverão servir de referência para a elaboração dos cronogramas preventivos.
+  3. A entrada de peças no estoque deverá ocorrer automaticamente após a confirmação do recebimento físico da compra, sem permitir entradas duplicadas para uma mesma compra.
   4. A utilização de uma peça em uma manutenção deverá gerar automaticamente a baixa da quantidade correspondente no estoque.
   5. O sistema deverá impedir movimentações que resultem em quantidade negativa no estoque.
-  6. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque.
+  6. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque, com registro no histórico de auditoria.
 - Resultado: Catálogo de peças atualizado, utilizado como referência para os cronogramas preventivos, registros de manutenção e processos de compra, com controle automatizado das entradas e saídas do estoque.
 
 
@@ -139,7 +139,7 @@ Controle de acesso e auditoria:
 Pagamento:
 - Objetivo: controlar as cobranças de manutenções e de contratos.
 - Quando ocorre: ao fechar o valor da manutenção e a cada período de cobrança do contrato.
-- Dados registrados: número da parcela, vencimento, valor total, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
+- Dados registrados: número da parcela, vencimento, valor da parcela, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
 - Regras:
   1. Cada parcela tem exatamente uma origem: uma manutenção ou um contrato (RN20).
   2. A soma das parcelas é igual ao valor calculado da origem.
@@ -152,7 +152,7 @@ Pagamento:
 
 Compra:
 - Objetivo: registrar as compras de peças feitas a fornecedores.
-- Quando ocorre: Quando existe a necessidade de adquirir peças ou materiais para as atividades da empresa, incluindo manutenções de geradores e uso interno.
+- Quando ocorre: Quando existe a necessidade de adquirir peças para as atividades da empresa, incluindo manutenções de geradores e uso interno.
 - Dados registrados: ID da compra, data da compra, fornecedor, situação (não recebido ou recebido), número da nota fiscal e itens adquiridos, incluindo quantidade e custo unitário.
 - Regras:
   1. Toda compra deverá conter pelo menos um item e um fornecedor cadastrado.
@@ -162,8 +162,9 @@ Compra:
   5. A quantidade disponível em estoque nunca poderá ser negativa.
 - Resultado: compras rastreáveis por fornecedor e estoque atualizado.
 
+
 Fornecedor:
-- Objetivo: Manter registrado os dados de cada fornecedor da empresa.
+- Objetivo: Registrados os dados de cada fornecedor da empresa.
 - Quando ocorre: Quando houver a compra de algum insumo diretamente a orgaização.
 - Dados registrados: nome, CNPJ, telefone e e-mail;
 - Regras: CNPJ e telefone unicos. 
@@ -173,8 +174,8 @@ Fornecedor:
 Contas a pagar:
 - Objetivo: Manter registrado o histórico de contas pendentes e pagas da empresa.
 - Quando ocorre: Quando houver contas em aberto ou pagas pela empresa.
-- Dados registrados: CNPJ, descricao conta, valor total, valor pago, data vencimento, boleto, conta paga (sim ou não), data pagamento (quando houver)
-- Regras: Cada boleto possui uma numeração unica, a conta só poderá ser dado como paga quando o valor pago estiver igual ao valor total. 
+- Dados registrados: Fornecedor cadastrado relacionado à conta, descrição da despesa, valor total, valor pago, data de vencimento, número do boleto (quando aplicável), situação (paga ou não) e data de pagamento (quando houver).
+- Regras: Toda conta está vinculada a um fornecedor cadastrado. Cada boleto possui numeração única. A conta só poderá ser dada como paga quando o valor pago for igual ao valor total e, nesse caso, sua situação deverá ser atualizada automaticamente para "Paga". Não há controle de pagamentos parciais.
 - Resultado: Controlar os custos e pagamentos da empresa.
 
 
@@ -197,7 +198,7 @@ Contas a pagar:
 - RF01 - Cadastro de clientes: O sistema deve permitir cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios.
 - RF02 - Consulta de clientes e histórico: O sistema deve permitir consultar e buscar clientes, exibindo em seu perfil o histórico completo de manutenções vinculadas.
 - RF03 - Cadastro de Geradores: O sistema deve permitir cadastrar geradores vinculados a um cliente, registrando número de série, marca, modelo, status operacional, potência em kVA e horímetro atual. Um cliente pode possuir um ou mais geradores cadastrados.
-- RF04 - Cronograma Preventivo: O sistema deve gerar automaticamente no cadastro do gerograma um cronograma de inspeção preventiva por peça crítica (ex: bateria, óleo, filtros, tanque) e atualizar a data da última troca sempre que uma manutenção substituir o item.
+- RF04 - Cronograma Preventivo: O sistema deve gerar automaticamente, no cadastro do gerador, um cronograma de inspeção preventiva por peça crítica (ex: bateria, óleo, filtros, tanque) e atualizar a data e o horímetro da última troca sempre que uma manutenção substituir ou limpar o item.
 - RF05 - Alerta de Peças Vencidas/A Vencer: O sistema deve listar as peças com manutenção preventiva vencida ou próxima do vencimento para cada gerador
 - RF06 - Cadastro de Contratos de Manutenção: O sistema deve permitir cadastrar contratos de manutenção vinculados a um cliente, informando data de início, data de término (opcional), valor mensal, tipo de periodicidade e status, permitindo associar múltiplos geradores do mesmo cliente ao contrato.
 - RF07 - Registro de Orçamentos: O sistema deve permitir registrar orçamentos por gerador, detalhando data, valor orçado, status (ex: pendente, aprovado, rejeitado) e data de aprovação.
@@ -206,18 +207,19 @@ Contas a pagar:
 - RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e permitir a alteração de serviços, peças e técnicos apenas enquanto ela estiver aberta ou em andamento. Após a conclusão, as alterações somente poderão ser feitas por usuários autorizados, com registro do histórico, conforme a RN16.
 - RF11 - Cálculo Dinâmico de Valores: O sistema deve calcular o valor total da manutenção somando (valor unitário × quantidade) dos serviços e peças aplicados, mantendo o cálculo dinâmico sem gravá-lo de forma estática; manutenções cobertas por contrato ativo devem ter valor final zerado para o cliente.
 - RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
-- RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão (definindo período e turno de atendimento).
+- RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão e folga (definindo período e turno de atendimento).
 - RF14 - Gestão de Parcelas de Pagamento: O sistema deve gerar e controlar parcelas financeiras referentes a manutenções avulsas e contratos (registrando vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago), permitindo cancelamentos ou correções estritamente por usuários com perfil de administrador.
 - RF15 - Controle de Estoque de Peças: O sistema deve permitir cadastrar peças com seus prazos de troca em dias e/ou em horas, e controlar o saldo de estoque em tempo real, bloqueando movimentações que resultem em saldo negativo, conforme a RN23.
-- RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve atulizar o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
+- RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve atualizar o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
 - RF17 - Gestão de Usuários e Perfis: O sistema deve gerenciar usuários do sistema associados a perfis de acesso (Administrador, Atendimento, Técnico ou Financeiro), adotando exclusão lógica (desativação) em vez de remoção física do banco de dados.
 - RF18 - Trilha de Auditoria (Logs): O sistema deve registrar em log de auditoria imutável todas as tentativas de acesso, operações de escrita e tentativas de login negadas.
 - RF19 – Aditivos Contratuais: O sistema deve permitir registrar aditivos sempre que as condições de um contrato forem alteradas, informando o contrato, a data do aditivo, a descrição da alteração e as condições anteriores. Um contrato pode ter vários aditivos, e o histórico não pode ser excluído, conforme a RN27.
+- RF20 - Gestão de Contas a Pagar: O sistema deve permitir registrar contas a pagar vinculadas a um fornecedor cadastrado, informando descrição, valor total, valor pago, vencimento, número do boleto (quando houver) e data de pagamento, e alterar a situação da conta para paga somente quando o valor pago for igual ao valor total, conforme a RN24.
   
 ### 3.2 Requisitos Não Funcionais
 
-- RNF01 - Segurança e criptografia: CPF/CNPJ, endereço e valores confidenciais devem ser protegidos por criptografia em repouso no banco de dados.
-- RNF02 - Controle de acesso e LGPD: as permissões seguem o perfil do usuário, e o acesso a dados pessoais registra a finalidade.
+- RNF01 - Segurança e criptografia: CPF/CNPJ e endereço dos clientes devem ser protegidos por criptografia em repouso no banco de dados, com acesso restrito a usuários autorizados, conforme as diretrizes da LGPD.
+- RNF02 - Controle de acesso e LGPD:  sistema deverá permitir o acesso às funcionalidades e informações conforme o nível de autorização de cada usuário. As operações realizadas deverão ser registradas em um histórico de auditoria, contendo identificação do usuário, data, horário e ação executada.
 - RNF03 - Integridade e imutabilidade de Auditoria: o log de acesso só recebe inserções; nenhum perfil pode alterá-lo ou excluí-lo.
 - RNF04 - Integridade relacional: o banco deve garantir chaves estrangeiras, unicidades e restrições de valores (InnoDB, CHECK e transações).
 - RNF05 - Disponibilidade 24/7: o sistema deve aceitar registros em qualquer horário, por causa do plantão de 24 h.
@@ -293,7 +295,7 @@ RN21 – Histórico financeiro: Os registros de pagamentos não deverão ser exc
 
 RN22 – Cadastro de fornecedores: Cada fornecedor deverá possuir um CNPJ único no sistema.
 
-RN23 – Compra de peças e controle de estoque: As peças necessárias às manutenções e ao uso interno deverão ser adquiridas por meio de compra registrada junto a um fornecedor cadastrado, informando os itens adquiridos, suas quantidades e seus custos unitários. O sistema deverá registrar automaticamente a entrada das peças no estoque após a confirmação do recebimento da compra e realizar automaticamente a baixa das peças utilizadas nas manutenções, impedindo qualquer movimentação que deixe a quantidade em estoque negativa e impedindo que uma mesma compra gere mais de uma entrada no estoque. Ajustes manuais de estoque somente poderão ser feitos por usuários autorizados.
+RN23 – Compra de peças e controle de estoque: Toda compra deverá estar vinculada a um fornecedor cadastrado e registrar os itens adquiridos, suas respectivas quantidades e valores. Após a confirmação do recebimento físico da compra, o sistema deverá atualizar automaticamente a quantidade disponível em estoque, impedindo que a mesma compra gere entradas duplicadas. A utilização de peças em manutenções deverá gerar automaticamente a baixa da quantidade correspondente no estoque. O sistema deverá impedir movimentações que resultem em saldo negativo. Ajustes manuais somente poderão ser realizados por usuários autorizados, com registro no histórico de auditoria.
 
 RN24 – Contas a pagar: Cada conta a pagar deve possuir um identificador único de boleto, quando aplicável. O pagamento deve corresponder ao valor total da conta, e seu status deve ser atualizado para "Paga" após a quitação integral.
 
