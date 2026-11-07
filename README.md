@@ -933,8 +933,18 @@ Cardinalidade:
 |------|------------------|
 | Ferramenta e etapa 5 | Gemini Flash, utilizado para auxiliar o entendimento a respeito de KPI's.|
 | *Motivação* | Procuramos saber de maneira mais aprofundadas os KPI's e durações relacionados a uma empresa de manutenção de geradores. |
-| *Prompt(s) utilizados* | Cite alguns exemplos de KPI's e a sua duração, de uma empresa que presta serviços de manutenções corretivas e preventivas de geradores de energia.” |
+| *Prompt(s) utilizados* | “Cite alguns exemplos de KPI's e a sua duração, de uma empresa que presta serviços de manutenções corretivas e preventivas de geradores de energia.” |
 | *Resposta recebida* | A IA apresentou algumas sugestões de KPI's para serem utlizados, visando a base de solicitação e area da empresa escolhida|
 | *Trechos rejeitados ou corrigidos* | 	Rejeitamos as sugestões genericas, que possivelmente a maioria das empresas que são fora do ramo teriam como KPI's também. Corrigimos essas sugestões com outras mais especificas, apresentadas pela própria IA posteriormente. |
 | *Justificativa da escolha final* | A IA foi utilizada com o intuito de clarear os pensamentos a respeitos dos KPI's, entender melhor quais são as metricas da empresa em questão, com sugestões, apontamentos e observações importantes para darmos mais realismo ao trabalho academico. |
 | *Reflexão crítica* | A partir da utilização da IA conseguimos relacionar a necessidade dos KPI's especificos para realizar as metricas e gerar resultados dentro da organização, utilizando os dados armazenados dentro do banco.|
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 6 | Gemini Flash, utilizado formatar a apresentação dos requisitos funcionais e não funcionais.|
+| *Motivação* | Após a observação do professor a respeito da formatação incorreta dos requisitos e restrições organizacionais (Nomeclaturas), solicitamos a IA sugestões de como poderiamos melhorar, comparando a apresentação dos FUNCIONAIS com os NÃO FUNCIONAIS. |
+| *Prompt(s) utilizados* |“Nos auxilie com a formatação correta dos requisitos e restrições organizacionais seguindo as observações do professor, destacando mudanças opcicionais que podemos realizar para aprimorar mais o trabalho. ” |
+| *Resposta recebida* | A IA destacou a importância de inserir a numeração de cada requisito/restrição, junto com uma pequena identificação antes da descrição de cada um deles.|
+| *Trechos rejeitados ou corrigidos* | 	Não houveram rejeições, apenas correções para que coubessem corretamente no cenário e no que já estava pronto na entrega 1. |
+| *Justificativa da escolha final* | As observações e sugestões aplicadas pela IA auxiliaram o entendimento do grupo para a importância da numeração e identificação, para realizar a interligação com os problemas e resultados, assim cedendo a oportunidade do grupo apresentar metricas reais, sempre ligando as partes importantes com soluções. |
+| *Reflexão crítica* | Após a utilização da IA nesse processo, o grupo conseguiu entender e identificar o uso das identificações, assim tendo a oportunidade de utiliza-los em outros tópicos, mantendo o trabalho mais organizado.|
