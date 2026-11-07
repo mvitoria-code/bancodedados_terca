@@ -928,3 +928,13 @@ Cardinalidade:
 | *Trechos rejeitados ou corrigidos* | 	Algumas sugestões da IA foram analisadas e não foram utilizadas diretamente, principalmente sugestões relacionadas à criação de entidades associativas. Como o objetivo dessa etapa era representar o modelo conceitual, mantivemos os relacionamentos N:N entre Manutenção e Técnico e entre Manutenção e Serviço conforme a estrutura adotada pelo grupo. |
 | *Justificativa da escolha final* | A IA foi utilizada apenas como apoio para revisar e organizar o modelo. A decisão final sobre as entidades, atributos e cardinalidades foi feita pelo grupo, considerando os requisitos e as regras de negócio da empresa estudada. |
 | *Reflexão crítica* | A utilização da IA ajudou principalmente a visualizar possíveis problemas na modelagem e entender melhor as cardinalidades. Porém, percebemos que uma sugestão gerada automaticamente não deve ser aplicada sem análise. Foi necessário comparar as sugestões com as regras de negócio e com o modelo que já havia sido desenvolvido pelo grupo. Dessa forma, a IA serviu como ferramenta de apoio e revisão, e não como responsável pela definição final do modelo.	|
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 5 | Gemini Flash, utilizado para auxiliar o entendimento a respeito de KPI's.|
+| *Motivação* | Procuramos saber de maneira mais aprofundadas os KPI's e durações relacionados a uma empresa de manutenção de geradores. |
+| *Prompt(s) utilizados* | Cite alguns exemplos de KPI's e a sua duração, de uma empresa que presta serviços de manutenções corretivas e preventivas de geradores de energia.” |
+| *Resposta recebida* | A IA apresentou algumas sugestões de KPI's para serem utlizados, visando a base de solicitação e area da empresa escolhida|
+| *Trechos rejeitados ou corrigidos* | 	Rejeitamos as sugestões genericas, que possivelmente a maioria das empresas que são fora do ramo teriam como KPI's também. Corrigimos essas sugestões com outras mais especificas, apresentadas pela própria IA posteriormente. |
+| *Justificativa da escolha final* | A IA foi utilizada com o intuito de clarear os pensamentos a respeitos dos KPI's, entender melhor quais são as metricas da empresa em questão, com sugestões, apontamentos e observações importantes para darmos mais realismo ao trabalho academico. |
+| *Reflexão crítica* | A partir da utilização da IA conseguimos relacionar a necessidade dos KPI's especificos para realizar as metricas e gerar resultados dentro da organização, utilizando os dados armazenados dentro do banco.|
