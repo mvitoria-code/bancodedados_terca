@@ -859,6 +859,14 @@ A arquitetura relacional estruturada no DER — integrando entidades como Client
 * * **Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela Manutencao e os dados de horímetro da entidade Gerador para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
 * **Painel Financeiro e de Contratos:** Agrupa os dados das tabelas Contrato, Pagamento e Manutencao para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
 
+### D. Aplicações Analíticas e de Inteligência Artificial (IA)
+O histórico armazenado nas tabelas do sistema serve como base para alimentar modelos preditivos e sistemas inteligentes:
+
+* **Manutenção Preditiva baseada em Horímetro:** Cruzando os dados da entidade Gerador (atributo horímetro) com o histórico de trocas da tabela Cronograma_Preventivo e Manutencao, um modelo de IA pode estimar estatisticamente o desgaste de peças (como baterias e filtros) e abrir ordens de serviço preventivas antes que o equipamento sofra uma pane no plantão 24h.
+* **Previsão de Risco de Inadimplência e Renovação de Contratos:** Utilizando o histórico de pagamentos da tabela Pagamento e os dados contratuais da tabela Contrato, um algoritmo analítico pode prever riscos de atraso financeiro e identificar padrões para otimizar a retenção e receita por contrato.
+
+### E. Tabela de Rastreabilidade (Problemas e KPIs)
+
 
 ## 9. Justificativa Técnica
 - Entidades: Separamos Cliente, Gerador, Manutenção, Técnico e Serviço porque cada uma tem ciclo de vida próprio — um cliente existe sem gerador, um gerador passa por várias manutenções, um técnico atende várias manutenções, e um serviço é um catálogo reutilizável. Se juntasse manutenção e gerador ficaria duplicando dados a cada manutenção assim também como serviço é uma entidade separada para evitar repetição de dados.
