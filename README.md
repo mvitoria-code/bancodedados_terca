@@ -38,9 +38,12 @@ Cadastro de clientes:
 
 Contrato de manutenção:
 - Objetivo: formalizar o atendimento recorrente dos clientes fixos, com cobrança periódica.
-- Quando ocorre: id contrato, quando um cliente fixo passa a ter um acordo de manutenção.
-- Dados registrados: cliente, data de início, data de fim (opcional), valor mensal, periodicidade (mensal a anual) e status (ativo, encerrado ou cancelado).
-- Regras: o contrato pertence a um cliente e cobre pelo menos um gerador desse mesmo cliente; sem data de fim, o prazo é indeterminado; contrato encerrado exige data de fim; as trocas preventivas previstas no contrato são pagas pela mensalidade e não geram cobrança à parte; itens fora do previsto no contrato são cobrados normalmente. quando o contrato é alterado, há a adição de um aditivo de contrato.
+- Quando ocorre:quando um cliente fixo passa a ter um acordo de manutenção e, depois, a cada alteração das condições do contrato.
+- Dados registrados:
+ 1. Contrato: cliente, data de início, data de fim (opcional), valor mensal, periodicidade (mensal a anual) e status (ativo, encerrado ou cancelado).
+  2. Aditivo: contrato, data do aditivo, descrição da alteração e condições anteriores.
+- Regras: O contrato pertence a um único cliente e cobre pelo menos um gerador desse mesmo cliente. Sem data de fim, o prazo é indeterminado. Contrato encerrado exige data de fim. As manutenções preventivas previstas no contrato são pagas pela mensalidade e não geram cobrança à parte. Itens fora do previsto são cobrados normalmente.
+Toda alteração das condições do contrato é registrada por aditivo. O contrato pode ter vários aditivos. O aditivo preserva o histórico das condições anteriores e nunca é excluído.
 - Resultado: contrato ativo, que gera as cobranças periódicas (ver Faturamento e pagamento) e enquadra as manutenções dos geradores cobertos.
 
 
@@ -53,11 +56,11 @@ Cadastro de geradores:
 
 
 Cronograma de manutenção preventiva:
-- Objetivo: acompanhar os prazos de troca ou limpeza das peças de cada gerador (bateria, óleo, filtro de ar e tanque).
-- Quando ocorre: no cadastro do gerador e a cada troca realizada em uma manutenção.
-- Dados registrados: gerador, peça e data da última troca (opcional).
-- Regras: um cronograma por peça em cada gerador; o prazo vem da peça (prazo de troca em dias); a manutenção que troca a peça atualiza a data da última troca.
-- Resultado: lista de peças vencidas ou a vencer, que orienta as manutenções preventivas.
+- Objetivo: acompanhar os prazos de troca ou limpeza das peças de cada gerador (bateria, óleo do motor, filtros e tanque).
+Quando ocorre: no cadastro do gerador, quando o cronograma é criado, e a cada troca ou limpeza realizada em uma manutenção.
+Dados registrados: gerador, peça, data da última troca e horímetro da última troca (ambos opcionais até a primeira intervenção).
+Regras: O cronograma é cadastrado para cada gerador, com um registro por peça. O prazo vem da peça: prazo de troca em dias e/ou em horas, vencendo o que for atingido primeiro (RN08). Quando uma manutenção troca ou limpa a peça, o sistema atualiza a data e o horímetro da última troca (RN09).
+Resultado: lista de peças vencidas ou a vencer, que orienta as manutenções preventivas.
 
 
 Solicitação de atendimento e orçamento:
@@ -69,23 +72,23 @@ Solicitação de atendimento e orçamento:
 
 
 Manutenção
-- Objetivo: Registrar cada atendimento, preventivo ou corretivo.
-- Quando ocorre: Em três situações:
-  1. Após a aprovação de um orçamento, incluindo emergências, que podem ser executadas antes do pagamento.
-  2. Na manutenção preventiva prevista em contrato, sem necessidade de orçamento, pois já está coberta pela mensalidade.
-  3. Na manutenção preventiva programada pelo cronograma, quando uma peça precisa ser substituída ou algum procedimento de limpeza precisa ser realizado.
-- Dados registrados: ID da manutenção, gerador, contrato e orçamento (quando houver), data, tipo, status (aberta, em andamento ou concluída), nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça aplicados, o valor unitário aplicado e a quantidade.
+- Objetivo: registrar cada atendimento, preventivo ou corretivo.
+- Quando ocorre: em três situações:
+   1. Após a aprovação de um orçamento, inclusive em emergência. A execução pode ocorrer antes do pagamento.
+   2. Na manutenção preventiva prevista em contrato, sem orçamento, pois já está coberta pela mensalidade.
+   3. Na manutenção preventiva gerada pelo cronograma, quando uma peça precisa ser trocada ou limpa.
+- Dados registrados: ID (gerado automaticamente), gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça aplicada, o valor unitário aplicado e a quantidade.
 - Regras:
-  1. Cada manutenção deverá estar vinculada a exatamente um gerador.
-  2. Cada manutenção deverá possuir pelo menos um técnico responsável e pelo menos um serviço.
-  3. A utilização de peças será opcional.
-  4. O status deverá seguir a sequência: aberta → em andamento → concluída.
-  5. Os itens da manutenção somente poderão ser alterados enquanto ela estiver aberta.
-  6. O valor total não será armazenado, mas calculado pela soma de (valor unitário × quantidade) dos serviços e peças aplicados.
-  7. A manutenção coberta por contrato deverá registrar os itens com valor aplicado igual a zero, portanto, o valor calculado será zero e não haverá cobrança adicional.
-  8. Ao registrar uma peça utilizada na manutenção, o sistema deverá realizar automaticamente a baixa da quantidade correspondente no estoque.
-  9. O sistema deverá verificar a disponibilidade da peça antes de realizar a baixa, impedindo que o estoque fique negativo.
-- Resultado: Histórico completo das manutenções realizadas em cada gerador e cliente, permitindo consultar os serviços executados, as peças utilizadas, os responsáveis e os valores aplicados.
+  1. Cada manutenção está vinculada a exatamente um gerador.
+  2. Tem pelo menos um técnico responsável e pelo menos um serviço. O uso de peças é     opcional.
+  3. Status: Aberta → Em andamento → Concluída.
+  4. Serviços, peças e técnicos podem ser alterados enquanto a manutenção estiver aberta ou em andamento.
+  5. Depois de concluída, só usuários autorizados podem alterar, e a alteração fica   registrada no histórico (RN16).
+  6. O valor total não é armazenado. É calculado pela soma de (valor unitário ×     quantidade) dos serviços e peças.
+  7. Manutenção coberta por contrato registra os itens com valor aplicado zero, então não há cobrança adicional.
+  8. Ao registrar uma peça utilizada, o sistema dá baixa automática no estoque. Se a peça   9. for removida ou alterada antes da conclusão, a baixa é estornada ou ajustada.
+  10.O sistema verifica a disponibilidade antes da baixa e impede estoque negativo.
+- Resultado: histórico completo das manutenções por gerador e cliente, com serviços, peças, responsáveis e valores.
 
 
 Serviço (catálogo):
@@ -98,7 +101,7 @@ Serviço (catálogo):
 
 Técnicos:
 - Objetivo: Manter os tecnicos cadastrados.
-- Quando ocorre: na contratação de um técnico.
+- Quando ocorre: após a contratação do técnico e a cada mudança de escala.
 - Dados registrados: nome, CPF, telefone e e-mail; da escala, período (início e fim) e turno (manhã, tarde, noite ou integral).
 - Regras: CPF único, 11 dígitos numéricos; 
 - Resultado: técnicos disponiveis serão apresentados, assim como seus dados cadastrais. 
@@ -116,12 +119,12 @@ Cadastro de peças
 - Quando ocorre: Quando a empresa passa a utilizar uma peça nova ou precisa atualizar as informações de uma peça já cadastrada.
 - Dados registrados: ID da peça, nome, descrição, valor, prazo ou intervalo de substituição e quantidade disponível em estoque.
 - Regras:
-  A. O nome da peça deverá ser único.
-  B. O prazo ou intervalo de substituição deverá servir de referência para a elaboração dos cronogramas preventivos.
-  C. A entrada de peças no estoque deverá ocorrer automaticamente após o recebimento e registro de uma compra no sistema.
-  D. A utilização de uma peça em uma manutenção deverá gerar automaticamente a baixa da quantidade correspondente no estoque.
-  E. O sistema deverá impedir movimentações que resultem em quantidade negativa no estoque.
-  F. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque.
+  1. O nome da peça deverá ser único.
+  2. O prazo ou intervalo de substituição deverá servir de referência para a elaboração dos cronogramas preventivos.
+  3. A entrada de peças no estoque deverá ocorrer automaticamente após o recebimento e registro de uma compra no sistema.
+  4. A utilização de uma peça em uma manutenção deverá gerar automaticamente a baixa da quantidade correspondente no estoque.
+  5. O sistema deverá impedir movimentações que resultem em quantidade negativa no estoque.
+  6. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque.
 - Resultado: Catálogo de peças atualizado, utilizado como referência para os cronogramas preventivos, registros de manutenção e processos de compra, com controle automatizado das entradas e saídas do estoque.
 
 
@@ -137,23 +140,27 @@ Pagamento:
 - Objetivo: controlar as cobranças de manutenções e de contratos.
 - Quando ocorre: ao fechar o valor da manutenção e a cada período de cobrança do contrato.
 - Dados registrados: número da parcela, vencimento, valor total, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
-- Regras: cada parcela tem exatamente uma origem; só há cobrança de manutenção se o valor calculado for maior que zero (manutenção coberta por contrato tem valor zero, paga pela mensalidade); fora de contrato, na preventiva as parcelas são quitadas antes da execução, e na corretiva a execução pode vir antes do pagamento só se houver orçamento aprovado; caso haja pendencia de valor, será somado, caso haja, com outros pagamentos pendentes do mesmo cliente dentro de outros serviços. a soma das parcelas é igual ao valor calculado; pagamento nunca é excluído, só cancelado ou corrigido pelo administrador com registro no log.
+- Regras:
+  1. Cada parcela tem exatamente uma origem: uma manutenção ou um contrato (RN20).
+  2. A soma das parcelas é igual ao valor calculado da origem.
+  3. Só há cobrança de manutenção se o valor calculado for maior que zero.
+  4. Fora de contrato, a preventiva é paga antes da execução. Na corretiva, a execução pode vir antes do pagamento se houver orçamento aprovado.
+  5. A parcela passa a “pago” quando o valor pago quita o valor da parcela.
+  6. O pagamento nunca é excluído. É cancelado ou corrigido por usuário autorizado, com registro no log.
 - Resultado: contas a receber controladas.
 
 
 Compra:
-- Objetivo: Manter o registro das compras de peças, materiais e outros itens adquiridos para utilização nas atividades internas e externas da empresa.
+- Objetivo: registrar as compras de peças feitas a fornecedores.
 - Quando ocorre: Quando existe a necessidade de adquirir peças ou materiais para as atividades da empresa, incluindo manutenções de geradores e uso interno.
 - Dados registrados: ID da compra, data da compra, fornecedor, situação (não recebido ou recebido), número da nota fiscal e itens adquiridos, incluindo quantidade e custo unitário.
 - Regras:
-  1. Toda compra deverá conter pelo menos um item.
-  2. Toda compra deverá estar vinculada a um fornecedor cadastrado.
-  3. A situação da compra poderá ser alterada enquanto estiver pendente de recebimento.
-  4. Após a confirmação do recebimento, o sistema deverá atualizar automaticamente a quantidade disponível dos itens correspondentes no estoque.
-  5. O recebimento de uma compra já processada não poderá gerar uma segunda entrada dos mesmos itens no estoque.
-  6. A quantidade disponível em estoque nunca poderá ser negativa.
-- Resultado: Registro das compras realizadas, permitindo rastrear os fornecedores, consultar os itens adquiridos e atualizar automaticamente as quantidades disponíveis em estoque após o recebimento.
-
+  1. Toda compra deverá conter pelo menos um item e um fornecedor cadastrado.
+  2. A situação só pode ser alterada enquanto a compra não estiver recebida.
+  3. Ao confirmar o recebimento, o sistema atualiza o estoque automaticamente.
+  4. Uma compra já recebida não gera segunda entrada dos mesmos itens.
+  5. A quantidade disponível em estoque nunca poderá ser negativa.
+- Resultado: compras rastreáveis por fornecedor e estoque atualizado.
 
 Fornecedor:
 - Objetivo: Manter registrado os dados de cada fornecedor da empresa.
@@ -196,15 +203,16 @@ Contas a pagar:
 - RF07 - Registro de Orçamentos: O sistema deve permitir registrar orçamentos por gerador, detalhando data, valor orçado, status (ex: pendente, aprovado, rejeitado) e data de aprovação.
 - RF08 - Gestão de Ordens de Manutenção: O sistema deve permitir registrar manutenções preventivas e corretivas vinculadas ao gerador, ao contrato vigente e ao orçamento (quando aplicável), registrando data, tipo, status, número da nota fiscal, problema relatado e data de conclusão. O código identificador da manutenção deve ser gerado automaticamente pelo sistema.
 - RF09 - Composição da Manutenção: O sistema deve permitir vincular a cada manutenção ao menos um técnico responsável, ao menos um serviço executado e, opcionalmente, peças aplicadas (informando valor unitário aplicado e quantidade).
-- RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e aplicar restrições de edição de itens conforme a RN06.
+- RF10 - Controle de Ciclo de Vida da Manutenção: O sistema deve controlar os status da manutenção (Aberta, Em andamento, Concluída) e permitir a alteração de serviços, peças e técnicos apenas enquanto ela estiver aberta ou em andamento. Após a conclusão, as alterações somente poderão ser feitas por usuários autorizados, com registro do histórico, conforme a RN16.
 - RF11 - Cálculo Dinâmico de Valores: O sistema deve calcular o valor total da manutenção somando (valor unitário × quantidade) dos serviços e peças aplicados, mantendo o cálculo dinâmico sem gravá-lo de forma estática; manutenções cobertas por contrato ativo devem ter valor final zerado para o cliente.
 - RF12 - Catálogo de Serviços: O sistema deve manter um catálogo de serviços contendo nome, descrição detalhada e valor base.
 - RF13 - Cadastro de Técnicos e Escalas: O sistema deve permitir cadastrar técnicos (nome, CPF, telefone, e-mail) e gerenciar suas escalas de plantão (definindo período e turno de atendimento).
 - RF14 - Gestão de Parcelas de Pagamento: O sistema deve gerar e controlar parcelas financeiras referentes a manutenções avulsas e contratos (registrando vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago), permitindo cancelamentos ou correções estritamente por usuários com perfil de administrador.
-- RF15 - Controle de Estoque de Peças: O sistema deve permitir cadastrar peças e controlar o saldo de estoque em tempo real, respeitando o bloqueio de saldo negativo definido na RN04.
-- RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve repor o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
+- RF15 - Controle de Estoque de Peças: O sistema deve permitir cadastrar peças com seus prazos de troca em dias e/ou em horas, e controlar o saldo de estoque em tempo real, bloqueando movimentações que resultem em saldo negativo, conforme a RN23.
+- RF16 - Gestão de Fornecedores e Compras: O sistema deve permitir cadastrar fornecedores e registrar compras de peças por itens; a confirmação de recebimento da compra deve atulizar o estoque automaticamente, assim como o uso em manutenções deve dar baixa.
 - RF17 - Gestão de Usuários e Perfis: O sistema deve gerenciar usuários do sistema associados a perfis de acesso (Administrador, Atendimento, Técnico ou Financeiro), adotando exclusão lógica (desativação) em vez de remoção física do banco de dados.
 - RF18 - Trilha de Auditoria (Logs): O sistema deve registrar em log de auditoria imutável todas as tentativas de acesso, operações de escrita e tentativas de login negadas.
+- RF19 – Aditivos Contratuais: O sistema deve permitir registrar aditivos sempre que as condições de um contrato forem alteradas, informando o contrato, a data do aditivo, a descrição da alteração e as condições anteriores. Um contrato pode ter vários aditivos, e o histórico não pode ser excluído, conforme a RN27.
   
 ### 3.2 Requisitos Não Funcionais
 
@@ -233,6 +241,7 @@ Contas a pagar:
 
 4. REGRAS DE NEGÓCIO
 As regras de negócio estabelecem os critérios, procedimentos e restrições que deverão ser respeitados pelo sistema de gerenciamento de manutenções preventivas e corretivas de grupos geradores da empresa S. A. de Lima.
+
 5.1 Regras operacionais (RN)
 RN01 – Identificação de clientes: Cada cliente deverá possuir um CPF ou CNPJ único no sistema, não sendo permitido cadastrar documentos duplicados.
 
@@ -284,7 +293,7 @@ RN21 – Histórico financeiro: Os registros de pagamentos não deverão ser exc
 
 RN22 – Cadastro de fornecedores: Cada fornecedor deverá possuir um CNPJ único no sistema.
 
-RN23 – Compra de peças: Quando uma manutenção exigir a substituição de uma peça, deverá ser realizada uma compra diretamente com um fornecedor. A compra deverá registrar os itens adquiridos, suas respectivas quantidades e valores. O sistema não realizará baixa automática de estoque por utilização de peças.
+RN23 – Compra de peças e controle de estoque: As peças necessárias às manutenções e ao uso interno deverão ser adquiridas por meio de compra registrada junto a um fornecedor cadastrado, informando os itens adquiridos, suas quantidades e seus custos unitários. O sistema deverá registrar automaticamente a entrada das peças no estoque após a confirmação do recebimento da compra e realizar automaticamente a baixa das peças utilizadas nas manutenções, impedindo qualquer movimentação que deixe a quantidade em estoque negativa e impedindo que uma mesma compra gere mais de uma entrada no estoque. Ajustes manuais de estoque somente poderão ser feitos por usuários autorizados.
 
 RN24 – Contas a pagar: Cada conta a pagar deve possuir um identificador único de boleto, quando aplicável. O pagamento deve corresponder ao valor total da conta, e seu status deve ser atualizado para "Paga" após a quitação integral.
 
