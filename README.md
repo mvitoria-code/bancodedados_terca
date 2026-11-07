@@ -832,15 +832,18 @@ O atendimento não deve possuir limitação de horário devido ao plantão de 24
 ## 8. Proposta de Arquitetura Analítica para BI e IA
 
 ### A. Informações Estratégicas
-A partir dos dados cadastrados no sistema de gestão de geradores e contratos, a diretoria e os gestores da empresa conseguem extrair informações cruciais para a tomada de decisão, tais como:
 
-- O volume de atendimentos de emergência realizados no plantão 24h por região e período.
+A partir do banco de dados relacional e do monitoramento dos indicadores de desempenho, a gestão da empresa consegue extrair informações estratégicas cruciais para a tomada de decisão no suporte 24h:
 
-- O controle rigoroso do desgaste de peças críticas para evitar falhas em campo.
+- Agilidade no Atendimento Corretivo (MTTR): Permite monitorar com precisão o tempo médio que a equipe leva para solucionar falhas emergenciais, garantindo que o tempo de indisponibilidade dos geradores dos clientes seja minimizado e mantido abaixo da meta de 3 horas.
 
-- A saúde financeira do negócio com base no recebimento de contratos fixos e manutenções avulsas.
+- Confiabilidade e Desempenho dos Equipamentos (MTBF): Avalia a durabilidade e o tempo médio de funcionamento dos geradores entre uma quebra e outra, auxiliando na identificação de modelos mais desgastados ou na necessidade de intervenções mais profundas.
 
-- O desempenho e a carga de trabalho dos técnicos escalados nos plantões.
+- Equilíbrio Operacional (preventivas x corretivas): Fornece uma visão clara sobre a eficiência da operação de campo, permitindo verificar se a empresa está atuando de forma proativa (antecipando falhas por meio das manutenções preventivas acima de 70%) ou se está apenas reativa (apagando incêndios com corretivas).
+
+- Previsibilidade Financeira e de Caixa (receita por contrato): Consolida de forma exata o faturamento mensal recorrente gerado pelos contratos ativos de manutenção, garantindo segurança financeira para a manutenção da estrutura e dos plantões 24/7.
+
+- Assertividade e Qualidade Técnica em Campo (first fix rate): Mede a eficácia dos técnicos nas visitas aos clientes, assegurando que a grande maioria dos problemas seja resolvida logo no primeiro atendimento (acima de 85%), evitando retornos desnecessários por falta de peças ou diagnóstico incorreto.
 
 ### B. Indicadores e Métricas Gerenciais (KPIs)
 
