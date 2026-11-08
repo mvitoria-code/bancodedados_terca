@@ -60,7 +60,7 @@
   </tr>
   <tr>
     <td>Nomes</td>
-    <td>Nomes de tabelas e de colunas do dicionário: maiúsculas, sem acentos, no formato PREFIXO_NOME; tabelas no singular, exceto CONTAS_A_PAGAR, que mantém o mesmo nome do DER e do modelo lógico. O script SQL não usa os nomes com prefixo: ele segue o DER e o modelo lógico, com os nomes da coluna “Atributo no DER” (por exemplo, nome, cpf_cnpj, numero_serie). Os nomes com prefixo identificam o atributo no dicionário e se correspondem um a um com os nomes do DER.</td>
+    <td>Nomes de tabelas e de colunas do dicionário: maiúsculas, sem acentos, no formato PREFIXO_NOME; tabelas no singular, exceto CONTAS_A_PAGAR, que mantém o mesmo nome do DER e do modelo lógico. O script SQL não usa os nomes com prefixo: ele segue o DER e o modelo lógico, com os nomes da coluna “Atributo no DER” (por exemplo, nome, cpf_cnpj, numero_serie). Os nomes com prefixo identificam o atributo no dicionário e se correspondem um a um com os nomes do DER, exceto DS_SENHA_HASH (senha_hash) e IN_ATIVO (ativo), de USUARIO, que aparecem apenas no modelo lógico.</td>
   </tr>
 </table>
 
@@ -215,9 +215,9 @@
     <td>Chaves primárias, como ID_CLIENTE e ID_GERADOR.</td>
   </tr>
   <tr>
-    <td>FLOAT</td>
-    <td>Número com casas decimais, usado para valores em dinheiro e medidas</td>
-    <td>Valores como VL_MENSAL e VL_PARCELA, e medidas como MD_POTENCIA.</td>
+    <td>DECIMAL</td>
+    <td>Número decimal exato, com precisão fixa: DECIMAL(10,2) guarda até 10 dígitos, sendo 2 depois da vírgula; usado para valores em dinheiro e medidas</td>
+    <td>Valores como VL_MENSAL e VL_PARCELA, em DECIMAL(10,2), e medidas como MD_POTENCIA, em DECIMAL(8,2).</td>
   </tr>
   <tr>
     <td>CHAR</td>
@@ -227,12 +227,7 @@
   <tr>
     <td>VARCHAR</td>
     <td>Texto de tamanho variável, até um limite máximo</td>
-    <td>Varchar(120) guarda até 120 caracteres, usado em nomes, e-mails, telefones. As listas fechadas de valores (TP_STATUS, TP_MANUTENCAO e semelhantes) também são VARCHAR(20), com CHECK que aceita só os valores listados em “Valores permitidos”.</td>
-  </tr>
-  <tr>
-    <td>TEXT</td>
-    <td>Texto livre e longo, sem um limite fixo de tamanho</td>
-    <td>Usado em descrições mais extensas.</td>
+    <td>Varchar(120) guarda até 120 caracteres, usado em nomes, e-mails e telefones; descrições usam VARCHAR(255). As listas fechadas de valores (TP_STATUS, TP_MANUTENCAO e semelhantes) também são VARCHAR(20), com CHECK que aceita só os valores listados em “Valores permitidos”.</td>
   </tr>
   <tr>
     <td>DATE / DATETIME</td>
@@ -637,7 +632,7 @@
   <tr>
     <td>MD_POTENCIA</td>
     <td>potencia</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(8,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -724,7 +719,7 @@
   <tr>
     <td>VL_MENSAL</td>
     <td>valor_mensal</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -888,7 +883,7 @@
   <tr>
     <td>VL_ORCADO</td>
     <td>valor_orcado</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -964,7 +959,7 @@
   <tr>
     <td>DS_DESCRICAO</td>
     <td>descricao</td>
-    <td>TEXT</td>
+    <td>VARCHAR(255)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -975,7 +970,7 @@
   <tr>
     <td>VL_BASE</td>
     <td>valor_base</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1012,7 +1007,7 @@
     <td>Sim</td>
     <td>Sim</td>
     <td>—</td>
-    <td>somente números</td>
+    <td>—</td>
     <td>Código único e exclusivo da manutenção, gerado automaticamente pelo sistema.</td>
   </tr>
   <tr>
@@ -1095,7 +1090,7 @@
   <tr>
     <td>DS_PROBLEMA</td>
     <td>descricao_problema</td>
-    <td>TEXT</td>
+    <td>VARCHAR(255)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1323,7 +1318,7 @@
   <tr>
     <td>DS_PECA</td>
     <td>descricao_peca</td>
-    <td>TEXT</td>
+    <td>VARCHAR(255)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1334,7 +1329,7 @@
   <tr>
     <td>VL_VENDA</td>
     <td>valor_venda</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1530,7 +1525,7 @@
   <tr>
     <td>VL_PARCELA</td>
     <td>valor_parcela</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1574,7 +1569,7 @@
   <tr>
     <td>VL_PAGO</td>
     <td>valor_pago</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1793,7 +1788,7 @@
   <tr>
     <td>VL_TOTAL</td>
     <td>valor_total</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1804,7 +1799,7 @@
   <tr>
     <td>VL_PAGO</td>
     <td>valor_pago</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1902,7 +1897,7 @@
   <tr>
     <td>VL_UNITARIO_APLICADO</td>
     <td>valor_unitario_aplicado</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1968,7 +1963,7 @@
   <tr>
     <td>VL_UNITARIO_APLICADO</td>
     <td>valor_unitario_aplicado</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -2132,7 +2127,7 @@
   <tr>
     <td>VL_CUSTO</td>
     <td>valor_custo</td>
-    <td>FLOAT</td>
+    <td>DECIMAL(10,2)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
