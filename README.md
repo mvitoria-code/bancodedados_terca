@@ -48,6 +48,7 @@
 | **P2** | Histórico e última troca de peças só são achados folheando relatórios | Entrevista | `Cronograma_Preventivo`, `Peca`, `Manutencao_*` (RF02, RF04, RF05) |
 | **P3** | Contrato relido a cada atendimento para checar cobertura | Entrevista | `Contrato`, `Gerador.id_contrato`, `Manutencao.id_contrato` (RF06, RN12–RN15) |
 | **P4** | Alterações de contrato por e-mail, sem registro garantido | Entrevista | `Aditivo_contrato` (RF19, RN27) |
+| **P5** | Faturamento estimado e reajustes refeitos à mão | Entrevista | `Contrato`, `Aditivo_contrato`, `Pagamento` (RF14, RF19) |
 
 ##  Caracterização da Organização
 
