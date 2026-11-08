@@ -30,7 +30,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 
 O modelo lógico foi construído a partir do DER conceitual revisado (seção 1.1) e segue a notação visual do brModelo para modelo lógico: cada tabela aparece com suas colunas e tipos de dados, as chaves primárias estão marcadas com `PK`, as chaves estrangeiras com `FK` (e `PK, FK` nas tabelas associativas) e as cardinalidades `(mín, máx)` estão indicadas em cada ponta dos relacionamentos.
 
-<img width="2760" height="5480" alt="empresa" src= "">
+<img width="2760" height="5480" alt="empresa" src= "Modelo Logico.png">
 
 ### Tabelas do modelo
 
