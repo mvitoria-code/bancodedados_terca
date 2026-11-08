@@ -2238,6 +2238,7 @@
 
 <h3 id="log_acesso">LOG_ACESSO</h3>
 <p>Registro de cada acesso ou operação feita por um usuário no sistema.</p>
+<p>Todo registro pertence a um usuário cadastrado (ID_USUARIO obrigatório). São registradas as ações permitidas e as negadas desse usuário (TP_RESULTADO = 'negado'). Tentativas de login com login inexistente não geram registro em LOG_ACESSO; esse caso fica fora desta trilha de auditoria e deve ser tratado pela aplicação.</p>
 <p>LOG_ACESSO = @ID_LOG + ID_USUARIO + DH_ACESSO + TP_ACAO + (NM_TABELA) + (ID_REGISTRO) + TP_RESULTADO + (DS_FINALIDADE)</p>
 <p>Leitura: @ID_LOG é o identificador único; chaves estrangeiras: ID_USUARIO referencia USUARIO; entre parênteses, opcionais: NM_TABELA, ID_REGISTRO, DS_FINALIDADE; os demais campos são obrigatórios e conectados por +.</p>
 
