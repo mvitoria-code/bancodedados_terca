@@ -62,7 +62,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 - Telefone: +55 (11) 98373-9556  
 - E-mail: sandrolima@limasenergia.com.br
 - site: https://limasenergia.com.br/
-- Foto da fachada: [Limas Energia Grupos Geradores](imagem empresa.jpg)
+- Foto da fachada: [Limas Energia Grupos Geradores](foto%20da%20entrevistas.png)
 
 ---
 
