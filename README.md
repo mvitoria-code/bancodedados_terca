@@ -30,6 +30,12 @@
 ### Caracterização da organização
 
 **Nome e natureza:** S. A. de Lima, que opera como **Limas Energia Geradores** — manutenção preventiva e corretiva de geradores de energia. Empresa privada **com fins lucrativos**.
+
+Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
+Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
+Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
+A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
+
 **Contexto e porte (números):**
 
 | Indicador | Valor informado |
@@ -411,10 +417,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Possível conflito de interesse (camisa da empresa na foto) | **⚠️ PREENCHER:** declarar o vínculo na caracterização | Transparência exigida pela E2 |
 
 
-Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
-Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
-Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
-A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
+
 
 
 1.1 Problemas identificados
