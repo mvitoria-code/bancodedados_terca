@@ -441,7 +441,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Escala do plantão 24h só citada como restrição | Criada `Escala` (período, turno, folga), ligada a `Técnico` (`cumpre`) | Plantão passa a ser dado do banco |
 | Atributo `servico_realizado` (texto) em `Manutenção` redundante com `utiliza` | Atributo removido; serviços ficam só no relacionamento `utiliza` | Evita redundância e perda de quantidade/valor aplicado |
 | N:N sem atributos próprios (`Manutenção`×`Serviço`) | `utiliza`, `usa` e `contém` agora têm atributos (valor unitário aplicado, quantidade, valor de custo) | O valor da manutenção é calculado a partir deles (RN15) |
-| Dicionário sem SGBD/engine, collation, versão/data, notação completa, log e LGPD | Dicionário v5.9 (08/11/2026) com ficha técnica (MySQL 8.0.16+, InnoDB, utf8mb4_unicode_ci), notação completa, seção `LOG_ACESSO` e seção `LGPD` | CPF, CNPJ e endereço são dados pessoais; a justificativa anterior estava equivocada. `Usuario` e `Log_acesso` entraram no DER |
+| Dicionário sem SGBD/engine, collation, versão/data, notação completa, log e LGPD | Dicionário v6.0 (08/11/2026) com ficha técnica (MySQL 8.0.16+, InnoDB, utf8mb4_unicode_ci), notação completa, seção `LOG_ACESSO` e seção `LGPD` | CPF, CNPJ e endereço são dados pessoais; a justificativa anterior estava equivocada. `Usuario` e `Log_acesso` entraram no DER |
 | Prefixos impróprios (`QT_VALOR`, `QT_VALOR_BASE`, `QT_POTENCIA`, `ID_CPF_CNPJ`) | Renomeados para `VL_*`, `MD_POTENCIA` e `NR_CPF_CNPJ`, com prefixos `VL_`, `MD_` e `NR_` explicados no dicionário | `QT_` é quantidade; valor e potência têm prefixos próprios |
 | RF falava em "mais de um serviço por cliente" | RF09 passou a ligar serviços à manutenção | O modelo liga serviço à manutenção, não ao cliente |
 | Alguns RF eram regras de unicidade | RFs reescritos como funcionalidades, com unicidades nas RNs | RF descreve o que o sistema faz; unicidade é regra |
@@ -682,7 +682,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | Artefato | Arquivo |
 | :--- | :--- |
 | relatório README.md | na raiz da branch `main` |
-| Dicionário de dados (HTML, v5.9) | [`dicionariodre.html`](dicionariodre.html) |
+| Dicionário de dados (HTML, v6.0) | [`dicionariodre.html`](dicionariodre.html) |
 | Diagrama DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
 | Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
 | Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql)  |
