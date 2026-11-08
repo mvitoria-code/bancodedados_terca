@@ -58,6 +58,8 @@
 
 **Evidências da organização**
 
+- Endereço e perfil da empresa no Google Maps:https://maps.app.goo.gl/XExBHSXrFvbUNv8Y6?g_st=aw
+
 ##  Caracterização da Organização
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
@@ -120,7 +122,7 @@ As demais restrições (`NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`) não aparecem 
 
 
 
-- Endereço da empresa: https://maps.app.goo.gl/XExBHSXrFvbUNv8Y6?g_st=aw
+
 ---
 
 ## 2. Processos de Negócio
