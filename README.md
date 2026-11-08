@@ -10,7 +10,18 @@
 | Kaylany Thayna de Oliveira de Paula | 47039035 | [`@kaayllany`](https://github.com/kaayllany) |
 | Maria Vitória Pereira Alves | 47230720 | [`@mvitoria-code`](https://github.com/mvitoria-code) |
 
+## **Índice de artefatos do repositório**
 
+| Artefato | Arquivo |
+| :--- | :--- |
+| DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
+| Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
+| Dicionário de dados (HTML, v5.9) | [`dicionariodre.html`](dicionariodre.html) |
+| Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
+| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md) — ** PREENCHER** |
+| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql) — ** PREENCHER* ** |
+| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) — ** PREENCHER*** |
+| Apresentação (slides) | ** PREENCHER** |
 
 ## 1. Caracterização da Organização
 
