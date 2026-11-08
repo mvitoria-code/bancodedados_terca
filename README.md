@@ -424,11 +424,11 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | **Generalização/especialização** | triângulo ligando a entidade genérica às especializadas | não utilizado: o perfil do usuário é um atributo (`perfil`), não uma especialização |
 | **Entidade associativa** | retângulo envolvendo o losango do relacionamento | não utilizado: os relacionamentos N:N (`utiliza`, `usa`, `contém`) são desenhados como losangos com atributos, e viram tabelas associativas no modelo lógico (seção 1.2) |
 
+---
+
 ### DER conceitual revisado (Caso A — mesma organização da Entrega 1)
 
 ![DER conceitual revisado](<DER (1).png>)
-
-**Apontamentos da correção da Entrega 1 e o que mudou**
 
 **Apontamentos da correção da Entrega 1 e o que mudou**
 
@@ -475,7 +475,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 | :--- | :--- | :--- | :--- |
 | Manutenção × Serviço | `utiliza` (`MANUTENCAO_SERVICO`) | `id_manutencao`, `id_servico` | `valor_unitario_aplicado`, `quantidade` |
 | Manutenção × Peça | `usa` (`MANUTENCAO_PECA`) | `id_manutencao`, `id_peca` | `valor_unitario_aplicado`, `quantidade` |
-| Manutenção × Técnico | `realizada por` (`MANUTENCAO_TECNICO`) | `id_manutencao`, `id_tecnico` | — |
+| Manutenção × Técnico | `realizada_por` (`MANUTENCAO_TECNICO`) | `id_manutencao`, `id_tecnico` | — |
 | Manutenção × Cronograma | `atualiza` (`MANUTENCAO_CRONOGRAMA`) | `id_manutencao`, `id_cronograma` | — |
 | Compra × Peça | `contem` (`COMPRA_PECA`) | `id_compra`, `id_peca` | `quantidade`, `valor_custo` |
 
@@ -519,6 +519,8 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 - **3FN (sem dependências transitivas):** os dados do cliente não se repetem em `Gerador` ou `Manutencao` (basta `id_cliente`); os dados do fornecedor ficam fora de `Compra` e `Contas_a_pagar`; o prazo de troca fica em `Peca`, não em `Cronograma_Preventivo`. O **valor total da manutenção não é gravado** (seria dependente de itens), é calculado por consulta. Exceção consciente: `Cliente` mantém `cidade` e `estado` juntos (a cidade determina o estado); não se criou tabela de cidades porque o ganho seria pequeno para 96 clientes e os valores seguem um domínio fechado (`CHAR(2)` no estado). 
 - **Justificativa do processo:** a 1FN era necessária porque o atendimento combina muitos itens; a 2FN, porque os valores praticados variam por manutenção; a 3FN, para que uma alteração de cadastro (telefone do cliente, preço-base do serviço) seja feita em um só lugar, o que resolve a inconsistência das fichas em papel (P1).
 
+---
+
 ## 1.5 Justificativas Técnicas das Decisões
 
 - **Chaves primárias:** inteiros `AUTO_INCREMENT` (substitutas) em todas as entidades, pois os identificadores naturais (CPF/CNPJ, número de série) são sensíveis, longos ou podem mudar. Os naturais ficam com `UNIQUE`. Em associativas, PK composta impede repetir o mesmo item na mesma manutenção.
@@ -548,9 +550,23 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 | `Log_acesso` só recebe `INSERT` | RN26, RNF03 |
 | `Aditivo_contrato` nunca excluído | RN27 |
 
-- **Auditoria (RN26, RNF03):** `Log_acesso` pertence sempre a um usuário cadastrado (cardinalidade `Usuário (0,n) — realiza — (1,1) Log_acesso`) e só recebe inserções. Registra ações permitidas e negadas de usuários existentes (`resultado = 'negado'`); login com usuário inexistente não é registrado, pois não identifica ninguém e a trilha existe para rastrear quem acessou dados pessoais (LGPD).
-- **Decisões arquiteturais gerais:** valor da manutenção calculado e não gravado (RN15); exclusão lógica de usuário e histórico financeiro imutável (RN21, RN25); tabela de log única para auditoria e LGPD; `utf8mb4_unicode_ci` para acentos em nomes e endereços; criptografia em repouso prevista (ver dicionário, seção LGPD).
+> **Nota sobre os valores das listas fechadas.** Na tabela acima, os valores aparecem em minúsculas e com `_` (por exemplo `em_manutencao`) para indicar o conceito de cada regra. No script SQL (`docs/script.sql`), os mesmos valores são gravados com a inicial maiúscula e sem acento, que é o formato usado na massa de dados e nas consultas:
+>
+> | Coluna | Valores no script |
+> | :--- | :--- |
+> | `Gerador.status` | `'Ativo'`, `'Em manutencao'`, `'Inativo'` |
+> | `Manutencao.status` | `'Aberta'`, `'Em andamento'`, `'Concluida'` |
+> | `Manutencao.tipo_manutencao` | `'Preventiva'`, `'Corretiva'` |
+> | `Orcamento.status` | `'Pendente'`, `'Aprovado'`, `'Recusado'` |
+> | `Compra.status` | `'Pedida'`, `'Recebida'`, `'Cancelada'` (no Processo 12, "não recebido" corresponde a `'Pedida'`) |
+> | `Usuario.perfil` | `'Administrador'`, `'Atendimento'`, `'Tecnico'`, `'Financeiro'` |
+>
+> Além do que a tabela lista, o script também garante:
+> - `Peca`: ao menos um prazo de troca (`prazo_troca_dias` ou `prazo_troca_horas`) preenchido, ambos maiores que zero quando informados (RN08).
+> - `Pagamento`: parcela única por origem, por meio de `UNIQUE (id_manutencao, numero_parcela)` e `UNIQUE (id_contrato, numero_parcela)` (RN20).
 
+- **Auditoria (RN26, RNF03):** `Log_acesso` pertence sempre a um usuário cadastrado (cardinalidade `Usuário (0,n) — realiza — (1,1) Log_acesso`) e só recebe inserções. Registra ações permitidas e negadas de usuários existentes (`resultado = 'Negado'`); login com usuário inexistente não é registrado, pois não identifica ninguém e a trilha existe para rastrear quem acessou dados pessoais (LGPD).
+- **Decisões arquiteturais gerais:** valor da manutenção calculado e não gravado (RN15); exclusão lógica de usuário e histórico financeiro imutável (RN21, RN25); tabela de log única para auditoria e LGPD; `utf8mb4_unicode_ci` para acentos em nomes e endereços; criptografia em repouso prevista (ver dicionário, seção LGPD).
 
 ---
 
@@ -573,7 +589,7 @@ A partir do banco de dados relacional e do monitoramento dos indicadores de dese
 ---
 ### Indicadores e Métricas Gerenciais (KPIs)
 
-**RETIRAR ISSO DEPOIS ⚠️ Os códigos G/A abaixo são o plano de consultas que o `docs/script.sql` precisa conter, se mudar algo precisa ajustar os códigos se a numeração no script**
+
 
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
 | :--- | :--- | :--- | :--- |
@@ -614,38 +630,47 @@ O histórico armazenado nas tabelas do sistema serve como base para alimentar mo
 ---
 ### Tabela de Rastreabilidade (Problemas e KPIs)
 
-**RETIRAR ISSO DEPOIS ⚠️ Os códigos G/A abaixo são o plano de consultas que o `docs/script.sql` precisa conter, se mudar algo precisa ajustar os códigos se a numeração no script**
-
 | Problema ou KPI | Tabelas envolvidas | Consulta |
 | :--- | :--- | :--- |
-| P1 — fichas em papel: histórico de atendimentos por cliente e gerador | `Cliente`, `Gerador`, `Manutencao` | G01 |
-| P2 — última troca e peças vencidas/a vencer | `Cronograma_Preventivo`, `Peca`, `Gerador` | G02, G03 |
-| P3 — cobertura contratual de cada manutenção | `Contrato`, `Gerador`, `Manutencao`, `utiliza`, `usa` | G04 |
-| P4 — aditivos e condições anteriores por contrato | `Contrato`, `Aditivo_contrato` | G05 |
-| P5 — faturamento e reajustes por contrato | `Contrato`, `Aditivo_contrato`, `Pagamento` | G06, G07 |
-| KPI — receita recorrente por contrato | `Contrato` | G06 |
-| KPI — taxa de preventivas | `Manutencao` | G08 |
-| KPI — tempo médio de reparo | `Manutencao` | G09 |
-| KPI — MTBF aproximado | `Gerador`, `Manutencao` | G10 |
-| KPI — inadimplência | `Pagamento` | G07 |
-| KPI — peças vencidas ou a vencer | `Cronograma_Preventivo`, `Peca` | G02 |
-| Custos: compras e contas a pagar por fornecedor | `Fornecedor`, `Compra`, `contem`, `Contas_a_pagar` | G11 |
+| P1 — fichas em papel: histórico de atendimentos por cliente e gerador | `Cliente`, `Gerador`, `Manutencao` | S01, S04 |
+| P2 — última troca e peças vencidas/a vencer | `Cronograma_Preventivo`, `Peca`, `Gerador` | G01 |
+| P3 — cobertura contratual de cada manutenção | `Contrato`, `Gerador`, `Manutencao`, `utiliza`, `usa` | S02, G09, A01, A11 |
+| P4 — aditivos e condições anteriores por contrato | `Contrato`, `Aditivo_contrato` | G14 |
+| P5 — faturamento, recebimentos e inadimplência | `Contrato`, `Pagamento`, `Cliente` | G03, G04, G11, G12 |
+| KPI — receita recorrente por contrato | `Contrato` | G12 |
+| KPI — taxa de preventivas | `Manutencao` | G13 |
+| KPI — tempo médio de reparo (MTTR, em dias) | `Manutencao` | G08 |
+| KPI — MTBF aproximado | `Gerador`, `Manutencao` | G15 |
+| KPI — índice de primeira visita (First Fix Rate) | `Manutencao` | G16 |
+| KPI — inadimplência | `Pagamento`, `Contrato`, `Manutencao`, `Cliente` | G04 |
+| KPI — peças vencidas ou a vencer | `Cronograma_Preventivo`, `Peca`, `Gerador` | G01 |
+| Estoque baixo | `Peca` | G02 |
+| Custos: contas a pagar por fornecedor | `Fornecedor`, `Contas_a_pagar` | G05 |
+| Custos: margem de cada peça (venda x custo de compra) | `Peca`, `Compra`, `contem` | G10 |
+| Carga de trabalho dos técnicos | `Tecnico`, `realizada_por`, `Manutencao` | G06 |
+| Taxa de aprovação de orçamentos | `Orcamento` | G07 |
+
+Observações: o MTTR (G08) é medido em dias porque o schema guarda apenas `DATE`; a meta de 3 horas não é verificável com o modelo atual. O MTBF (G15) usa o horímetro acumulado dividido pelas falhas do período registrado, por isso é aproximado. O First Fix Rate (G16) considera resolvida na 1ª visita a corretiva sem nova corretiva no mesmo gerador em 30 dias.
 
 **Consultas de auditoria planejadas**
 
+Resultado vazio = dados consistentes com a regra.
+
 | Código | Pergunta | Regra |
 | :--- | :--- | :--- |
-| A01 | Há manutenção sem técnico? | RN06 |
-| A02 | Há manutenção sem serviço? | RN07 |
-| A03 | Há pagamento sem origem ou com duas origens? | RN20 |
-| A04 | Há gerador coberto por contrato de outro cliente? | RN12 |
-| A05 | Há peça com estoque negativo? | RN23 |
-| A06 | Há manutenção concluída sem `data_conclusao` (ou o contrário)? | RN16 |
-| A07 | Há conta paga com `valor_pago` diferente de `valor_total`? | RN24 |
-| A08 | Há corretiva fora de contrato sem orçamento aprovado? | RN10, RN11 |
-| A09 | Há gerador sem cronograma preventivo? | RN08 |
-| A10 | A soma das parcelas difere do valor calculado da manutenção? | RN20 |
+| A01 | Há gerador ligado a um contrato de outro cliente? | RN12 |
+| A02 | Há pagamento "Pago" que não quitou o valor da parcela? | RN20 |
+| A03 | Há manutenção concluída sem nota fiscal? | Processo 6 |
+| A04 | Há manutenção em andamento ou concluída sem técnico? | RN06 |
+| A05 | Há corretiva iniciada sem orçamento aprovado? | RN10, RN11 |
+| A06 | Há contrato "Ativo" com data de fim já vencida? | Processo 3 |
+| A07 | Há conta a pagar vencida ainda como "Pendente"? | RN24 |
+| A08 | Há acesso registrado de usuário inativo? | RN25, RN26 |
+| A09 | Há técnico com escalas sobrepostas? | RN18 |
+| A10 | O status do gerador é coerente com as manutenções abertas? | RN04 |
+| A11 | Há contrato sem nenhum gerador vinculado? | RN12 |
 
+As regras RN07 (manutenção sem serviço), RN16 (conclusão x `data_conclusao`, já garantida por `CHECK`) e RN23 (estoque negativo, garantido por `CHECK`) deixam de ter consulta própria: as duas últimas são impedidas pelo próprio banco.
 ---
 
 # 2. Modelo Lógico Relacional
@@ -675,15 +700,17 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 # 4. Massa de Dados
 
-| Tabela | Volume proposto | Justificativa |
+| Tabela | Volume na massa | Justificativa |
 | :--- | :--- | :--- |
-| `Cliente` | 96 (ou uma amostra proporcional, ex. 30) | 96 clientes fixos |
-| `Gerador` | ≈ 120–140 | cliente pode ter mais de um gerador  |
-| `Contrato` |  (ex. 60–70) | clientes fixos têm contrato |
-| `Manutencao` | ≈ 400 (12 meses × 33) | média de 33 por mês |
-| `Pagamento` | proporcional às manutenções avulsas e às mensalidades | cobrança por parcela |
-| `Tecnico` / `Escala` | (de 15 funcionários) | plantão 24 h exige várias escalas por técnico |
-| `Peca` / `Fornecedor` / `Compra` | dezenas de peças, poucos fornecedores | bateria, óleo, filtros, tanque |
+| `Cliente` | 102 (96 fixos com contrato + 6 avulsos) | 96 clientes fixos informados |
+| `Contrato` | 96 | cada cliente fixo tem um contrato |
+| `Aditivo_contrato` | 92 | alterações contratuais |
+| `Gerador` | 196 | cliente pode ter mais de um gerador |
+| `Manutencao` | 408 (nov/2025 a nov/2026) | média de 33 por mês |
+| `Pagamento` | 1.091 | mensalidades e manutenções avulsas |
+| `Tecnico` / `Escala` | 10 / 130 | 10 técnicos entre os 15 funcionários; escalas semanais |
+| `Peca` / `Fornecedor` / `Compra` | 11 / 6 / 33 | bateria, óleo, filtros, tanque etc. |
+| `Usuario` / `Log_acesso` | 16 (1 inativo) / 300 | 15 funcionários + conta extra; logs de usuários cadastrados |
 
 ---
 
