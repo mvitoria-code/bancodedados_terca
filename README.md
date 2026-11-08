@@ -468,7 +468,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Manutenção × Cronograma | `atualiza` (`MANUTENCAO_CRONOGRAMA`) | `id_manutencao`, `id_cronograma` | — |
 | Compra × Peça | `contem` (`COMPRA_PECA`) | `id_compra`, `id_peca` | `quantidade`, `valor_custo` |
 
-- **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `ENUM`, e não subtipos, porque os perfis não têm atributos diferentes.
+- **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `VARCHAR(20)` com `CHECK`, e não subtipos, porque os perfis não têm atributos diferentes.
 
 ---
 
@@ -510,7 +510,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 ## 1.5 Justificativas Técnicas das Decisões
 
-- **Chaves primárias:** inteiros `AUTO_INCREMENT` (substitutas) em todas as entidades, pois os identificadores naturais (CPF/CNPJ, número de série) são sensíveis, longos ou podem mudar. Os naturais ficam com `UNIQUE`. Em associativas, PK composta impede repetir o mesmo item na mesma manutenção. `Log_acesso` usa `BIGINT`, pois cresce a cada acesso.
+- **Chaves primárias:** inteiros `AUTO_INCREMENT` (substitutas) em todas as entidades, pois os identificadores naturais (CPF/CNPJ, número de série) são sensíveis, longos ou podem mudar. Os naturais ficam com `UNIQUE`. Em associativas, PK composta impede repetir o mesmo item na mesma manutenção.
 - **Chaves estrangeiras:** implementam os relacionamentos da seção 1.3, com `InnoDB` para garantir a integridade referencial (RNF04). Colunas opcionais (`Gerador.id_contrato`, `Manutencao.id_contrato`, `Manutencao.id_orcamento`) correspondem às cardinalidades mínimas 0 do DER.
 - **Restrições e as regras que implementam:**
 
@@ -519,11 +519,11 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | `Cliente.cpf_cnpj` `UNIQUE NOT NULL` | RN01 |
 | `Gerador.id_cliente` `NOT NULL` | RN02 |
 | `Gerador.numero_serie` `UNIQUE`, alfanumérico | RN03 |
-| `Gerador.status` `ENUM('ativo','em_manutencao','inativo')` | RN04 |
+| `Gerador.status` `CHECK (status IN ('ativo','em_manutencao','inativo'))` | RN04 |
 | `Manutencao.id_gerador` `NOT NULL` | RN05 |
 | Ao menos um técnico / serviço por manutenção (aplicação + consulta de auditoria) | RN06, RN07 |
-| `Manutencao.status` `ENUM('aberta','em_andamento','concluida')`, padrão `'aberta'`; `data_conclusao ≥ data_manutencao` | RN16 |
-| `Orcamento.status` `ENUM('pendente','aprovado','recusado')`; `Manutencao.id_orcamento` `UNIQUE` | RN10, RN11 |
+| `Manutencao.status` `CHECK (status IN ('aberta','em_andamento','concluida'))`, padrão `'aberta'`; `data_conclusao ≥ data_manutencao` | RN16 |
+| `Orcamento.status` `CHECK (status IN ('pendente','aprovado','recusado'))`; `Manutencao.id_orcamento` `UNIQUE` | RN10, RN11 |
 | `Contrato.id_cliente` `NOT NULL`; contrato do gerador do mesmo cliente (aplicação + auditoria) | RN12 |
 | `valor_unitario_aplicado ≥ 0` (zero se coberto por contrato) | RN15 |
 | `Tecnico.cpf` `CHAR(11)` `UNIQUE` | RN17 |
@@ -533,7 +533,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | `Fornecedor.cnpj` `UNIQUE` | RN22 |
 | `Peca.estoque ≥ 0`; ao menos um prazo de troca | RN23, RN08 |
 | `Contas_a_pagar.numero_boleto` `UNIQUE`; paga só se `valor_pago = valor_total` | RN24 |
-| `Usuario.login` `UNIQUE`; perfil `ENUM` | RN25 |
+| `Usuario.login` `UNIQUE`; perfil `CHECK (perfil IN ('administrador','atendimento','tecnico','financeiro'))` | RN25 |
 | `Log_acesso` só recebe `INSERT` | RN26, RNF03 |
 | `Aditivo_contrato` nunca excluído | RN27 |
 
