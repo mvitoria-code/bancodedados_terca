@@ -54,7 +54,7 @@
 
 **Justificativa da escolha:** a empresa relatou dificuldades reais de organização de dados (todo o controle é em papel), tem processos variados (atendimento, contratos, estoque, financeiro) que rendem um modelo rico, e o grupo tem fácil acesso à empresa e ao dono. 
 
-**Vínculo com a organização:**
+**Vínculo com a organização:** o integrante **Kauan José da Silva** trabalha na S. A. de Lima (Limas Energia Geradores) e é sobrinho do dono da empresa, que é o responsável que atendeu o grupo. Na foto da entrevista, os dois aparecem juntos, e a camisa com o logotipo da empresa é a do Kauan. O vínculo facilitou o acesso à empresa e o contato com o responsável. A entrevista foi feita no ambiente da organização e não depende apenas desse vínculo: ela está comprovada pela foto e pelo relato da seção seguinte.
 
 
 ##  Caracterização da Organização
