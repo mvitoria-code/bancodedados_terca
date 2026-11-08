@@ -77,12 +77,33 @@
 - **Quando e onde:** **⚠️ PREENCHER:** data e local (na sede da empresa). data 22/09/2026 
 - **Comprovação:** foto do grupo/integrante com o responsável, no local:
 
-<img src="foto%20da%20entrevistas.png" alt="Entrevista com o responsável" width="320">
-
 - **O que foi levantado (resumo):**
 - **Achados da observação presencial (separados do que foi dito):**
 - **Nova visita (Entrega 2):**
 - **Levantamento completo:** [`levantamento/levantamento.md`](levantamento/levantamento.md)
+
+
+### Processos de negócio
+
+Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de **contratos, preventiva, escala, compras, fornecedores, estoque e contas a pagar**):
+
+| # | Processo | Tabelas principais |
+| :--- | :--- | :--- |
+| 1 | Cadastro de clientes | `Cliente` |
+| 2 | Cadastro de geradores | `Gerador` |
+| 3 | Formalização de contratos (e aditivos) | `Contrato`, `Aditivo_contrato` |
+| 4 | Planejamento da manutenção preventiva | `Cronograma_Preventivo`, `Peca` |
+| 5 | Solicitação de atendimento e orçamento | `Orcamento` |
+| 6 | Registro de manutenções | `Manutencao`, `utiliza`, `usa`, `realizada por`, `atualiza` |
+| 7 | Cadastro de serviços | `Servico` |
+| 8 | Cadastro de técnicos | `Tecnico` |
+| 9 | Escalas dos técnicos | `Escala` |
+| 10 | Cadastro de peças e estoque | `Peca` |
+| 11 | Cadastro de fornecedores | `Fornecedor` |
+| 12 | Registro de compras | `Compra`, `contem` |
+| 13 | Controle de pagamentos (contas a receber) | `Pagamento` |
+| 14 | Contas a pagar | `Contas_a_pagar` |
+| 15 | Controle de acesso e auditoria | `Usuario`, `Log_acesso` |
 
 
 Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
@@ -128,37 +149,6 @@ O modelo é composto por **15 tabelas de entidades** e **5 tabelas associativas*
 As demais restrições (`NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`) não aparecem no diagrama do brModelo. Elas estão documentadas no [Dicionário de Dados](docs/dicionario_dados.html) (seção 5) e implementadas no [script SQL](docs/script.sql) (seção 3).
 
 
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-## 2. Processos de Negócio
-### Principais processos mapeados:
-- 2.1 Cadastro de clientes;
-- 2.2 Cadastro de geradores;
-- 2.3 Formalização de contratos de manutenção;
-- 2.4 Planejamento da manutenção preventiva;
-- 2.5 Solicitação de atendimento e elaboração de orçamento;
-- 2.6 Registro de manutenções;
-- 2.7 Cadastro de serviços;
-- 2.8 Cadastro de técnicos;
-- 2.9 Gerenciamento de escalas dos técnicos;
-- 2.10 Cadastro de peças;
-- 2.11 Cadastro de fornecedores;
-- 2.12 Registro de compras;
-- 2.13 Controle de pagamentos;
-- 2.14 Controle de contas a pagar;
-- 2.15 Controle de acesso e auditoria.
 
 
 #### 2.1 Processo de cadastrar clientes
