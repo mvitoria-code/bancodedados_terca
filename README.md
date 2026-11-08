@@ -23,7 +23,16 @@
 | Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) ** PREENCHER** |
 | Apresentação (slides) |  ** PREENCHER ** |
 
-## 1. Caracterização da Organização
+# 1. Relatório Técnico Final
+
+## 1.1 Revisão do Modelo Conceitual
+
+### Caracterização da organização
+
+**Nome e natureza:** S. A. de Lima, que opera como **Limas Energia Geradores** — manutenção preventiva e corretiva de geradores de energia. Empresa privada **com fins lucrativos**.
+
+
+##  Caracterização da Organização
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
 
