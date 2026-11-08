@@ -32,9 +32,6 @@ Nos dias atuais, a empresa não tem um controle digital para a organização dos
 Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
 A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
 
----
-
-
 **Problemas e necessidades identificados**
 
 | ID | Problema (crise operacional) | Evidência | Onde o modelo o resolve |
@@ -50,6 +47,8 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 **Justificativa da escolha:** a empresa relatou dificuldades reais de organização de dados (todo o controle é em papel), tem processos variados (atendimento, contratos, estoque, financeiro) que rendem um modelo rico, e o grupo tem fácil acesso à empresa e ao dono. 
 
 **Vínculo com a organização:** o integrante **Kauan José da Silva** trabalha na S. A. de Lima (Limas Energia Geradores) e é sobrinho do dono da empresa, que é o responsável que atendeu o grupo. Na foto da entrevista, os dois aparecem juntos, e a camisa com o logotipo da empresa é a do Kauan. O vínculo facilitou o acesso à empresa e o contato com o responsável. A entrevista foi feita no ambiente da organização e não depende apenas desse vínculo: ela está comprovada pela foto e pelo relato da seção seguinte.
+
+---
 
 **Evidências da organização**
 
