@@ -70,8 +70,8 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 
 
 ### Relato da entrevista
-- **Quem:** **⚠️ PREENCHER:** nome e função do entrevistado; quais integrantes participaram.
-- **Quando e onde:** **⚠️ PREENCHER:** data e local (na sede da empresa). data 22/09/2026 
+-  **Quem:** Sandro Aparecido de Lima, dono da empresa e responsável pela organização. Participou da entrevista **⚠️ PREENCHER: quais integrantes**.
+- **Quando e onde:** 22/09/2026, na sede da empresa (Av. Adriano Bertozzi, 815 - Jardim Helian, São Paulo - SP).
 - **Comprovação:** foto do grupo/integrante com o responsável, no local:
 
 ---
@@ -447,7 +447,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Alguns RF eram regras de unicidade | RFs reescritos como funcionalidades, com unicidades nas RNs | RF descreve o que o sistema faz; unicidade é regra |
 | Entrevista sem relato; foto não referenciada no README | Seção "Relato da entrevista" e foto referenciada | Exigência da E2 — **⚠️ conferir o texto preenchido** |
 | README só com nomes, sem RGM | Tabela de integrantes com RGM e usuário do GitHub | Identificação dos autores |
-| Possível conflito de interesse (camisa da empresa na foto) | **⚠️ PREENCHER:** declarar o vínculo na caracterização | Transparência exigida pela E2 |
+| Possível conflito de interesse (camisa da empresa na foto) | Vínculo declarado na caracterização: o integrante Kauan José da Silva trabalha na empresa e é sobrinho do dono | Transparência exigida pela E2 |
 
 ---
 
@@ -657,7 +657,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 ---
 
 # 3. Script SQL Completo
-**SGBD:** MySQL **PREENCHER**
+**SGBD:** MySQL 8.0 (a partir da 8.0.16, por causa dos `CHECK`), mecanismo InnoDB, conjunto de caracteres `utf8mb4` e collation `utf8mb4_unicode_ci`.
 
 **Arquivo:** [`docs/script.sql`](docs/script.sql) — **⚠️ PREENCHER**
 
