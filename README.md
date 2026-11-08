@@ -52,6 +52,11 @@
 
 **Escopo do sistema:** o banco cobre **toda** a operação da empresa, não só um setor: clientes e contratos (com aditivos), geradores, orçamentos, manutenções (técnicos, serviços e peças), cronograma preventivo, escala dos técnicos, recebimentos (pagamentos), compras de peças e fornecedores, contas a pagar e controle de acesso/auditoria (22 tabelas).
 
+**Justificativa da escolha:** a empresa relatou dificuldades reais de organização de dados (todo o controle é em papel), tem processos variados (atendimento, contratos, estoque, financeiro) que rendem um modelo rico, e o grupo tem fácil acesso à empresa e ao dono. 
+
+**Vínculo com a organização:**
+
+
 ##  Caracterização da Organização
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
