@@ -681,17 +681,18 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 | Artefato | Arquivo |
 | :--- | :--- |
-| relatório README.md | [`main`] |
-| Dicionário de dados (HTML, v6.0) | [`dicionariodre.html`](dicionariodre.html) |
-| Diagrama DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
-| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
-| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql)  |
-| Histórico de commits e colaboração |  **PREENCHER** |
-| Evidências fotos | [fachada](imagem%20empresa.jpg) e [entrevista](foto%20da%20entrevistas.png) |
-| Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
-| Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
-| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) **PREENCHER** |
-| Apresentação (slides) |  **PREENCHER ** |
+| Relatório (README) | `README.md`, na raiz da branch `main` |
+| Dicionário de dados (HTML, v6.0) | [dicionariodre.html](dicionariodre.html) |
+| Diagrama DER conceitual revisado (brModelo Web) | [DER (1).png](DER%20%281%29.png) |
+| Levantamento completo | [levantamento/levantamento.md](levantamento/levantamento.md) |
+| Script SQL (MySQL) | [docs/script.sql](docs/script.sql) |
+| Consultas gerenciais e de auditoria | [docs/03_consultas_.sql](docs/03_consultas_.sql) |
+| Histórico de commits e colaboração | [Ver commits](../../commits/main) |
+| Evidências (fotos) | [fachada](imagem%20empresa.jpg) e [entrevista](foto%20da%20entrevistas.png) |
+| Modelo lógico (brModelo Web) | [Modelo Logico.png](Modelo%20Logico.png) |
+| Fluxograma do atendimento | [fluxograma.png](fluxograma.png) |
+| Massa de dados | [docs/02_massa_dados.sql](docs/02_massa_dados.sql) **PREENCHER** |
+| Apresentação (slides) |  **PREENCHER link dos slides** |
 
 ---
 
