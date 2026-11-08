@@ -94,7 +94,7 @@ Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de
 | 3 | Formalização de contratos (e aditivos) | `Contrato`, `Aditivo_contrato` |
 | 4 | Planejamento da manutenção preventiva | `Cronograma_Preventivo`, `Peca` |
 | 5 | Solicitação de atendimento e orçamento | `Orcamento` |
-| 6 | Registro de manutenções | `Manutencao`, `utiliza`, `usa`, `realizada por`, `atualiza` |
+| 6 | Registro de manutenções | `Manutencao`, `utiliza`, `usa`, `realizada_por`, `atualiza` |
 | 7 | Cadastro de serviços | `Servico` |
 | 8 | Cadastro de técnicos | `Tecnico` |
 | 9 | Escalas dos técnicos | `Escala` |
@@ -225,7 +225,7 @@ Dados:
 #### Processo 12 — registrar compras
 - Objetivo: registrar as compras de peças feitas a fornecedores.
 - Quando ocorre: quando é preciso adquirir peças para manutenções ou uso interno.
-- Dados: ID, data, fornecedor, situação (não recebido ou recebido), nota fiscal e itens (quantidade e custo unitário).
+- Dados: ID, data, fornecedor, situação (pedida, recebida ou cancelada), nota fiscal e itens (quantidade e custo unitário).
 - Regras: toda compra tem pelo menos um item e um fornecedor cadastrado; a situação só muda enquanto a compra não estiver recebida; o recebimento atualiza o estoque automaticamente, sem segunda entrada; o estoque nunca fica negativo.
 - Resultado: compras rastreáveis por fornecedor e estoque atualizado.
 
@@ -464,7 +464,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 ## 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
 - **Entidades → Tabelas:** cada uma das 17 entidades do DER virou uma tabela com o mesmo nome (`Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala`, `Peca`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso`). O DER final tem **17 entidades**, mais **5 relacionamentos N:N** que viraram tabelas associativas, totalizando **22 tabelas**.
-- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos do diagrama e do dicionário são os mesmos (`INT`, `FLOAT`, `VARCHAR`, `CHAR`, `TEXT`, `DATE`, `DATETIME`, `BOOLEAN`); o dicionário acrescenta os tamanhos (por exemplo `VARCHAR(120)`, `CHAR(11)`). Listas fechadas de valores (status, tipo, turno, perfil etc.) são `VARCHAR(20)` com `CHECK ... IN (...)`.
+- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos do diagrama e do dicionário são os mesmos (`INT`, `DECIMAL`, `VARCHAR`, `CHAR`, `DATE`, `DATETIME`); o dicionário acrescenta os tamanhos (por exemplo `VARCHAR(120)`, `CHAR(11)`). Listas fechadas de valores (status, tipo, turno, perfil etc.) são `VARCHAR(20)` com `CHECK ... IN (...)`.
 - **Relacionamentos → Chaves:**
   - **1:N** — a chave do lado "1" vai como `FK` para a tabela do lado "N" (ex.: `Gerador.id_cliente`, `Manutencao.id_gerador`, `Compra.id_fornecedor`, `Escala.id_tecnico`).
   - **0,1 : 0,1** (`Orçamento` origina `Manutenção`) — `FK` opcional `Manutencao.id_orcamento` com índice `UNIQUE`, para que um orçamento origine no máximo uma manutenção.
@@ -506,7 +506,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 | `Log_acesso` | `id_log` | `id_usuario` → `Usuario` |
 | `utiliza` | (`id_manutencao`, `id_servico`) | ambas → `Manutencao`, `Servico` |
 | `usa` | (`id_manutencao`, `id_peca`) | ambas → `Manutencao`, `Peca` |
-| `realizada por` | (`id_manutencao`, `id_tecnico`) | ambas → `Manutencao`, `Tecnico` |
+| `realizada_por` | (`id_manutencao`, `id_tecnico`) | ambas → `Manutencao`, `Tecnico` |
 | `atualiza` | (`id_manutencao`, `id_cronograma`) | ambas → `Manutencao`, `Cronograma_Preventivo` |
 | `contem` | (`id_compra`, `id_peca`) | ambas → `Compra`, `Peca` |
 
@@ -514,7 +514,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 
 ## 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
-- **1FN (sem grupos repetitivos nem multivalorados):** a manutenção tem vários serviços, peças e técnicos. Se fossem colunas ou listas dentro de `Manutencao` haveria grupos repetitivos; por isso viraram as tabelas `utiliza`, `usa` e `realizada por`, com uma linha por item. O texto `servico_realizado` da E1 foi removido pelo mesmo motivo. Cada gerador tem várias peças acompanhadas: virou `Cronograma_Preventivo`, uma linha por peça. As parcelas de pagamento são linhas de `Pagamento`, não colunas "parcela1, parcela2".
+- **1FN (sem grupos repetitivos nem multivalorados):** a manutenção tem vários serviços, peças e técnicos. Se fossem colunas ou listas dentro de `Manutencao` haveria grupos repetitivos; por isso viraram as tabelas `utiliza`, `usa` e `realizada_por`, com uma linha por item. O texto `servico_realizado` da E1 foi removido pelo mesmo motivo. Cada gerador tem várias peças acompanhadas: virou `Cronograma_Preventivo`, uma linha por peça. As parcelas de pagamento são linhas de `Pagamento`, não colunas "parcela1, parcela2".
 - **2FN (sem dependências parciais):** nas tabelas com chave composta, todo atributo depende da chave inteira. Em `utiliza`, `valor_unitario_aplicado` e `quantidade` dependem do par (manutenção, serviço) — o mesmo serviço tem valor diferente em manutenções diferentes. Nome, descrição e valor-base do serviço ficam em `Servico`, e não repetidos em `utiliza`. O mesmo vale para `usa` (dados da peça ficam em `Peca`) e `contem`.
 - **3FN (sem dependências transitivas):** os dados do cliente não se repetem em `Gerador` ou `Manutencao` (basta `id_cliente`); os dados do fornecedor ficam fora de `Compra` e `Contas_a_pagar`; o prazo de troca fica em `Peca`, não em `Cronograma_Preventivo`. O **valor total da manutenção não é gravado** (seria dependente de itens), é calculado por consulta. Exceção consciente: `Cliente` mantém `cidade` e `estado` juntos (a cidade determina o estado); não se criou tabela de cidades porque o ganho seria pequeno para 96 clientes e os valores seguem um domínio fechado (`CHAR(2)` no estado). 
 - **Justificativa do processo:** a 1FN era necessária porque o atendimento combina muitos itens; a 2FN, porque os valores praticados variam por manutenção; a 3FN, para que uma alteração de cadastro (telefone do cliente, preço-base do serviço) seja feita em um só lugar, o que resolve a inconsistência das fichas em papel (P1).
@@ -558,7 +558,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 > | `Manutencao.status` | `'Aberta'`, `'Em andamento'`, `'Concluida'` |
 > | `Manutencao.tipo_manutencao` | `'Preventiva'`, `'Corretiva'` |
 > | `Orcamento.status` | `'Pendente'`, `'Aprovado'`, `'Recusado'` |
-> | `Compra.status` | `'Pedida'`, `'Recebida'`, `'Cancelada'` (no Processo 12, "não recebido" corresponde a `'Pedida'`) |
+> | `Compra.status` | `'Pedida'`, `'Recebida'`, `'Cancelada'`|
 > | `Usuario.perfil` | `'Administrador'`, `'Atendimento'`, `'Tecnico'`, `'Financeiro'` |
 >
 > Além do que a tabela lista, o script também garante:
@@ -605,25 +605,20 @@ A partir do banco de dados relacional e do monitoramento dos indicadores de dese
 
 A arquitetura relacional estruturada no DER — integrando entidades como Cliente, Gerador, Contrato, Manutencao, Pagamento e Peca — suporta perfeitamente a extração de relatórios e a construção de painéis gerenciais (dashboards) dinâmicos:
 
-- **Painel operacional:** manutenções abertas, geradores em manutenção, técnicos em escala (`Manutencao`, `Gerador`, `Tecnico`, `Escala`).
-***Painel Operacional de Campo:** Conecta as tabelas Manutencao, Gerador e Tecnico para monitorar chamados abertos em tempo real, o status operacional dos geradores em atendimento e a disponibilidade dos técnicos baseada na tabela Escala.
-  
-- **Painel de confiabilidade:** tempo de reparo, MTBF e peças vencidas (`Manutencao`, `Gerador`, `Cronograma_Preventivo`, `Peca`).
-***Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela Manutencao e os dados de horímetro da entidade Gerador para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
+- **Painel operacional de campo:** manutenções abertas, geradores em manutenção e técnicos em escala (`Manutencao`, `Gerador`, `Tecnico`, `Escala`). Conecta as tabelas para monitorar chamados abertos em tempo real, o status dos geradores em atendimento e a disponibilidade dos técnicos pela tabela `Escala`.
 
-- **Painel financeiro:** receita por contrato, parcelas a receber e atrasadas, contas a pagar (`Contrato`, `Pagamento`, `Contas_a_pagar`).
-***Painel Financeiro e de Contratos:** Agrupa os dados das tabelas Contrato, Pagamento e Manutencao para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
+- **Painel de confiabilidade e desempenho (MTTR/MTBF/FFR):** tempo de reparo, MTBF, índice de primeira visita e peças vencidas (`Manutencao`, `Gerador`, `Cronograma_Preventivo`, `Peca`). Usa o histórico de `Manutencao` e o horímetro de `Gerador` para medir a velocidade de reparo, a solução na primeira visita e a frequência de falhas.
+
+- **Painel financeiro e de contratos:** receita por contrato, parcelas a receber e atrasadas, contas a pagar (`Contrato`, `Pagamento`, `Manutencao`, `Contas_a_pagar`). Apresenta a receita recorrente dos contratos ativos e o faturamento geral da empresa.
 
 ---
 
 ### Aplicações analíticas e de IA
 O histórico armazenado nas tabelas do sistema serve como base para alimentar modelos preditivos e sistemas inteligentes:
 
-- **Manutenção preditiva:** estimar a data da próxima troca de peça a partir de horímetro e histórico de trocas.
-***Manutenção Preditiva baseada em Horímetro:** Cruzando os dados da entidade Gerador (atributo horímetro) com o histórico de trocas da tabela Cronograma_Preventivo e Manutencao, um modelo de IA pode estimar estatisticamente o desgaste de peças (como baterias e filtros) e abrir ordens de serviço preventivas antes que o equipamento sofra uma pane no plantão 24h.
+- **Manutenção preditiva baseada em horímetro:** estimar a data da próxima troca de peça cruzando o horímetro de `Gerador` com o histórico de `Cronograma_Preventivo` e `Manutencao`. Um modelo pode estimar o desgaste de peças (como baterias e filtros) e abrir ordens preventivas antes de uma pane no plantão 24h.
 
-- **Risco de inadimplência e renovação de contratos:** classificar contratos a partir do histórico de pagamentos.
-**Previsão de Risco de Inadimplência e Renovação de Contratos:** Utilizando o histórico de pagamentos da tabela Pagamento e os dados contratuais da tabela Contrato, um algoritmo analítico pode prever riscos de atraso financeiro e identificar padrões para otimizar a retenção e receita por contrato.
+- **Risco de inadimplência e renovação de contratos:** classificar contratos a partir do histórico de `Pagamento` e dos dados de `Contrato`, para prever atrasos e identificar padrões que melhorem a retenção e a receita por contrato.
 
 - **Previsão de demanda de peças:** projetar o consumo (`usa`) para orientar compras (`contem`).
 
@@ -652,7 +647,7 @@ O histórico armazenado nas tabelas do sistema serve como base para alimentar mo
 
 Observações: o MTTR (G08) é medido em dias porque o schema guarda apenas `DATE`; a meta de 3 horas não é verificável com o modelo atual. O MTBF (G15) usa o horímetro acumulado dividido pelas falhas do período registrado, por isso é aproximado. O First Fix Rate (G16) considera resolvida na 1ª visita a corretiva sem nova corretiva no mesmo gerador em 30 dias.
 
-**Consultas de auditoria planejadas**
+**Consultas de auditoria**
 
 Resultado vazio = dados consistentes com a regra.
 
@@ -670,7 +665,8 @@ Resultado vazio = dados consistentes com a regra.
 | A10 | O status do gerador é coerente com as manutenções abertas? | RN04 |
 | A11 | Há contrato sem nenhum gerador vinculado? | RN12 |
 
-As regras RN07 (manutenção sem serviço), RN16 (conclusão x `data_conclusao`, já garantida por `CHECK`) e RN23 (estoque negativo, garantido por `CHECK`) deixam de ter consulta própria: as duas últimas são impedidas pelo próprio banco.
+Não há consulta de auditoria para a RN07 (manutenção sem serviço), que fica a cargo da aplicação. A RN16 (conclusão exige `data_conclusao`) e a RN23 (estoque negativo) são impedidas pelo próprio banco, por `CHECK`.
+
 ---
 
 # 2. Modelo Lógico Relacional
@@ -688,7 +684,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | Peças e preventiva | `Peca`, `Cronograma_Preventivo` |
 | Financeiro e suprimentos | `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar` |
 | Segurança | `Usuario`, `Log_acesso` |
-| Associativas (N:N) | `utiliza`, `usa`, `realizada por`, `atualiza`, `contem` |
+| Associativas (N:N) | `utiliza`, `usa`, `realizada_por`, `atualiza`, `contem` |
 ---
 
 # 3. Script SQL Completo
