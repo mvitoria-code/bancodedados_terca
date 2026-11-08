@@ -73,6 +73,16 @@
 - E-mail: sandrolima@limasenergia.com.br
 
 ### Relato da entrevista
+- **Quem:** **⚠️ PREENCHER:** nome e função do entrevistado; quais integrantes participaram.
+- **Quando e onde:** **⚠️ PREENCHER:** data e local (na sede da empresa). data 22/09/2026 
+- **Comprovação:** foto do grupo/integrante com o responsável, no local:
+
+<img src="foto%20da%20entrevistas.png" alt="Entrevista com o responsável" width="320">
+
+- **O que foi levantado (resumo):**
+- **Achados da observação presencial (separados do que foi dito):**
+- **Nova visita (Entrega 2):**
+- **Levantamento completo:** [`levantamento/levantamento.md`](levantamento/levantamento.md)
 
 
 Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
