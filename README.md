@@ -58,11 +58,11 @@
 
 **Evidências da organização**
 
-- Endereço e perfil da empresa no Google Maps: https://maps.app.goo.gl/XExBHSXrFvbUNv8Y6?g_st=aw
-- Telefone: +55 11 98373-9556  
+- Endereço e perfil da empresa no Google Maps: Av. Adriano Bertozzi, 815 - Jardim Helian, São Paulo - SP, 08265-000 https://maps.app.goo.gl/XExBHSXrFvbUNv8Y6?g_st=aw
+- Telefone: +55 (11) 98373-9556  
 - E-mail: sandrolima@limasenergia.com.br
 - site: https://limasenergia.com.br/
-- Foto da fachada (marca "Limas Energia") :
+- Foto da fachada (marca "Limas Energia Grupos Geradores") :
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
 
