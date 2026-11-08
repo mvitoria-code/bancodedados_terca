@@ -1,4 +1,7 @@
-## 👥 1  Integrantes do Grupo
+# Entrega 2 — Banco de Dados da S. A. de Lima (Limas Energia Geradores)
+### Gestão de manutenção preventiva e corretiva de geradores de energia
+
+##  1  Integrantes do Grupo
 
 | Nome | RGM | GitHub |
 | :--- | :---: | :--- |
