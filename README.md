@@ -626,9 +626,9 @@ O histórico armazenado nas tabelas do sistema serve como base para alimentar mo
 | :--- | :--- | :--- |
 | P1 — fichas em papel: histórico de atendimentos por cliente e gerador | `Cliente`, `Gerador`, `Manutencao` | S01, S04 |
 | P2 — última troca e peças vencidas/a vencer | `Cronograma_Preventivo`, `Peca`, `Gerador` | G01 |
-| P3 — cobertura contratual de cada manutenção | `Contrato`, `Gerador`, `Manutencao`, `utiliza`, `usa` | S02, G09, A01, A11 |
+| P3 — contratos vigentes e vencendo, coerência gerador × contrato e itens com valor zerado por cobertura | `Contrato`, `Gerador`, `Manutencao`, `utiliza`, `usa` | S02, G09, A01, A11 |
 | P4 — aditivos e condições anteriores por contrato | `Contrato`, `Aditivo_contrato` | G14 |
-| P5 — faturamento, recebimentos e inadimplência | `Contrato`, `Pagamento`, `Cliente` | G03, G04, G11, G12 |
+| P5 — faturamento, recebimentos, inadimplência e reajustes contratuais | `Contrato`, `Aditivo_contrato`, `Pagamento`, `Manutencao`, `Gerador`, `Cliente` | G03, G04, G11, G12, G14 |
 | KPI — receita recorrente por contrato | `Contrato` | G12 |
 | KPI — taxa de preventivas | `Manutencao` | G13 |
 | KPI — tempo médio de reparo (MTTR, em dias) | `Manutencao` | G08 |
