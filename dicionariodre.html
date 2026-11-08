@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dicionário de Dados Conceitual</title>
+    <style>
+        body { max-width: 1300px; margin: 0 auto; padding: 24px 20px; font-family: Arial, Helvetica, sans-serif; line-height: 1.5; }
+        table { display: block; width: fit-content; max-width: 100%; overflow-x: auto; margin: 12px 0; border-collapse: collapse; }
+        th, td { vertical-align: top; text-align: left; padding: 4px 8px; }
+        th { background: #eee; white-space: nowrap; }
+    </style>
 </head>
 <body>
 
@@ -94,6 +100,16 @@
     <td>Seleção: um dos valores da lista, separados por |</td>
     <td>[ativo | em_manutencao | inativo]</td>
   </tr>
+  <tr>
+    <td>≥</td>
+    <td>Maior ou igual a: o valor pode ser igual ao limite ou maior que ele</td>
+    <td>≥ 0 (MD_HORIMETRO); ≥ DT_INICIO (DT_FIM)</td>
+  </tr>
+  <tr>
+    <td>&gt;</td>
+    <td>Maior que: o valor precisa ser estritamente maior que o limite, sem incluí-lo</td>
+    <td>&gt; 0 (MD_POTENCIA, QT_PECA)</td>
+  </tr>
 </table>
 
 <p><b>Convenção de prefixos:</b></p>
@@ -163,6 +179,11 @@
     <td>Número de documento ou de série (texto) e número de ordem (inteiro)</td>
     <td>NR_CPF_CNPJ, NR_CPF, NR_SERIE, NR_NOTA_FISCAL, NR_PARCELA</td>
   </tr>
+  <tr>
+    <td>RN</td>
+    <td>Regra de negócio: código (RN seguido de número) que aparece entre parênteses no significado de uma coluna e indica qual regra do projeto aquele campo implementa. O texto de cada regra está no README</td>
+    <td>(RN01) a (RN27), como (RN01), (RN02), (RN03) até (RN27)</td>
+  </tr>
 </table>
 
 <p><b>Tipos de dado:</b></p>
@@ -178,8 +199,18 @@
     <td>Chaves e quantidades.</td>
   </tr>
   <tr>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>Inteiro que o próprio banco numera, sozinho, em sequência (1, 2, 3…) a cada novo registro</td>
+    <td>Chaves primárias, como ID_CLIENTE e ID_GERADOR.</td>
+  </tr>
+  <tr>
     <td>BIGINT</td>
     <td>Inteiro de faixa ampla</td>
+    <td>ID_LOG, que cresce a cada acesso.</td>
+  </tr>
+  <tr>
+    <td>BIGINT AUTO_INCREMENT</td>
+    <td>Inteiro de faixa ampla que o próprio banco numera, em sequência, a cada novo registro</td>
     <td>ID_LOG, que cresce a cada acesso.</td>
   </tr>
   <tr>
@@ -226,6 +257,11 @@
     <td>FK</td>
     <td>Chave estrangeira</td>
     <td>Um campo que “empresta” o ID de outra tabela, para ligar as duas. É assim que um gerador fica sabendo a qual cliente ele pertence.</td>
+  </tr>
+  <tr>
+    <td>NULL</td>
+    <td>Ausência de valor: o campo fica vazio, o que é diferente de zero e de texto vazio. Só é aceito em campo opcional; na coluna “Padrão”, NULL indica que o campo fica sem valor quando nada é informado</td>
+    <td>ID_CONTRATO em GERADOR; DT_CONCLUSAO em MANUTENCAO.</td>
   </tr>
 </table>
 
@@ -2335,4 +2371,3 @@
 
 </body>
 </html>
-
