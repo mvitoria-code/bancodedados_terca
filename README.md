@@ -445,9 +445,14 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Prefixos impróprios (`QT_VALOR`, `QT_VALOR_BASE`, `QT_POTENCIA`, `ID_CPF_CNPJ`) | Renomeados para `VL_*`, `MD_POTENCIA` e `NR_CPF_CNPJ`, com prefixos `VL_`, `MD_` e `NR_` explicados no dicionário | `QT_` é quantidade; valor e potência têm prefixos próprios |
 | RF falava em "mais de um serviço por cliente" | RF09 passou a ligar serviços à manutenção | O modelo liga serviço à manutenção, não ao cliente |
 | Alguns RF eram regras de unicidade | RFs reescritos como funcionalidades, com unicidades nas RNs | RF descreve o que o sistema faz; unicidade é regra |
-| Entrevista sem relato; foto não referenciada no README | Seção "Relato da entrevista" e foto referenciada | Exigência da E2 — **⚠️ conferir o texto preenchido** |
+| Entrevista sem relato; foto não referenciada no README | Seção "Relato da entrevista" com quem, quando e onde, e foto da entrevista referenciada | Exigência da E2 |
 | README só com nomes, sem RGM | Tabela de integrantes com RGM e usuário do GitHub | Identificação dos autores |
 | Possível conflito de interesse (camisa da empresa na foto) | Vínculo declarado na caracterização: o integrante Kauan José da Silva trabalha na empresa e é sobrinho do dono | Transparência exigida pela E2 |
+| Regras ausentes: compras de fornecedor cadastrado e conferência das peças | Criadas RN22 (fornecedor com CNPJ único), RN23 (compra ligada a fornecedor, com itens, quantidades e valores; o estoque só é atualizado após a confirmação do recebimento) e RN24 (contas a pagar) | Cobre o ciclo de compras que faltava |
+| Regra ausente: emissão de nota fiscal | O número da nota fiscal é guardado em `Manutenção` e em `Compra` (`numero_nota_fiscal`); a emissão da nota em si fica fora do sistema | O sistema registra a nota, não a emite |
+| Regra parcial: LGPD (só criptografia) | Seção LGPD no dicionário, trilha de auditoria (`Usuario`, `Log_acesso`, RN26) e requisitos de segurança (RNF) | CPF, CNPJ e endereço são dados pessoais |
+| Regra parcial: técnico habilitado (NR-10) | **Mantida fora do modelo.** As NRs aparecem só como restrição organizacional (REST01) | 
+| Uso 2 de IA com prompt e resposta genéricos | Item 2 da seção 6 reescrito com o prompt real, o que foi aceito e o que foi rejeitado | Apontamento da correção |
 
 ---
 
@@ -659,7 +664,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 # 3. Script SQL Completo
 **SGBD:** MySQL 8.0 (a partir da 8.0.16, por causa dos `CHECK`), mecanismo InnoDB, conjunto de caracteres `utf8mb4` e collation `utf8mb4_unicode_ci`.
 
-**Arquivo:** [`docs/script.sql`](docs/script.sql) — **⚠️ PREENCHER**
+**Arquivo:** [`docs/script.sql`](docs/script.sql) 
 
 ---
 
