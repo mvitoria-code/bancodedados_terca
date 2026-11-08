@@ -389,6 +389,20 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 - **Software:** brModelo Web (<https://app.brmodeloweb.com>), modelo conceitual.
 - Identificadores como círculos preenchidos; atributos comuns como círculos vazios; atributos de relacionamento ligados ao losango; **sem chaves estrangeiras**.
+| Elemento | Como aparece | No nosso DER |
+| :--- | :--- | :--- |
+| **Entidade** | retângulo | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orçamento`, `Manutenção`, `Serviço`, `Técnico`, `Escala`, `Peça`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso` (17 entidades) |
+| **Relacionamento** | losango | `possui` (Cliente–Gerador), `firma` (Cliente–Contrato), `cobre` (Contrato–Gerador), `recebe` (Gerador–Manutenção), `realizada por` (Manutenção–Técnico) |
+| **Cardinalidade mínima e máxima** | par `(mín, máx)` dos dois lados de cada relacionamento | `(0, n)` e `(1, 1)` em `Cliente` **possui** `Gerador`; `(0, 1)` e `(0, 1)` em `Orçamento` **origina** `Manutenção`; `(1, n)` em `Compra` **contém** `Peça` |
+| **Autorrelacionamento** | losango ligado duas vezes à mesma entidade | não utilizado: nenhuma entidade se relaciona com ela mesma |
+| **Atributo identificador (chave)** | círculo **preenchido** | `id_cliente`, `id_gerador`, `id_contrato`, `id_manutencao`, `id_pagamento` (um por entidade) |
+| **Identificador composto** | mais de um círculo preenchido na mesma entidade | não utilizado no DER: todas as entidades têm identificador simples. A chave composta aparece só nas tabelas associativas do modelo lógico |
+| **Atributo comum** | círculo **vazio** | `nome`, `cpf_cnpj`, `telefone`, `valor_mensal`, `status`, `data_manutencao` |
+| **Atributo multivalorado** | círculo vazio com a cardinalidade do atributo | não utilizado: os dados que se repetem viraram entidades ou relacionamentos (peças, serviços, técnicos e parcelas) |
+| **Atributo composto** | atributo com subatributos ligados a ele | não utilizado: o endereço do cliente é representado por atributos simples (`endereco`, `cidade`, `estado`) |
+| **Atributo de relacionamento** | círculo vazio ligado ao losango | `valor_unitario_aplicado` e `quantidade` em `utiliza` e `usa`; `quantidade` e `valor_custo` em `contém` |
+| **Generalização/especialização** | triângulo ligando a entidade genérica às especializadas | não utilizado: o perfil do usuário é um atributo (`perfil`), não uma especialização |
+| **Entidade associativa** | retângulo envolvendo o losango do relacionamento | não utilizado: os relacionamentos N:N (`utiliza`, `usa`, `contém`) são desenhados como losangos com atributos, e viram tabelas associativas no modelo lógico (seção 1.2) |
 
 ### DER conceitual revisado (Caso A — mesma organização da Entrega 1)
 
