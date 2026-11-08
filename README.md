@@ -27,156 +27,151 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 ---
 
 ## 2. Processos de Negócio
-Cadastro de clientes:
-- Objetivo: preservar as informações dos clientes da empresa e permitir cadastrar, consultar e buscar o histórico de cada um.
+### Principais processos mapeados:
+- 2.1 Cadastro de clientes;
+- 2.2 Cadastro de geradores;
+- 2.3 Formalização de contratos de manutenção;
+- 2.4 Planejamento da manutenção preventiva;
+- 2.5 Solicitação de atendimento e elaboração de orçamento;
+- 2.6 Registro de manutenções;
+- 2.7 Cadastro de serviços;
+- 2.8 Cadastro de técnicos;
+- 2.9 Gerenciamento de escalas dos técnicos;
+- 2.10 Cadastro de peças;
+- 2.11 Cadastro de fornecedores;
+- 2.12 Registro de compras;
+- 2.13 Controle de pagamentos;
+- 2.14 Controle de contas a pagar;
+- 2.15 Controle de acesso e auditoria.
+
+
+#### 2.1 Processo de cadastrar clientes
+- Objetivo: preservar as informações dos clientes e permitir consultar o histórico de cada um.
 - Quando ocorre: no primeiro atendimento de um cliente novo.
-- Dados registrados: nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado.
-- Regras: todos os campos são obrigatórios; o CPF/CNPJ não pode se repetir; por serem dados pessoais, CPF/CNPJ e endereço são protegidos por criptografia em repouso no banco de dados.
-- Resultado: cliente disponível para vincular geradores e contratos e consultar o histórico.
+- Dados: nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado.
+- Regras: todos os campos são obrigatórios; o CPF/CNPJ não pode se repetir; CPF/CNPJ e endereço são protegidos por criptografia em repouso.
+Resultado: cliente disponível para vincular geradores e contratos.
 
-
-Contrato de manutenção:
-- Objetivo: formalizar o atendimento recorrente dos clientes fixos, com cobrança periódica.
-- Quando ocorre:quando um cliente fixo passa a ter um acordo de manutenção e, depois, a cada alteração das condições do contrato.
-- Dados registrados:
- 1. Contrato: cliente, data de início, data de fim (opcional), valor mensal, periodicidade (mensal a anual) e status (ativo, encerrado ou cancelado).
-  2. Aditivo: contrato, data do aditivo, descrição da alteração e condições anteriores.
-- Regras: O contrato pertence a um único cliente e cobre pelo menos um gerador desse mesmo cliente. Sem data de fim, o prazo é indeterminado. Contrato encerrado exige data de fim. As manutenções preventivas previstas no contrato são pagas pela mensalidade e não geram cobrança à parte. Itens fora do previsto são cobrados normalmente.
-Toda alteração das condições do contrato é registrada por aditivo. O contrato pode ter vários aditivos. O aditivo preserva o histórico das condições anteriores e nunca é excluído.
-- Resultado: contrato ativo, que gera as cobranças periódicas (ver Faturamento e pagamento) e enquadra as manutenções dos geradores cobertos.
-
-
-Cadastro de geradores:
-- Objetivo: controlar os geradores supervisionados pela empresa, mantendo a assertividade nas manutenções.
+#### 2.2 Processo de cadastrar geradores
+- Objetivo: controlar os geradores supervisionados pela empresa.
 - Quando ocorre: quando o cliente possui um gerador ainda não registrado.
-- Dados registrados: número de série, marca, modelo, status (ativo, em manutenção ou inativo), potência em kVA, horímetro (horas de operação acumuladas) e, quando houver, o contrato que cobre o gerador.
-- Regras: todo gerador pertence a um cliente; o número de série é único (aceita letras e números); um cliente pode ter mais de um gerador, conforme o porte e a necessidade; o contrato que cobre o gerador deve pertencer ao mesmo cliente do gerador; todo gerador deve ter um cronograma de inspeção preventiva.
-- Resultado: equipamento identificado, com cronograma de inspeção preventiva criado e pronto para receber manutenções.
+- Dados: número de série, marca, modelo, status (ativo, em manutenção ou inativo), potência em kVA, horímetro e, quando houver, o contrato que cobre o gerador.
+- Regras: todo gerador pertence a um cliente; o número de série é único; um cliente pode ter mais de um gerador; o contrato deve pertencer ao mesmo cliente do gerador; todo gerador deve ter um cronograma de inspeção preventiva.
+- Resultado: equipamento identificado, com cronograma criado e pronto para receber manutenções.
 
+#### 2.3 Processo de formalizar contratos de manutenção
+- Objetivo: formalizar o atendimento recorrente dos clientes fixos, com cobrança periódica.
+- Quando ocorre: quando um cliente fixo passa a ter um acordo de manutenção e a cada alteração das condições do contrato.
+Dados:
+- Contrato: cliente, data de início, data de fim (opcional), valor mensal, periodicidade (mensal a anual) e status (ativo, encerrado ou cancelado).
+- Aditivo: contrato, data do aditivo, descrição da alteração e condições anteriores.
+- Regras: o contrato pertence a um único cliente e cobre pelo menos um gerador dele; sem data de fim, o prazo é indeterminado; contrato encerrado exige data de fim; as preventivas previstas  são pagas pela mensalidade e itens fora do previsto são cobrados à parte; toda alteração é registrada por aditivo, que nunca é excluído.
+- Resultado: contrato ativo, que gera as cobranças periódicas e enquadra as manutenções dos geradores cobertos.
 
-Cronograma de manutenção preventiva:
-- Objetivo: acompanhar os prazos de troca ou limpeza das peças de cada gerador (bateria, óleo do motor, filtros e tanque).
-Quando ocorre: no cadastro do gerador, quando o cronograma é criado, e a cada troca ou limpeza realizada em uma manutenção.
-Dados registrados: gerador, peça, data da última troca e horímetro da última troca (ambos opcionais até a primeira intervenção).
-Regras: O cronograma é cadastrado para cada gerador, com um registro por peça. O prazo vem da peça: prazo de troca em dias e/ou em horas, vencendo o que for atingido primeiro (RN08). Quando uma manutenção troca ou limpa a peça, o sistema atualiza a data e o horímetro da última troca (RN09).
-Resultado: lista de peças vencidas ou a vencer, que orienta as manutenções preventivas.
+#### 2.4 Processo de planejar a manutenção preventiva
+- Objetivo: acompanhar os prazos de troca ou limpeza das peças de cada gerador (bateria, óleo, filtros e tanque).
+- Quando ocorre: no cadastro do gerador e a cada troca ou limpeza feita em uma manutenção.
+- Dados: gerador, peça, data da última troca e horímetro da última troca (opcionais até a primeira intervenção).
+- Regras: um registro por peça em cada gerador; o prazo vem da peça (dias e/ou horas), vencendo o que for atingido primeiro (RN08); a manutenção que troca ou limpa a peça atualiza data e horímetro (RN09).
+- Resultado: lista de peças vencidas ou a vencer.
 
-
-Solicitação de atendimento e orçamento:
+#### 2.5 Processo de solicitar atendimento e elaborar orçamento
 - Objetivo: registrar o pedido do cliente e estimar o valor antes da execução.
-- Quando ocorre: a cada pedido de atendimento fora de contrato. Na emergência (corretiva com o gerador inoperante), o orçamento também é emitido e precisa ser aprovado pelo cliente antes da execução; o que a emergência dispensa é o pagamento antes da execução. Manutenção preventiva prevista em contrato não passa por orçamento.
-- Dados registrados: id orçamento, gerador, data, valor orçado (estimativa total, sem itens), status (pendente, aprovado ou recusado) e data de aprovação.
-- Regras: orçamento aprovado pode originar uma manutenção; recusado não origina; o valor final da manutenção pode diferir do orçado.
+- Quando ocorre: a cada pedido de atendimento fora de contrato.
+- Dados: ID do orçamento, gerador, data, valor orçado, status (pendente, aprovado ou recusado) e data de aprovação.
+- Regras: orçamento aprovado pode originar uma manutenção, recusado não; o valor final pode diferir do orçado; na emergência o orçamento também precisa ser aprovado antes da execução, mas o pagamento pode vir depois; preventiva prevista em contrato não passa por orçamento.
 - Resultado: orçamento aprovado e ligado à manutenção, ou encerrado sem atendimento.
 
-
-Manutenção
+#### 2.6 Processo de registrar manutenções
 - Objetivo: registrar cada atendimento, preventivo ou corretivo.
-- Quando ocorre: em três situações:
-   1. Após a aprovação de um orçamento, inclusive em emergência. A execução pode ocorrer antes do pagamento.
-   2. Na manutenção preventiva prevista em contrato, sem orçamento, pois já está coberta pela mensalidade.
-   3. Na manutenção preventiva gerada pelo cronograma, quando uma peça precisa ser trocada ou limpa.
-- Dados registrados: ID (gerado automaticamente), gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça aplicada, o valor unitário aplicado e a quantidade.
+- Quando ocorre: após a aprovação de um orçamento; na preventiva prevista em contrato (sem orçamento); ou na preventiva gerada pelo cronograma.
+- Dados: ID, gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça, valor unitário aplicado e quantidade.
 - Regras:
-  1. Cada manutenção está vinculada a exatamente um gerador.
-  2. Tem pelo menos um técnico responsável e pelo menos um serviço. O uso de peças é     opcional.
-  3. Status: Aberta → Em andamento → Concluída.
-  4. Serviços, peças e técnicos podem ser alterados enquanto a manutenção estiver aberta ou em andamento.
-  5. Depois de concluída, só usuários autorizados podem alterar, e a alteração fica   registrada no histórico (RN16).
-  6. O valor total não é armazenado. É calculado pela soma de (valor unitário ×     quantidade) dos serviços e peças.
-  7. Manutenção coberta por contrato registra os itens com valor aplicado zero, então não há cobrança adicional.
-  8. Ao registrar uma peça utilizada, o sistema dá baixa automática no estoque. Se a peça for removida ou alterada antes da conclusão, a baixa é estornada ou ajustada.
-  9. O sistema verifica a disponibilidade antes da baixa e impede estoque negativo.
-- Resultado: histórico completo das manutenções por gerador e cliente, com serviços, peças, responsáveis e valores.
+  - Cada manutenção está vinculada a exatamente um gerador.
+  - Tem pelo menos um técnico responsável e um serviço; peças são opcionais.
+  - Status: Aberta → Em andamento → Concluída.
+  - Serviços, peças e técnicos só podem ser alterados enquanto a manutenção não estiver concluída.
+  - Depois de concluída, só usuários autorizados alteram, com registro no histórico (RN16).
+  - O valor total não é armazenado: é a soma de (valor unitário × quantidade) dos serviços e peças.
+  - Manutenção coberta por contrato registra os itens com valor zero.
+  - Ao registrar uma peça, o sistema dá baixa no estoque; se ela for removida ou alterada antes da conclusão, a baixa é estornada ou ajustada.
+  - O sistema impede estoque negativo.
+- Resultado: histórico completo das manutenções por gerador e cliente.
 
-
-Serviço (catálogo):
-- Objetivo: definir o tipo de serviço que será feito, incluindo os valores base.
+#### 2.7 Processo de cadastrar serviços
+- Objetivo: definir os tipos de serviço oferecidos e seus valores base.
 - Quando ocorre: quando a empresa passa a oferecer um novo tipo de serviço.
-- Dados registrados: nome, descrição e valor base.
-- Regras: o nome do serviço é único; um serviço pode ser usado em várias manutenções; o valor aplicado em cada manutenção pode diferir do valor base, inclusive ser zero quando o item é coberto por contrato; os serviços seguem as normas NR-10, NR-12, NR-20 e NR-6.
-- Resultado: catálogo que alimenta o cálculo do valor de cada manutenção.
+- Dados: nome, descrição e valor base.
+- Regras: o nome é único; um serviço pode ser usado em várias manutenções; o valor aplicado pode diferir do valor base, inclusive ser zero quando coberto por contrato; os serviços seguem as normas NR-10, NR-12, NR-20 e NR-6.
+- Resultado: catálogo que alimenta o cálculo do valor das manutenções.
 
+#### 2.8 Processo de cadastrar técnicos
+- Objetivo: manter os técnicos cadastrados.
+- Quando ocorre: após a contratação do técnico.
+- Dados: nome, CPF, telefone e e-mail.
+- Regras: CPF único, com 11 dígitos numéricos.
+- Resultado: técnicos disponíveis com seus dados cadastrais.
 
-Técnicos:
-- Objetivo: Manter os tecnicos cadastrados.
+#### 2.9 Processo de gerenciar escalas dos técnicos
+- Objetivo: manter a escala de trabalho de cada técnico.
 - Quando ocorre: após a contratação do técnico e a cada mudança de escala.
-- Dados registrados: nome, CPF, telefone e e-mail; da escala, período (início e fim) e turno (manhã, tarde, noite ou integral), dia da folga.
-- Regras: CPF único, 11 dígitos numéricos; 
-- Resultado: técnicos disponiveis serão apresentados, assim como seus dados cadastrais. 
+- Dados: ID da escala, período (início e fim), turno (manhã, tarde, noite ou integral) e dia da folga.
+- Regras: a data final não pode ser anterior à inicial; um técnico pode ter várias escalas e participar de várias manutenções.
+- Resultado: técnicos disponíveis para alocação e plantão coberto.
 
-Escala:
-- Objetivo: Manter a escala correta de trabalho de cada tecnico.
-- Quando ocorre: após a contratação de cada tecnico, a sua escala de trabalho é montada.
-- Dados registrados: id escala, período (início e fim) e turno (manhã, tarde, noite ou integral) e folga. 
-- Regras: a data final da escala não pode ser anterior à inicial; um técnico pode ter várias escalas e participar de várias manutenções.
-- Resultado: técnicos disponíveis para alocação e plantão coberto com limite de horário.
-
-
-Cadastro de peças
-- Objetivo: Manter o catálogo das peças utilizadas nas manutenções dos geradores e nos cronogramas preventivos, incluindo baterias, óleos, filtros de ar e outros componentes.
-- Quando ocorre: Quando a empresa passa a utilizar uma peça nova ou precisa atualizar as informações de uma peça já cadastrada.
-- Dados registrados: ID da peça, nome, descrição, valor, prazo de troca em dias, prazo de troca em horas (ambos opcionais) e quantidade disponível em estoque.
+#### 2.10 Processo de cadastrar peças
+- Objetivo: manter o catálogo de peças usadas nas manutenções e nos cronogramas, incluindo baterias, óleos e filtros.
+- Quando ocorre: quando a empresa passa a usar uma peça nova ou precisa atualizar uma já cadastrada.
+- Dados: ID, nome, descrição, valor, prazo de troca em dias e/ou em horas (opcionais) e quantidade em estoque.
 - Regras:
-  1. O nome da peça deverá ser único.
-  2. Os prazos de troca (em dias e/ou em horas) deverão servir de referência para a elaboração dos cronogramas preventivos.
-  3. A entrada de peças no estoque deverá ocorrer automaticamente após a confirmação do recebimento físico da compra, sem permitir entradas duplicadas para uma mesma compra.
-  4. A utilização de uma peça em uma manutenção deverá gerar automaticamente a baixa da quantidade correspondente no estoque.
-  5. O sistema deverá impedir movimentações que resultem em quantidade negativa no estoque.
-  6. Apenas usuários autorizados poderão realizar ajustes manuais nas quantidades disponíveis em estoque, com registro no histórico de auditoria.
-- Resultado: Catálogo de peças atualizado, utilizado como referência para os cronogramas preventivos, registros de manutenção e processos de compra, com controle automatizado das entradas e saídas do estoque.
+  - O nome da peça é único.
+  - Os prazos de troca servem de referência para os cronogramas.
+  - A entrada no estoque ocorre após a confirmação do recebimento da compra, sem entradas duplicadas.
+  - O uso da peça em uma manutenção gera baixa automática no estoque.
+  - O sistema impede quantidade negativa.
+  - Ajustes manuais de estoque só por usuários autorizados, com registro de auditoria.
+- Resultado: catálogo atualizado, com entradas e saídas de estoque controladas.
 
+#### 2.11 Processo de cadastrar fornecedores
+- Objetivo: registrar os dados de cada fornecedor.
+- Quando ocorre: quando houver compra de algum insumo diretamente com a organização.
+- Dados: nome, CNPJ, telefone e e-mail.
+- Regras: CNPJ e telefone únicos.
+- Resultado: fornecedores sempre atualizados.
 
-Controle de acesso e auditoria:
-- Objetivo: controlar quem acessa o sistema e proteger dados pessoais (LGPD).
-- Quando ocorre: na criação de cada conta de usuário e a cada acesso ou operação realizada no sistema.
-- Dados registrados: usuário (login e perfil) e log de acesso (data/hora, ação, tabela, registro afetado, resultado e finalidade).
-- Regras: perfis administrador, atendimento, técnico e financeiro; usuário nunca é excluído; o log só recebe inserções, inclusive de tentativas negadas de usuários existentes.
-- Resultado: acessos rastreáveis e permissões por perfil.
-
-
-Pagamento:
-- Objetivo: controlar as cobranças de manutenções e de contratos.
-- Quando ocorre: ao fechar o valor da manutenção e a cada período de cobrança do contrato.
-- Dados registrados: número da parcela, vencimento, valor da parcela, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
-- Regras:
-  1. Cada parcela tem exatamente uma origem: uma manutenção ou um contrato (RN20).
-  2. A soma das parcelas é igual ao valor calculado da origem.
-  3. Só há cobrança de manutenção se o valor calculado for maior que zero.
-  4. Fora de contrato, a preventiva é paga antes da execução. Na corretiva, a execução pode vir antes do pagamento se houver orçamento aprovado.
-  5. A parcela passa a “pago” quando o valor pago quita o valor da parcela.
-  6. O pagamento nunca é excluído. É cancelado ou corrigido por usuário autorizado, com registro no log.
-- Resultado: contas a receber controladas.
-
-
-Compra:
+#### 2.12 Processo de registrar compras
 - Objetivo: registrar as compras de peças feitas a fornecedores.
-- Quando ocorre: Quando existe a necessidade de adquirir peças para as atividades da empresa, incluindo manutenções de geradores e uso interno.
-- Dados registrados: ID da compra, data da compra, fornecedor, situação (não recebido ou recebido), número da nota fiscal e itens adquiridos, incluindo quantidade e custo unitário.
-- Regras:
-  1. Toda compra deverá conter pelo menos um item e um fornecedor cadastrado.
-  2. A situação só pode ser alterada enquanto a compra não estiver recebida.
-  3. Ao confirmar o recebimento, o sistema atualiza o estoque automaticamente.
-  4. Uma compra já recebida não gera segunda entrada dos mesmos itens.
-  5. A quantidade disponível em estoque nunca poderá ser negativa.
+- Quando ocorre: quando é preciso adquirir peças para manutenções ou uso interno.
+- Dados: ID, data, fornecedor, situação (não recebido ou recebido), nota fiscal e itens (quantidade e custo unitário).
+- Regras: toda compra tem pelo menos um item e um fornecedor cadastrado; a situação só muda enquanto a compra não estiver recebida; o recebimento atualiza o estoque automaticamente, sem segunda entrada; o estoque nunca fica negativo.
 - Resultado: compras rastreáveis por fornecedor e estoque atualizado.
 
+##### 2.13 Processo de controlar pagamentos
+- Objetivo: controlar as cobranças de manutenções e de contratos (contas a receber).
+- Quando ocorre: ao fechar o valor da manutenção e a cada período de cobrança do contrato.
+- Dados: número da parcela, vencimento, valor da parcela, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
+- Regras:
+  - Cada parcela tem exatamente uma origem: uma manutenção ou um contrato (RN20).
+  - A soma das parcelas é igual ao valor calculado da origem.
+  - Só há cobrança de manutenção se o valor calculado for maior que zero.
+  - Fora de contrato, a preventiva é paga antes da execução; a corretiva pode ser executada antes do pagamento se houver orçamento aprovado.
+  - A parcela fica "paga" quando o valor pago quita o valor da parcela.
+  - O pagamento nunca é excluído: é cancelado ou corrigido por usuário autorizado, com registro no log.
+- Resultado: contas a receber controladas.
 
-Fornecedor:
-- Objetivo: Registrados os dados de cada fornecedor da empresa.
-- Quando ocorre: Quando houver a compra de algum insumo diretamente a orgaização.
-- Dados registrados: nome, CNPJ, telefone e e-mail;
-- Regras: CNPJ e telefone unicos. 
-- Resultado: Controle e registros de fornecedores sempre atualizados.
+#### 2.14 Processo de controlar contas a pagar
+- Objetivo: manter o histórico de contas pendentes e pagas da empresa.
+- Quando ocorre: quando houver contas em aberto ou pagas pela empresa.
+- Dados: fornecedor, descrição da despesa, valor total, valor pago, vencimento, número do boleto (quando aplicável), situação (paga ou não) e data de pagamento.
+- Regras: toda conta está vinculada a um fornecedor cadastrado; cada boleto tem numeração única; a conta só é dada como paga quando o valor pago é igual ao valor total, e a situação muda automaticamente para "Paga"; não há pagamentos parciais.
+- Resultado: controle dos custos e pagamentos da empresa.
 
-
-Contas a pagar:
-- Objetivo: Manter registrado o histórico de contas pendentes e pagas da empresa.
-- Quando ocorre: Quando houver contas em aberto ou pagas pela empresa.
-- Dados registrados: Fornecedor cadastrado relacionado à conta, descrição da despesa, valor total, valor pago, data de vencimento, número do boleto (quando aplicável), situação (paga ou não) e data de pagamento (quando houver).
-- Regras: Toda conta está vinculada a um fornecedor cadastrado. Cada boleto possui numeração única. A conta só poderá ser dada como paga quando o valor pago for igual ao valor total e, nesse caso, sua situação deverá ser atualizada automaticamente para "Paga". Não há controle de pagamentos parciais.
-- Resultado: Controlar os custos e pagamentos da empresa.
-
+#### 2.15 Processo de controlar acesso e auditoria
+- Objetivo: controlar quem acessa o sistema e proteger dados pessoais (LGPD).
+- Quando ocorre: na criação de cada conta de usuário e a cada acesso ou operação no sistema.
+- Dados: usuário (login e perfil) e log de acesso (data/hora, ação, tabela, registro afetado, resultado e finalidade).
+- Regras: perfis administrador, atendimento, técnico e financeiro; o usuário nunca é excluído; o log só recebe inserções, inclusive de tentativas negadas.
+- Resultado: acessos rastreáveis e permissões por perfil.
 
 
 
