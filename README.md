@@ -108,21 +108,21 @@ Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de
 ## Fluxograma do atendimento:
 <img width="2760" height="5480" alt="fluxograma" src="fluxograma.png" />
 
-#### 2.1 Processo de cadastrar clientes
+#### Processo 1 — cadastrar clientes
 - Objetivo: preservar as informações dos clientes e permitir consultar o histórico de cada um.
 - Quando ocorre: no primeiro atendimento de um cliente novo.
 - Dados: nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado.
 - Regras: todos os campos são obrigatórios; o CPF/CNPJ não pode se repetir; CPF/CNPJ e endereço são protegidos por criptografia em repouso.
 Resultado: cliente disponível para vincular geradores e contratos.
 
-#### 2.2 Processo de cadastrar geradores
+#### Processo 2 — cadastrar geradores
 - Objetivo: controlar os geradores supervisionados pela empresa.
 - Quando ocorre: quando o cliente possui um gerador ainda não registrado.
 - Dados: número de série, marca, modelo, status (ativo, em manutenção ou inativo), potência em kVA, horímetro e, quando houver, o contrato que cobre o gerador.
 - Regras: todo gerador pertence a um cliente; o número de série é único; um cliente pode ter mais de um gerador; o contrato deve pertencer ao mesmo cliente do gerador; todo gerador deve ter um cronograma de inspeção preventiva.
 - Resultado: equipamento identificado, com cronograma criado e pronto para receber manutenções.
 
-#### 2.3 Processo de formalizar contratos de manutenção
+#### Processo 3 — formalizar contratos de manutenção
 - Objetivo: formalizar o atendimento recorrente dos clientes fixos, com cobrança periódica.
 - Quando ocorre: quando um cliente fixo passa a ter um acordo de manutenção e a cada alteração das condições do contrato.
 Dados:
@@ -131,21 +131,21 @@ Dados:
 - Regras: o contrato pertence a um único cliente e cobre pelo menos um gerador dele; sem data de fim, o prazo é indeterminado; contrato encerrado exige data de fim; as preventivas previstas  são pagas pela mensalidade e itens fora do previsto são cobrados à parte; toda alteração é registrada por aditivo, que nunca é excluído.
 - Resultado: contrato ativo, que gera as cobranças periódicas e enquadra as manutenções dos geradores cobertos.
 
-#### 2.4 Processo de planejar a manutenção preventiva
+#### Processo 4 — planejar a manutenção preventiva
 - Objetivo: acompanhar os prazos de troca ou limpeza das peças de cada gerador (bateria, óleo, filtros e tanque).
 - Quando ocorre: no cadastro do gerador e a cada troca ou limpeza feita em uma manutenção.
 - Dados: gerador, peça, data da última troca e horímetro da última troca (opcionais até a primeira intervenção).
 - Regras: um registro por peça em cada gerador; o prazo vem da peça (dias e/ou horas), vencendo o que for atingido primeiro (RN08); a manutenção que troca ou limpa a peça atualiza data e horímetro (RN09).
 - Resultado: lista de peças vencidas ou a vencer.
 
-#### 2.5 Processo de solicitar atendimento e elaborar orçamento
+#### Processo 5 — solicitar atendimento e elaborar orçamento
 - Objetivo: registrar o pedido do cliente e estimar o valor antes da execução.
 - Quando ocorre: a cada pedido de atendimento fora de contrato.
 - Dados: ID do orçamento, gerador, data, valor orçado, status (pendente, aprovado ou recusado) e data de aprovação.
 - Regras: orçamento aprovado pode originar uma manutenção, recusado não; o valor final pode diferir do orçado; na emergência o orçamento também precisa ser aprovado antes da execução, mas o pagamento pode vir depois; preventiva prevista em contrato não passa por orçamento.
 - Resultado: orçamento aprovado e ligado à manutenção, ou encerrado sem atendimento.
 
-#### 2.6 Processo de registrar manutenções
+#### Processo 6 — registrar manutenções
 - Objetivo: registrar cada atendimento, preventivo ou corretivo.
 - Quando ocorre: após a aprovação de um orçamento; na preventiva prevista em contrato (sem orçamento); ou na preventiva gerada pelo cronograma.
 - Dados: ID, gerador, contrato e orçamento (quando houver), data, tipo, status, nota fiscal, problema relatado, data de conclusão e, para cada serviço e peça, valor unitário aplicado e quantidade.
@@ -161,28 +161,28 @@ Dados:
   - O sistema impede estoque negativo.
 - Resultado: histórico completo das manutenções por gerador e cliente.
 
-#### 2.7 Processo de cadastrar serviços
+#### Processo 7 — cadastrar serviços
 - Objetivo: definir os tipos de serviço oferecidos e seus valores base.
 - Quando ocorre: quando a empresa passa a oferecer um novo tipo de serviço.
 - Dados: nome, descrição e valor base.
 - Regras: o nome é único; um serviço pode ser usado em várias manutenções; o valor aplicado pode diferir do valor base, inclusive ser zero quando coberto por contrato; os serviços seguem as normas NR-10, NR-12, NR-20 e NR-6.
 - Resultado: catálogo que alimenta o cálculo do valor das manutenções.
 
-#### 2.8 Processo de cadastrar técnicos
+#### Processo 8 — cadastrar técnicos
 - Objetivo: manter os técnicos cadastrados.
 - Quando ocorre: após a contratação do técnico.
 - Dados: nome, CPF, telefone e e-mail.
 - Regras: CPF único, com 11 dígitos numéricos.
 - Resultado: técnicos disponíveis com seus dados cadastrais.
 
-#### 2.9 Processo de gerenciar escalas dos técnicos
+#### Processo 9 — gerenciar escalas dos técnicos
 - Objetivo: manter a escala de trabalho de cada técnico.
 - Quando ocorre: após a contratação do técnico e a cada mudança de escala.
 - Dados: ID da escala, período (início e fim), turno (manhã, tarde, noite ou integral) e dia da folga.
 - Regras: a data final não pode ser anterior à inicial; um técnico pode ter várias escalas e participar de várias manutenções.
 - Resultado: técnicos disponíveis para alocação e plantão coberto.
 
-#### 2.10 Processo de cadastrar peças
+#### Processo 10 — cadastrar peças
 - Objetivo: manter o catálogo de peças usadas nas manutenções e nos cronogramas, incluindo baterias, óleos e filtros.
 - Quando ocorre: quando a empresa passa a usar uma peça nova ou precisa atualizar uma já cadastrada.
 - Dados: ID, nome, descrição, valor, prazo de troca em dias e/ou em horas (opcionais) e quantidade em estoque.
@@ -195,21 +195,21 @@ Dados:
   - Ajustes manuais de estoque só por usuários autorizados, com registro de auditoria.
 - Resultado: catálogo atualizado, com entradas e saídas de estoque controladas.
 
-#### 2.11 Processo de cadastrar fornecedores
+#### Processo 11 — cadastrar fornecedores
 - Objetivo: registrar os dados de cada fornecedor.
 - Quando ocorre: quando houver compra de algum insumo diretamente com a organização.
 - Dados: nome, CNPJ, telefone e e-mail.
 - Regras: CNPJ e telefone únicos.
 - Resultado: fornecedores sempre atualizados.
 
-#### 2.12 Processo de registrar compras
+#### Processo 12 — registrar compras
 - Objetivo: registrar as compras de peças feitas a fornecedores.
 - Quando ocorre: quando é preciso adquirir peças para manutenções ou uso interno.
 - Dados: ID, data, fornecedor, situação (não recebido ou recebido), nota fiscal e itens (quantidade e custo unitário).
 - Regras: toda compra tem pelo menos um item e um fornecedor cadastrado; a situação só muda enquanto a compra não estiver recebida; o recebimento atualiza o estoque automaticamente, sem segunda entrada; o estoque nunca fica negativo.
 - Resultado: compras rastreáveis por fornecedor e estoque atualizado.
 
-##### 2.13 Processo de controlar pagamentos
+#### Processo 13 — controlar pagamentos
 - Objetivo: controlar as cobranças de manutenções e de contratos (contas a receber).
 - Quando ocorre: ao fechar o valor da manutenção e a cada período de cobrança do contrato.
 - Dados: número da parcela, vencimento, valor da parcela, data e forma de pagamento, status (pendente, pago, atrasado ou cancelado) e valor pago.
@@ -222,23 +222,24 @@ Dados:
   - O pagamento nunca é excluído: é cancelado ou corrigido por usuário autorizado, com registro no log.
 - Resultado: contas a receber controladas.
 
-#### 2.14 Processo de controlar contas a pagar
+#### Processo 14 — controlar contas a pagar
 - Objetivo: manter o histórico de contas pendentes e pagas da empresa.
 - Quando ocorre: quando houver contas em aberto ou pagas pela empresa.
 - Dados: fornecedor, descrição da despesa, valor total, valor pago, vencimento, número do boleto (quando aplicável), situação (paga ou não) e data de pagamento.
 - Regras: toda conta está vinculada a um fornecedor cadastrado; cada boleto tem numeração única; a conta só é dada como paga quando o valor pago é igual ao valor total, e a situação muda automaticamente para "Paga"; não há pagamentos parciais.
 - Resultado: controle dos custos e pagamentos da empresa.
 
-#### 2.15 Processo de controlar acesso e auditoria
+#### Processo 15 — controlar acesso e auditoria
 - Objetivo: controlar quem acessa o sistema e proteger dados pessoais (LGPD).
 - Quando ocorre: na criação de cada conta de usuário e a cada acesso ou operação no sistema.
 - Dados: usuário (login e perfil) e log de acesso (data/hora, ação, tabela, registro afetado, resultado e finalidade).
 - Regras: perfis administrador, atendimento, técnico e financeiro; o usuário nunca é excluído; o log só recebe inserções, inclusive de tentativas negadas.
 - Resultado: acessos rastreáveis e permissões por perfil.
 
-##  Requisitos do Sistema
 
-###  Requisitos Funcionais (RF)
+###  Requisitos do Sistema
+
+####  Requisitos Funcionais (RF)
 
 - RF01 - Cadastro de clientes: O sistema deve permitir cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios.
   
@@ -279,8 +280,8 @@ Dados:
 - RF19 – Aditivos Contratuais: O sistema deve permitir registrar aditivos sempre que as condições de um contrato forem alteradas, informando o contrato, a data do aditivo, a descrição da alteração e as condições anteriores. Um contrato pode ter vários aditivos, e o histórico não pode ser excluído, conforme a RN27.
   
 - RF20 - Gestão de Contas a Pagar: O sistema deve permitir registrar contas a pagar vinculadas a um fornecedor cadastrado, informando descrição, valor total, valor pago, vencimento, número do boleto (quando houver) e data de pagamento, e alterar a situação da conta para paga somente quando o valor pago for igual ao valor total, conforme a RN24.
-  
-###  Requisitos Não Funcionais (RNF)
+
+####  Requisitos Não Funcionais (RNF)
 
 - RNF01 - Segurança e criptografia: CPF/CNPJ e endereço dos clientes devem ser protegidos por criptografia em repouso no banco de dados, com acesso restrito a usuários autorizados, conforme as diretrizes da LGPD.
  
@@ -300,7 +301,7 @@ Dados:
   
 - RNF09 - Usabilidade: a interface deve ser simples e compreensível para todos os perfis de usuário.
 
-###  Restrições organizacionais:
+####  Restrições organizacionais:
 
 - REST01 - Conformidade com Normas Regulamentadoras: A execução e a parametrização do catálogo de serviços do sistema devem estar adequadas às diretrizes de segurança da NR-10 (Segurança em Instalações Elétricas), NR-12 (Segurança no Trabalho em Máquinas e Equipamentos), NR-20 (Manuseio de Inflamáveis e Combustíveis) e NR-6 (Equipamentos de Proteção Individual - EPI).
 
@@ -314,12 +315,10 @@ Dados:
 
 - REST06 - Priorização de Chamados de Emergência: O sistema ajuda a identificar e priorizar os chamados mais urgentes para acionar rapidamente o técnico que estiver de plantão no turno.
 
-### REGRAS DE NEGÓCIO
+### Regras de negócio
+
 As regras de negócio estabelecem os critérios, procedimentos e restrições que deverão ser respeitados pelo sistema de gerenciamento de manutenções preventivas e corretivas de grupos geradores da empresa S. A. de Lima.
 
-## Regras operacionais (RN)
-
-RN01 – Identificação de clientes: Cada cliente deverá possuir um CPF ou CNPJ único no sistema, não sendo permitido cadastrar documentos duplicados.
 
 RN02 – Vinculação de geradores: Todo gerador cadastrado deverá estar obrigatoriamente vinculado a um único cliente.
 
