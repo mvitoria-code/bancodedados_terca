@@ -59,7 +59,8 @@
 **Evidências da organização**
 
 - Endereço e perfil da empresa no Google Maps: https://maps.app.goo.gl/XExBHSXrFvbUNv8Y6?g_st=aw
-- Telefone: +55 11 98373-9556  · E-mail: sandrolima@limasenergia.com.br
+- Telefone: +55 11 98373-9556  
+- E-mail: sandrolima@limasenergia.com.br
 - site: https://limasenergia.com.br/
 - Foto da fachada (marca "Limas Energia") :
 
