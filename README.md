@@ -18,10 +18,10 @@
 | Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
 | Dicionário de dados (HTML, v5.9) | [`dicionariodre.html`](dicionariodre.html) |
 | Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
-| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md) — ** PREENCHER** |
-| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql) — ** PREENCHER* ** |
-| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) — ** PREENCHER*** |
-| Apresentação (slides) | ** PREENCHER** |
+| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md) —  |
+| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql) —  |
+| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) —|
+| Apresentação (slides) |  PREENCHER |
 
 ## 1. Caracterização da Organização
 
