@@ -417,6 +417,26 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Possível conflito de interesse (camisa da empresa na foto) | **⚠️ PREENCHER:** declarar o vínculo na caracterização | Transparência exigida pela E2 |
 
 
+## 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
+
+- **Entidades → Tabelas:** cada uma das 17 entidades do DER virou uma tabela com o mesmo nome (`Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala`, `Peca`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso`). O DER final tem **17 entidades**, mais **5 relacionamentos N:N** que viraram tabelas associativas, totalizando **22 tabelas**.
+- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos físicos definitivos (`DECIMAL(10,2)`, `ENUM`, `CHAR`, `BOOLEAN`) estão no dicionário; o diagrama brModelo usa tipos genéricos (`FLOAT`, `VARCHAR`).
+- **Relacionamentos → Chaves:**
+  - **1:N** — a chave do lado "1" vai como `FK` para a tabela do lado "N" (ex.: `Gerador.id_cliente`, `Manutencao.id_gerador`, `Compra.id_fornecedor`, `Escala.id_tecnico`).
+  - **0,1 : 0,1** (`Orçamento` origina `Manutenção`) — `FK` opcional `Manutencao.id_orcamento` com índice `UNIQUE`, para que um orçamento origine no máximo uma manutenção.
+  - **Origem exclusiva do pagamento** — `Pagamento` tem `id_manutencao` e `id_contrato`, ambos opcionais, com `CHECK` de que exatamente um é preenchido (RN20).
+- **Cardinalidades N:N → tabelas associativas** com PK composta:
+
+| Relacionamento | Tabela associativa | PK composta | Atributos próprios |
+| :--- | :--- | :--- | :--- |
+| Manutenção × Serviço | `utiliza` (`MANUTENCAO_SERVICO`) | `id_manutencao`, `id_servico` | `valor_unitario_aplicado`, `quantidade` |
+| Manutenção × Peça | `usa` (`MANUTENCAO_PECA`) | `id_manutencao`, `id_peca` | `valor_unitario_aplicado`, `quantidade` |
+| Manutenção × Técnico | `realizada por` (`MANUTENCAO_TECNICO`) | `id_manutencao`, `id_tecnico` | — |
+| Manutenção × Cronograma | `atualiza` (`MANUTENCAO_CRONOGRAMA`) | `id_manutencao`, `id_cronograma` | — |
+| Compra × Peça | `contem` (`COMPRA_PECA`) | `id_compra`, `id_peca` | `quantidade`, `valor_custo` |
+
+- **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `ENUM`, e não subtipos, porque os perfis não têm atributos diferentes.
+
 
 
 
