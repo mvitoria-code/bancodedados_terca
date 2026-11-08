@@ -1,6 +1,10 @@
 # Entrega 2 — Banco de Dados da S. A. de Lima (Limas Energia Geradores)
 ### Gestão de manutenção preventiva e corretiva de geradores de energia
 
+# 1. Relatório Técnico Final
+
+## 1.1 Revisão do Modelo Conceitual
+
 ## Integrantes
 
 | Nome | RGM | GitHub |
@@ -9,11 +13,6 @@
 | Kauê Romaneto Machado | 47357304 | [`@MACHAD0Z`](https://github.com/MACHAD0Z) |
 | Kaylany Thayna de Oliveira de Paula | 47039035 | [`@kaayllany`](https://github.com/kaayllany) |
 | Maria Vitória Pereira Alves | 47230720 | [`@mvitoria-code`](https://github.com/mvitoria-code) |
-
-
-# 1. Relatório Técnico Final
-
-## 1.1 Revisão do Modelo Conceitual
 
 ### Caracterização da organização
 
