@@ -453,7 +453,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 ## 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
 - **Entidades → Tabelas:** cada uma das 17 entidades do DER virou uma tabela com o mesmo nome (`Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala`, `Peca`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso`). O DER final tem **17 entidades**, mais **5 relacionamentos N:N** que viraram tabelas associativas, totalizando **22 tabelas**.
-- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos físicos definitivos (`DECIMAL(10,2)`, `ENUM`, `CHAR`, `BOOLEAN`) estão no dicionário; o diagrama brModelo usa tipos genéricos (`FLOAT`, `VARCHAR`).
+- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos do diagrama e do dicionário são os mesmos (`INT`, `FLOAT`, `VARCHAR`, `CHAR`, `TEXT`, `DATE`, `DATETIME`, `BOOLEAN`); o dicionário acrescenta os tamanhos (por exemplo `VARCHAR(120)`, `CHAR(11)`). Listas fechadas de valores (status, tipo, turno, perfil etc.) são `VARCHAR(20)` com `CHECK ... IN (...)`.
 - **Relacionamentos → Chaves:**
   - **1:N** — a chave do lado "1" vai como `FK` para a tabela do lado "N" (ex.: `Gerador.id_cliente`, `Manutencao.id_gerador`, `Compra.id_fornecedor`, `Escala.id_tecnico`).
   - **0,1 : 0,1** (`Orçamento` origina `Manutenção`) — `FK` opcional `Manutencao.id_orcamento` com índice `UNIQUE`, para que um orçamento origine no máximo uma manutenção.
