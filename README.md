@@ -745,7 +745,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | *Prompt(s) utilizados* | "Poderia me ajudar a revisar o arquivo".|
 | *Resposta recebida* | 	Documento reorganizado com tabelas de atributos, descrição, e regra de negócio associada. |
 | *Fontes consultadas e verificadas* | Não foram utilizadas fontes externas. As informações vieram do próprio material produzido pelo grupo, com base na visita e na pesquisa de campo realizadas na empresa.|
-| *Trechos rejeitados ou corrigidos* | Na Entrega 1 retiramos as seções "Log de acesso" e "Conformidade com a LGPD" por achar que valiam só para dados de saúde. A correção da E1 mostrou que isso estava errado, pois o sistema guarda CPF, CNPJ e endereço, que são dados pessoais. Na Entrega 2 as duas seções voltaram ao dicionário. |
+| *Trechos rejeitados ou corrigidos* | Mantivemos o Log_acesso com cardinalidade (1,1). Mantivemos o perfil técnico sem vínculo com a tabela Técnico. Adotamos a sugestão de DECIMAL para valores em dinheiro e potência: o dicionário passou a usar DECIMAL(10,2) nos valores e DECIMAL(8,2) na potência, de acordo com a seção 1.2 e com o script SQL. Corrigimos o total de entidades para 17 e restauramos a RN01. |
 | *Justificativa da escolha final* | A estrutura do exemplo foi aproveitada porque atendia ao formato solicitado, mas algumas partes foram retiradas para que o documento ficasse adequado ao contexto da empresa e às informações levantadas. |
 | *Reflexão crítica* | O prompt que usamos na E1 era genérico e a resposta da IA foi igualmente genérica. Descartar partes do modelo sem verificar se se aplicavam ao nosso caso foi um erro nosso, não da IA. |
 
