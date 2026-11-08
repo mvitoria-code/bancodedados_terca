@@ -750,7 +750,8 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 # 7. Apresentação Corporativa Final
 
-Pitch de 8 minutos: problema → solução → modelo lógico → SQL rodando → consultas G/A → BI e IA → benefícios. ** PREENCHER:** link/arquivo dos slides.
+Pitch de 8 minutos: problema → solução → modelo lógico → SQL rodando → consultas G/A → BI e IA → benefícios.
+** PREENCHER:** link/arquivo dos slides.
 
 ---
 
