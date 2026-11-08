@@ -1,4 +1,4 @@
-## 👥 Integrantes do Grupo
+1## 👥 Integrantes do Grupo
 
 | Nome | RGM | GitHub |
 | :--- | :---: | :--- |
@@ -25,13 +25,13 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 
 1.1 Problemas identificados
 
-ID	Problema	Evidência	Resposta no modelo
-P1	Fichas em papel sujeitas a perda ou ilegibilidade	Entrevista, Foto 01	Cliente, Gerador (RF01, RF03)
-P2	Histórico e última troca de peças só achados folheando relatórios	Entrevista, Foto 02	Manutenção, Cronograma_Preventivo (RF02, RF04, RF05)
-P3	Contrato relido a cada atendimento para checar cobertura	Entrevista, Foto 03	Contrato (RF06, RN13, RN15)
-P4	Alterações de contrato por e-mail, sem registro garantido	Entrevista	Aditivo_contrato (RF19, RN27)
-P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
-P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
+ID/Problema	Evidência	Resposta no modelo
+- P1	Fichas em papel sujeitas a perda ou ilegibilidade	Entrevista, Gerador (RF01, RF03)
+- P2	Histórico e última troca de peças só achados folheando relatórios	Entrevista, Cronograma_Preventivo (RF02, RF04, RF05)
+- P3	Contrato relido a cada atendimento para checar cobertura	Entrevista (RF06, RN13, RN15)
+- P4	Alterações de contrato por e-mail, sem registro garantido	Entrevista	Aditivo_contrato (RF19, RN27)
+- P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
+- P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
 
 
 ## 2. Modelo Lógico Relacional
