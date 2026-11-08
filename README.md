@@ -681,7 +681,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 | Artefato | Arquivo |
 | :--- | :--- |
-| relatório README.md | na raiz da branch `main` |
+| relatório README.md | [`main`] |
 | Dicionário de dados (HTML, v6.0) | [`dicionariodre.html`](dicionariodre.html) |
 | Diagrama DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
 | Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
