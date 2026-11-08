@@ -20,7 +20,7 @@
 | Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
 | Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md) —  |
 | Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql) —  |
-| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) —|
+| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) — PREENCHER |
 | Apresentação (slides) |  PREENCHER |
 
 ## 1. Caracterização da Organização
