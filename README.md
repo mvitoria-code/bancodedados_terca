@@ -430,6 +430,8 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 **Apontamentos da correção da Entrega 1 e o que mudou**
 
+**Apontamentos da correção da Entrega 1 e o que mudou**
+
 | Apontamento da correção da E1 | O que mudou no trabalho | Por quê |
 | :--- | :--- | :--- |
 | DER sem `PECA/MATERIAL` (essencial): trocas de bateria, óleo e filtro não podiam ser registradas | Criada a entidade `Peça` (nome, descrição, valor de venda, prazos de troca em dias/horas, estoque) e os relacionamentos `usa` (com valor unitário aplicado e quantidade) e `contém` | Sem ela não há como registrar as peças usadas por manutenção nem controlar estoque |
@@ -453,9 +455,9 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Regra parcial: LGPD (só criptografia) | Seção LGPD no dicionário, trilha de auditoria (`Usuario`, `Log_acesso`, RN26) e requisitos de segurança (RNF) | CPF, CNPJ e endereço são dados pessoais |
 | Regra parcial: técnico habilitado (NR-10) | Mantida fora do modelo; as NRs aparecem como restrição organizacional (REST01) | O sistema não controla cursos nem certificados dos técnicos; a habilitação é conferida pela empresa fora do banco |
 | Regra ausente: garantia legal do serviço (CDC) | Mantida fora do modelo | A empresa não registra garantia do serviço hoje; o assunto é tratado diretamente com o cliente |
-| Uso 2 de IA com prompt e resposta genéricos | Item 2 da seção 6 reescrito com o prompt real, o que foi aceito e o que foi rejeitado | Apontamento da correção |
-| *Trechos rejeitados ou corrigidos* | Na Entrega 1 retiramos as seções "Log de acesso" e "Conformidade com a LGPD" por achar que valiam só para dados de saúde. A correção da E1 mostrou que isso estava errado, pois o sistema guarda CPF, CNPJ e endereço, que são dados pessoais. Na Entrega 2 as duas seções voltaram ao dicionário. |
-| *Reflexão crítica* | O prompt que usamos na E1 era genérico e a resposta da IA foi igualmente genérica. Descartar partes do modelo sem verificar se se aplicavam ao nosso caso foi um erro nosso, não da IA. |
+| Uso 2 de IA com prompt e resposta genéricos | Item 2 da seção 6 completado com o que foi rejeitado e a reflexão crítica; o prompt original foi mantido | Apontamento da correção |
+
+O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, pelos motivos registrados acima; os demais apontamentos foram aplicados.
 
 ---
 
@@ -723,9 +725,9 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | *Prompt(s) utilizados* | "Poderia me ajudar a revisar o arquivo".|
 | *Resposta recebida* | 	Documento reorganizado com tabelas de atributos, descrição, e regra de negócio associada. |
 | *Fontes consultadas e verificadas* | Não foram utilizadas fontes externas. As informações vieram do próprio material produzido pelo grupo, com base na visita e na pesquisa de campo realizadas na empresa.|
-| *Trechos rejeitados ou corrigidos* | Decidimos retirar as partes de “Log de acesso” e “Conformidade com a LGPD” que apareciam no exemplo. Essas seções estavam mais relacionadas ao caso apresentado no modelo, que envolvia dados sensíveis de saúde, e não eram necessárias para o projeto da empresa escolhida. |
+| *Trechos rejeitados ou corrigidos* | Na Entrega 1 retiramos as seções "Log de acesso" e "Conformidade com a LGPD" por achar que valiam só para dados de saúde. A correção da E1 mostrou que isso estava errado, pois o sistema guarda CPF, CNPJ e endereço, que são dados pessoais. Na Entrega 2 as duas seções voltaram ao dicionário. |
 | *Justificativa da escolha final* | A estrutura do exemplo foi aproveitada porque atendia ao formato solicitado, mas algumas partes foram retiradas para que o documento ficasse adequado ao contexto da empresa e às informações levantadas. |
-| *Reflexão crítica* | 	O exemplo ajudou bastante na organização das informações, mas foi necessário analisar o que realmente se aplicava ao projeto. Dessa forma, utilizamos apenas o modelo como referência e fizemos as adaptações necessárias ao próprio trabalho. |
+| *Reflexão crítica* | O prompt que usamos na E1 era genérico e a resposta da IA foi igualmente genérica. Descartar partes do modelo sem verificar se se aplicavam ao nosso caso foi um erro nosso, não da IA. |
 
 | Item | Registro |
 |------|------------------|
