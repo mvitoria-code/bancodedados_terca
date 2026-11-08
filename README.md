@@ -62,9 +62,18 @@
 - Telefone: +55 (11) 98373-9556  
 - E-mail: sandrolima@limasenergia.com.br
 - site: https://limasenergia.com.br/
-- Foto da fachada (marca "Limas Energia Grupos Geradores") :
+- Foto da fachada ("Limas Energia Grupos Geradores") :
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
+
+
+**Responsável pela organização:** 
+- Nome: Sandro aparecido de lima
+- Telefone: +55 (11) 98373-9556
+- E-mail: sandrolima@limasenergia.com.br
+
+### Relato da entrevista
+
 
 Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
 Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
