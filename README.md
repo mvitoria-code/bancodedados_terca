@@ -70,7 +70,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 
 
 ### Relato da entrevista
--  **Quem:** Sandro Aparecido de Lima, dono da empresa e responsável pela organização. Participou da entrevista **⚠️ PREENCHER: quais integrantes**.
+-  **Quem:** Sandro Aparecido de Lima, dono da empresa e responsável pela organização. Participou da entrevista o integrante **Kauan José da Silva**, que trabalha na empresa e é sobrinho do entrevistado (vínculo declarado na caracterização). Os demais integrantes não estiveram presentes e trabalharam a partir do relato e do levantamento do Kauan.
 - **Quando e onde:** 22/09/2026, na sede da empresa (Av. Adriano Bertozzi, 815 - Jardim Helian, São Paulo - SP).
 - **Comprovação:** foto do grupo/integrante com o responsável, no local:
 
