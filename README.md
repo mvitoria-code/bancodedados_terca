@@ -80,10 +80,15 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 - Telefone: +55 (11) 98373-9556
 - E-mail: sandrolima@limasenergia.com.br
 
+---
+
+
 ### Relato da entrevista
 - **Quem:** **⚠️ PREENCHER:** nome e função do entrevistado; quais integrantes participaram.
 - **Quando e onde:** **⚠️ PREENCHER:** data e local (na sede da empresa). data 22/09/2026 
 - **Comprovação:** foto do grupo/integrante com o responsável, no local:
+
+---
 
 ### **O que foi levantado (resumo):**
 - **Achados da observação presencial (separados do que foi dito):**
@@ -293,6 +298,8 @@ Dados:
   
 - RF20 - Gestão de Contas a Pagar: O sistema deve permitir registrar contas a pagar vinculadas a um fornecedor cadastrado, informando descrição, valor total, valor pago, vencimento, número do boleto (quando houver) e data de pagamento, e alterar a situação da conta para paga somente quando o valor pago for igual ao valor total, conforme a RN24.
 
+---
+
 ####  Requisitos Não Funcionais (RNF)
 
 - RNF01 - Segurança e criptografia: CPF/CNPJ e endereço dos clientes devem ser protegidos por criptografia em repouso no banco de dados, com acesso restrito a usuários autorizados, conforme as diretrizes da LGPD.
@@ -489,6 +496,97 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 ---
 
+## 1.6 Proposta de Arquitetura Analítica para BI e IA
+
+###  Informações Estratégicas
+
+A partir do banco de dados relacional e do monitoramento dos indicadores de desempenho, a gestão da empresa consegue extrair informações estratégicas cruciais para a tomada de decisão no suporte 24h:
+
+- Agilidade no Atendimento Corretivo (MTTR): Permite monitorar com precisão o tempo médio que a equipe leva para solucionar falhas emergenciais, garantindo que o tempo de indisponibilidade dos geradores dos clientes seja minimizado e mantido abaixo da meta de 3 horas.
+
+- Confiabilidade e Desempenho dos Equipamentos (MTBF): Avalia a durabilidade e o tempo médio de funcionamento dos geradores entre uma quebra e outra, auxiliando na identificação de modelos mais desgastados ou na necessidade de intervenções mais profundas.
+
+- Equilíbrio Operacional (preventivas x corretivas): Fornece uma visão clara sobre a eficiência da operação de campo, permitindo verificar se a empresa está atuando de forma proativa (antecipando falhas por meio das manutenções preventivas acima de 70%) ou se está apenas reativa (apagando incêndios com corretivas).
+
+- Previsibilidade Financeira e de Caixa (receita por contrato): Consolida de forma exata o faturamento mensal recorrente gerado pelos contratos ativos de manutenção, garantindo segurança financeira para a manutenção da estrutura e dos plantões 24/7.
+
+- Assertividade e Qualidade Técnica em Campo (first fix rate): Mede a eficácia dos técnicos nas visitas aos clientes, assegurando que a grande maioria dos problemas seja resolvida logo no primeiro atendimento (acima de 85%), evitando retornos desnecessários por falta de peças ou diagnóstico incorreto.
+
+---
+### Indicadores e Métricas Gerenciais (KPIs)
+
+| KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
+| :--- | :--- | :--- | :--- |
+| **MTTR (Tempo Médio de Reparo)** | Soma do tempo (início até o fim) dos chamados corretivos / Total de atendimentos corretivos | Mensal | Menor que 3 horas para emergências |
+| **MTBF (Tempo Médio Entre Falhas)** | Horas totais de funcionamento dos geradores / Número total de falhas corretivas | Mensal / Trimestral | Maximizar a vida útil entre as quebras |
+| **Taxa de Atendimento Preventivo vs. Corretivo** | (Total de Manutenções Preventivas / Total Geral de Manutenções) * 100 | Mensal | Acima de 70% (preventivas dominando as corretivas) |
+| **Receita por Contrato** | Soma dos valores mensais gerados pelos contratos ativos. | Mensal | Garantir previsibilidade financeira fixa. |
+| **Índice de Primeira Visita (First Fix Rate)** | (Chamados resolvidos na 1ª visita do técnico / Total de chamados) * 100 | Mensal | Acima de 85% (evitar voltar ao cliente por falta de peça) |
+
+---
+
+### Potencial dos Dados para Business Inteligence (BI)
+
+A arquitetura relacional estruturada no DER — integrando entidades como Cliente, Gerador, Contrato, Manutencao, Pagamento e Peca — suporta perfeitamente a extração de relatórios e a construção de painéis gerenciais (dashboards) dinâmicos:
+
+- **Painel operacional:** manutenções abertas, geradores em manutenção, técnicos em escala (`Manutencao`, `Gerador`, `Tecnico`, `Escala`).
+***Painel Operacional de Campo:** Conecta as tabelas Manutencao, Gerador e Tecnico para monitorar chamados abertos em tempo real, o status operacional dos geradores em atendimento e a disponibilidade dos técnicos baseada na tabela Escala.
+  
+- **Painel de confiabilidade:** tempo de reparo, MTBF e peças vencidas (`Manutencao`, `Gerador`, `Cronograma_Preventivo`, `Peca`).
+***Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela Manutencao e os dados de horímetro da entidade Gerador para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
+
+- **Painel financeiro:** receita por contrato, parcelas a receber e atrasadas, contas a pagar (`Contrato`, `Pagamento`, `Contas_a_pagar`).
+***Painel Financeiro e de Contratos:** Agrupa os dados das tabelas Contrato, Pagamento e Manutencao para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
+
+---
+
+### Aplicações analíticas e de IA
+O histórico armazenado nas tabelas do sistema serve como base para alimentar modelos preditivos e sistemas inteligentes:
+
+- **Manutenção preditiva:** estimar a data da próxima troca de peça a partir de horímetro e histórico de trocas.
+***Manutenção Preditiva baseada em Horímetro:** Cruzando os dados da entidade Gerador (atributo horímetro) com o histórico de trocas da tabela Cronograma_Preventivo e Manutencao, um modelo de IA pode estimar estatisticamente o desgaste de peças (como baterias e filtros) e abrir ordens de serviço preventivas antes que o equipamento sofra uma pane no plantão 24h.
+
+- **Risco de inadimplência e renovação de contratos:** classificar contratos a partir do histórico de pagamentos.
+**Previsão de Risco de Inadimplência e Renovação de Contratos:** Utilizando o histórico de pagamentos da tabela Pagamento e os dados contratuais da tabela Contrato, um algoritmo analítico pode prever riscos de atraso financeiro e identificar padrões para otimizar a retenção e receita por contrato.
+
+- **Previsão de demanda de peças:** projetar o consumo (`usa`) para orientar compras (`contem`).
+
+---
+### Tabela de Rastreabilidade (Problemas e KPIs)
+
+| Problema ou KPI | Tabelas envolvidas | Consulta |
+| :--- | :--- | :--- |
+| P1 — fichas em papel: histórico de atendimentos por cliente e gerador | `Cliente`, `Gerador`, `Manutencao` | G01 |
+| P2 — última troca e peças vencidas/a vencer | `Cronograma_Preventivo`, `Peca`, `Gerador` | G02, G03 |
+| P3 — cobertura contratual de cada manutenção | `Contrato`, `Gerador`, `Manutencao`, `utiliza`, `usa` | G04 |
+| P4 — aditivos e condições anteriores por contrato | `Contrato`, `Aditivo_contrato` | G05 |
+| P5 — faturamento e reajustes por contrato | `Contrato`, `Aditivo_contrato`, `Pagamento` | G06, G07 |
+| KPI — receita recorrente por contrato | `Contrato` | G06 |
+| KPI — taxa de preventivas | `Manutencao` | G08 |
+| KPI — tempo médio de reparo | `Manutencao` | G09 |
+| KPI — MTBF aproximado | `Gerador`, `Manutencao` | G10 |
+| KPI — inadimplência | `Pagamento` | G07 |
+| KPI — peças vencidas ou a vencer | `Cronograma_Preventivo`, `Peca` | G02 |
+| Custos: compras e contas a pagar por fornecedor | `Fornecedor`, `Compra`, `contem`, `Contas_a_pagar` | G11 |
+
+**Consultas de auditoria planejadas**
+
+| Código | Pergunta | Regra |
+| :--- | :--- | :--- |
+| A01 | Há manutenção sem técnico? | RN06 |
+| A02 | Há manutenção sem serviço? | RN07 |
+| A03 | Há pagamento sem origem ou com duas origens? | RN20 |
+| A04 | Há gerador coberto por contrato de outro cliente? | RN12 |
+| A05 | Há peça com estoque negativo? | RN23 |
+| A06 | Há manutenção concluída sem `data_conclusao` (ou o contrário)? | RN16 |
+| A07 | Há conta paga com `valor_pago` diferente de `valor_total`? | RN24 |
+| A08 | Há corretiva fora de contrato sem orçamento aprovado? | RN10, RN11 |
+| A09 | Há gerador sem cronograma preventivo? | RN08 |
+| A10 | A soma das parcelas difere do valor calculado da manutenção? | RN20 |
+
+---
+
+
 1.1 Problemas identificados
 
 ID/Problema	Evidência	Resposta no modelo
@@ -530,49 +628,6 @@ ID/Problema	Evidência	Resposta no modelo
 
 
 
-
-
-
-## 8. Proposta de Arquitetura Analítica para BI e IA
-
-### A. Informações Estratégicas
-
-A partir do banco de dados relacional e do monitoramento dos indicadores de desempenho, a gestão da empresa consegue extrair informações estratégicas cruciais para a tomada de decisão no suporte 24h:
-
-- Agilidade no Atendimento Corretivo (MTTR): Permite monitorar com precisão o tempo médio que a equipe leva para solucionar falhas emergenciais, garantindo que o tempo de indisponibilidade dos geradores dos clientes seja minimizado e mantido abaixo da meta de 3 horas.
-
-- Confiabilidade e Desempenho dos Equipamentos (MTBF): Avalia a durabilidade e o tempo médio de funcionamento dos geradores entre uma quebra e outra, auxiliando na identificação de modelos mais desgastados ou na necessidade de intervenções mais profundas.
-
-- Equilíbrio Operacional (preventivas x corretivas): Fornece uma visão clara sobre a eficiência da operação de campo, permitindo verificar se a empresa está atuando de forma proativa (antecipando falhas por meio das manutenções preventivas acima de 70%) ou se está apenas reativa (apagando incêndios com corretivas).
-
-- Previsibilidade Financeira e de Caixa (receita por contrato): Consolida de forma exata o faturamento mensal recorrente gerado pelos contratos ativos de manutenção, garantindo segurança financeira para a manutenção da estrutura e dos plantões 24/7.
-
-- Assertividade e Qualidade Técnica em Campo (first fix rate): Mede a eficácia dos técnicos nas visitas aos clientes, assegurando que a grande maioria dos problemas seja resolvida logo no primeiro atendimento (acima de 85%), evitando retornos desnecessários por falta de peças ou diagnóstico incorreto.
-
-### B. Indicadores e Métricas Gerenciais (KPIs)
-
-| KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
-| :--- | :--- | :--- | :--- |
-| **MTTR (Tempo Médio de Reparo)** | Soma do tempo (início até o fim) dos chamados corretivos / Total de atendimentos corretivos | Mensal | Menor que 3 horas para emergências |
-| **MTBF (Tempo Médio Entre Falhas)** | Horas totais de funcionamento dos geradores / Número total de falhas corretivas | Mensal / Trimestral | Maximizar a vida útil entre as quebras |
-| **Taxa de Atendimento Preventivo vs. Corretivo** | (Total de Manutenções Preventivas / Total Geral de Manutenções) * 100 | Mensal | Acima de 70% (preventivas dominando as corretivas) |
-| **Receita por Contrato** | Soma dos valores mensais gerados pelos contratos ativos. | Mensal | Garantir previsibilidade financeira fixa. |
-| **Índice de Primeira Visita (First Fix Rate)** | (Chamados resolvidos na 1ª visita do técnico / Total de chamados) * 100 | Mensal | Acima de 85% (evitar voltar ao cliente por falta de peça) |
-
-### C. Potencial dos Dados para Business Inteligence (BI)
-A arquitetura relacional estruturada no DER — integrando entidades como Cliente, Gerador, Contrato, Manutencao, Pagamento e Peca — suporta perfeitamente a extração de relatórios e a construção de painéis gerenciais (dashboards) dinâmicos:
-
-* **Painel Operacional de Campo:** Conecta as tabelas Manutencao, Gerador e Tecnico para monitorar chamados abertos em tempo real, o status operacional dos geradores em atendimento e a disponibilidade dos técnicos baseada na tabela Escala.
-* * **Painel de Confiabilidade e Desempenho (MTTR/MTBF/FFR):** Utiliza o histórico da tabela Manutencao e os dados de horímetro da entidade Gerador para medir a velocidade de reparo, o índice de solução na primeira visita e a frequência de falhas dos equipamentos.
-* **Painel Financeiro e de Contratos:** Agrupa os dados das tabelas Contrato, Pagamento e Manutencao para apresentar a receita recorrente garantida pelos contratos ativos e o faturamento geral da empresa.
-
-### D. Aplicações Analíticas e de Inteligência Artificial (IA)
-O histórico armazenado nas tabelas do sistema serve como base para alimentar modelos preditivos e sistemas inteligentes:
-
-* **Manutenção Preditiva baseada em Horímetro:** Cruzando os dados da entidade Gerador (atributo horímetro) com o histórico de trocas da tabela Cronograma_Preventivo e Manutencao, um modelo de IA pode estimar estatisticamente o desgaste de peças (como baterias e filtros) e abrir ordens de serviço preventivas antes que o equipamento sofra uma pane no plantão 24h.
-* **Previsão de Risco de Inadimplência e Renovação de Contratos:** Utilizando o histórico de pagamentos da tabela Pagamento e os dados contratuais da tabela Contrato, um algoritmo analítico pode prever riscos de atraso financeiro e identificar padrões para otimizar a retenção e receita por contrato.
-
-### E. Tabela de Rastreabilidade (Problemas e KPIs)
 
 
 ## 9. Justificativa Técnica
