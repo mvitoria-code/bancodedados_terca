@@ -570,6 +570,8 @@ O histórico armazenado nas tabelas do sistema serve como base para alimentar mo
 ---
 ### Tabela de Rastreabilidade (Problemas e KPIs)
 
+**RETIRAR ISSO DEPOIS ⚠️ Os códigos G/A abaixo são o plano de consultas que o `docs/script.sql` precisa conter, se mudar algo precisa ajustar os códigos se a numeração no script**
+
 | Problema ou KPI | Tabelas envolvidas | Consulta |
 | :--- | :--- | :--- |
 | P1 — fichas em papel: histórico de atendimentos por cliente e gerador | `Cliente`, `Gerador`, `Manutencao` | G01 |
@@ -622,6 +624,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 # 3. Script SQL Completo
 **SGBD:** MySQL **PREENCHER**
+
 **Arquivo:** [`docs/script.sql`](docs/script.sql) — **⚠️ PREENCHER**
 
 ---
@@ -649,12 +652,12 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | Diagrama DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
 | Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
 | Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql)  |
-| Histórico de commits e colaboração |  ** PREENCHER ** |
+| Histórico de commits e colaboração |  **PREENCHER** |
 | Evidências fotos | [fachada](imagem%20empresa.jpg) e [entrevista](foto%20da%20entrevistas.png) |
 | Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
 | Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
-| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) ** PREENCHER** |
-| Apresentação (slides) |  ** PREENCHER ** |
+| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) **PREENCHER** |
+| Apresentação (slides) |  **PREENCHER ** |
 
 ---
 
