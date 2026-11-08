@@ -50,6 +50,8 @@
 | **P4** | Alterações de contrato por e-mail, sem registro garantido | Entrevista | `Aditivo_contrato` (RF19, RN27) |
 | **P5** | Faturamento estimado e reajustes refeitos à mão | Entrevista | `Contrato`, `Aditivo_contrato`, `Pagamento` (RF14, RF19) |
 
+**Escopo do sistema:** o banco cobre **toda** a operação da empresa, não só um setor: clientes e contratos (com aditivos), geradores, orçamentos, manutenções (técnicos, serviços e peças), cronograma preventivo, escala dos técnicos, recebimentos (pagamentos), compras de peças e fornecedores, contas a pagar e controle de acesso/auditoria (22 tabelas).
+
 ##  Caracterização da Organização
 
 <img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
