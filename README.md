@@ -107,6 +107,24 @@ Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de
 
 ---
 
+### Nível de detalhe — processos, requisitos e regras de negócio
+
+Frases genéricas são superficiais e não bastam. Em todos os requisitos, regras e processos deste trabalho indicamos quais dados estão envolvidos, com os mesmos campos do DER, do dicionário de dados e do modelo lógico. Exemplos:
+
+| Superficial | Detalhado (como está neste trabalho) |
+| :--- | :--- |
+| O sistema deve permitir cadastrar cliente. | **RF01** — O sistema deve permitir cadastrar clientes com nome (ou razão social), CPF/CNPJ, telefone, endereço, e-mail, cidade e estado, todos obrigatórios. |
+| O sistema deve permitir cadastrar geradores. | **RF03** — O sistema deve permitir cadastrar geradores vinculados a um cliente, registrando número de série, marca, modelo, status operacional, potência em kVA e horímetro atual. |
+| O sistema deve registrar as manutenções. | **RF08** — O sistema deve registrar manutenções preventivas e corretivas vinculadas ao gerador, ao contrato vigente e ao orçamento (quando aplicável), com data, tipo, status, número da nota fiscal, problema relatado e data de conclusão. **RF09** — Cada manutenção deve ter ao menos um técnico, ao menos um serviço e, opcionalmente, peças, informando valor unitário aplicado e quantidade. |
+| O sistema controla os pagamentos. | **RF14** — O sistema deve gerar e controlar parcelas de pagamento de manutenções avulsas e de contratos, registrando número da parcela, vencimento, valor previsto, data de pagamento, forma de pagamento, status e valor pago. |
+| O sistema avisa quando é hora de trocar peças. | **RF05** — O sistema deve listar, para cada gerador, as peças com troca vencida ou próxima do vencimento, exibindo o nome da peça, a data e o horímetro da última troca e o prazo de troca em dias e/ou horas. |
+| O cliente precisa estar cadastrado. | **RN01** — Todo cliente deve ter um CPF ou CNPJ único no sistema; não é permitido cadastrar documentos duplicados. Nome, telefone, endereço, e-mail, cidade e estado são obrigatórios (RF01). |
+| O pagamento precisa ter uma origem. | **RN20** — Cada pagamento deve estar ligado a exatamente uma origem de cobrança: uma manutenção (`id_manutencao`) ou um contrato (`id_contrato`), nunca as duas nem nenhuma. |
+| O gerador precisa ter um número de identificação. | **RN03** — Cada gerador deve ter um número de série único, com caracteres alfanuméricos, e pertencer a exatamente um cliente (RN02). |
+| O técnico faz a manutenção. | No registro da manutenção constam a data, o tipo (preventiva ou corretiva), o status (aberta, em andamento ou concluída), o número da nota fiscal, o problema relatado e a data de conclusão; para cada serviço, a quantidade e o valor unitário aplicado; para cada peça trocada, a quantidade e o valor unitário aplicado (RF08, RF09). |
+
+---
+
 ## Fluxograma do atendimento:
 <img width="2760" height="5480" alt="fluxograma" src="fluxograma.png" />
 
