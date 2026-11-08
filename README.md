@@ -62,12 +62,9 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 - Telefone: +55 (11) 98373-9556  
 - E-mail: sandrolima@limasenergia.com.br
 - site: https://limasenergia.com.br/
-- Foto da fachada ("Limas Energia Grupos Geradores") :
-
-<img width="2760" height="5480" alt="empresa" src= "imagem empresa.jpg">
+- Foto da fachada: [Limas Energia Grupos Geradores](imagem empresa.jpg)
 
 ---
-
 
 ### Relato da entrevista
 -  **Quem:** Sandro Aparecido de Lima, dono da empresa e responsável pela organização. Participou da entrevista o integrante **Kauan José da Silva**, que trabalha na empresa e é sobrinho do entrevistado (vínculo declarado na caracterização). Os demais integrantes não estiveram presentes e trabalharam a partir do relato e do levantamento do Kauan.
@@ -593,7 +590,7 @@ A partir do banco de dados relacional e do monitoramento dos indicadores de dese
 
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
 | :--- | :--- | :--- | :--- |
-| **MTTR (Tempo Médio de Reparo)** | Soma do tempo (início até o fim) dos chamados corretivos / Total de atendimentos corretivos | Mensal | Menor que 3 horas para emergências |
+| **MTTR (Tempo Médio de Reparo)** | Soma do tempo (início até o fim) dos chamados corretivos / Total de atendimentos corretivos | Mensal | Menor que 3 horas para emergências (no modelo atual é medido em dias, pois o banco guarda apenas a data) |
 | **MTBF (Tempo Médio Entre Falhas)** | Horas totais de funcionamento dos geradores / Número total de falhas corretivas | Mensal / Trimestral | Maximizar a vida útil entre as quebras |
 | **Taxa de Atendimento Preventivo vs. Corretivo** | (Total de Manutenções Preventivas / Total Geral de Manutenções) * 100 | Mensal | Acima de 70% (preventivas dominando as corretivas) |
 | **Receita por Contrato** | Soma dos valores mensais gerados pelos contratos ativos. | Mensal | Garantir previsibilidade financeira fixa. |
