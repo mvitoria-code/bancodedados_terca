@@ -435,7 +435,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Manutenção × Cronograma | `atualiza` (`MANUTENCAO_CRONOGRAMA`) | `id_manutencao`, `id_cronograma` | — |
 | Compra × Peça | `contem` (`COMPRA_PECA`) | `id_compra`, `id_peca` | `quantidade`, `valor_custo` |
 
--- **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `ENUM`, e não subtipos, porque os perfis não têm atributos diferentes.
+- **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `ENUM`, e não subtipos, porque os perfis não têm atributos diferentes.
 
 ---
 
