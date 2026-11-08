@@ -28,10 +28,6 @@
 | Regime de atendimento | plantão de 24 horas (emergências a qualquer hora) |
 | Controle atual dos dados | papel: fichas e relatórios físicos (clientes, atendimentos, contratos) |
 
-Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
-Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
-A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
-
 **Problemas e necessidades identificados**
 
 | ID | Problema (crise operacional) | Evidência | Onde o modelo o resolve |
@@ -41,6 +37,10 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 | **P3** | Contrato relido a cada atendimento para checar cobertura | Entrevista | `Contrato`, `Gerador.id_contrato`, `Manutencao.id_contrato` (RF06, RN12–RN15) |
 | **P4** | Alterações de contrato por e-mail, sem registro garantido | Entrevista | `Aditivo_contrato` (RF19, RN27) |
 | **P5** | Faturamento estimado e reajustes refeitos à mão | Entrevista | `Contrato`, `Aditivo_contrato`, `Pagamento` (RF14, RF19) |
+
+Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
+Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
+A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
 
 **Escopo do sistema:** o banco cobre **toda** a operação da empresa, não só um setor: clientes e contratos (com aditivos), geradores, orçamentos, manutenções (técnicos, serviços e peças), cronograma preventivo, escala dos técnicos, recebimentos (pagamentos), compras de peças e fornecedores, contas a pagar e controle de acesso/auditoria (22 tabelas).
 
