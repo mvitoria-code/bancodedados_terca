@@ -40,6 +40,10 @@
 | Regime de atendimento | plantão de 24 horas (emergências a qualquer hora) |
 | Controle atual dos dados | papel: fichas e relatórios físicos (clientes, atendimentos, contratos) |
 
+**Problemas e necessidades identificados**
+
+| ID | Problema (crise operacional) | Evidência | Onde o modelo o resolve |
+| :--- | :--- | :--- | :--- |
 
 ##  Caracterização da Organização
 
