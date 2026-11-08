@@ -77,7 +77,7 @@
 - **Quando e onde:** **⚠️ PREENCHER:** data e local (na sede da empresa). data 22/09/2026 
 - **Comprovação:** foto do grupo/integrante com o responsável, no local:
 
-- **O que foi levantado (resumo):**
+### **O que foi levantado (resumo):**
 - **Achados da observação presencial (separados do que foi dito):**
 - **Nova visita (Entrega 2):**
 - **Levantamento completo:** [`levantamento/levantamento.md`](levantamento/levantamento.md)
@@ -105,51 +105,8 @@ Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de
 | 14 | Contas a pagar | `Contas_a_pagar` |
 | 15 | Controle de acesso e auditoria | `Usuario`, `Log_acesso` |
 
-
-Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
-Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
-Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
-A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
-
-
-1.1 Problemas identificados
-
-ID/Problema	Evidência	Resposta no modelo
-- P1	Fichas em papel sujeitas a perda ou ilegibilidade	Entrevista, Gerador (RF01, RF03)
-- P2	Histórico e última troca de peças só achados folheando relatórios	Entrevista, Cronograma_Preventivo (RF02, RF04, RF05)
-- P3	Contrato relido a cada atendimento para checar cobertura	Entrevista (RF06, RN13, RN15)
-- P4	Alterações de contrato por e-mail, sem registro garantido	Entrevista	Aditivo_contrato (RF19, RN27)
-- P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
-- P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
-
-
-## 2. Modelo Lógico Relacional
-
-**Software utilizado:** brModelo Web (https://app.brmodeloweb.com)
-
-O modelo lógico foi construído a partir do DER conceitual revisado (seção 1.1) e segue a notação visual do brModelo para modelo lógico: cada tabela aparece com suas colunas e tipos de dados, as chaves primárias estão marcadas com `PK`, as chaves estrangeiras com `FK` (e `PK, FK` nas tabelas associativas) e as cardinalidades `(mín, máx)` estão indicadas em cada ponta dos relacionamentos.
-
-<img width="2760" height="5480" alt="empresa" src= "Modelo Logico.png">
-
-### Tabelas do modelo
-
-O modelo é composto por **15 tabelas de entidades** e **5 tabelas associativas** (resultantes dos relacionamentos N:N):
-
-| Grupo | Tabelas |
-| :---- | :---- |
-| Relacionamento com o cliente | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador` |
-| Atendimento | `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala` |
-| Peças e preventiva | `Peca`, `Cronograma_Preventivo` |
-| Financeiro e suprimentos | `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar` |
-| Segurança | `Usuario`, `Log_acesso` |
-| Tabelas associativas (N:N) | `utiliza` (Manutenção × Serviço), `realizada por` (Manutenção × Técnico), `usa` (Manutenção × Peça), `contem` (Compra × Peça), `atualiza` (Manutenção × Cronograma) |
-
-### Restrições de integridade
-
-As demais restrições (`NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`) não aparecem no diagrama do brModelo. Elas estão documentadas no [Dicionário de Dados](docs/dicionario_dados.html) (seção 5) e implementadas no [script SQL](docs/script.sql) (seção 3).
-
-
-
+## Fluxograma do atendimento:
+<img width="2760" height="5480" alt="fluxograma" src="fluxograma.png" />
 
 #### 2.1 Processo de cadastrar clientes
 - Objetivo: preservar as informações dos clientes e permitir consultar o histórico de cada um.
@@ -282,8 +239,56 @@ Dados:
 
 
 
+Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
+Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
+Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
+A organização foi escolhida de acordo com as dificuldades relatadas. A partir disso foram encontradas possibilidades reais de implantar um plano de ação e renovação de fluxos de armazenamento de dados. Além de que o fácil acesso a empresa e contato com o dono contribuiram com a escolha do grupo.
 
-<img width="2760" height="5480" alt="fluxograma" src="fluxograma.png" />
+
+1.1 Problemas identificados
+
+ID/Problema	Evidência	Resposta no modelo
+- P1	Fichas em papel sujeitas a perda ou ilegibilidade	Entrevista, Gerador (RF01, RF03)
+- P2	Histórico e última troca de peças só achados folheando relatórios	Entrevista, Cronograma_Preventivo (RF02, RF04, RF05)
+- P3	Contrato relido a cada atendimento para checar cobertura	Entrevista (RF06, RN13, RN15)
+- P4	Alterações de contrato por e-mail, sem registro garantido	Entrevista	Aditivo_contrato (RF19, RN27)
+- P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
+- P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
+
+
+## 2. Modelo Lógico Relacional
+
+**Software utilizado:** brModelo Web (https://app.brmodeloweb.com)
+
+O modelo lógico foi construído a partir do DER conceitual revisado (seção 1.1) e segue a notação visual do brModelo para modelo lógico: cada tabela aparece com suas colunas e tipos de dados, as chaves primárias estão marcadas com `PK`, as chaves estrangeiras com `FK` (e `PK, FK` nas tabelas associativas) e as cardinalidades `(mín, máx)` estão indicadas em cada ponta dos relacionamentos.
+
+<img width="2760" height="5480" alt="empresa" src= "Modelo Logico.png">
+
+### Tabelas do modelo
+
+O modelo é composto por **15 tabelas de entidades** e **5 tabelas associativas** (resultantes dos relacionamentos N:N):
+
+| Grupo | Tabelas |
+| :---- | :---- |
+| Relacionamento com o cliente | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador` |
+| Atendimento | `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala` |
+| Peças e preventiva | `Peca`, `Cronograma_Preventivo` |
+| Financeiro e suprimentos | `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar` |
+| Segurança | `Usuario`, `Log_acesso` |
+| Tabelas associativas (N:N) | `utiliza` (Manutenção × Serviço), `realizada por` (Manutenção × Técnico), `usa` (Manutenção × Peça), `contem` (Compra × Peça), `atualiza` (Manutenção × Cronograma) |
+
+### Restrições de integridade
+
+As demais restrições (`NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`) não aparecem no diagrama do brModelo. Elas estão documentadas no [Dicionário de Dados](docs/dicionario_dados.html) (seção 5) e implementadas no [script SQL](docs/script.sql) (seção 3).
+
+
+
+
+
+
+
+
+
 
 
 
