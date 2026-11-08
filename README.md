@@ -380,7 +380,35 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 ---
 
+### Notação do DER
 
+- **Software:** brModelo Web (<https://app.brmodeloweb.com>), modelo conceitual.
+- Identificadores como círculos preenchidos; atributos comuns como círculos vazios; atributos de relacionamento ligados ao losango; **sem chaves estrangeiras**.
+
+### DER conceitual revisado (Caso A — mesma organização da Entrega 1)
+
+![DER conceitual revisado](<DER (1).png>)
+
+**Apontamentos da correção da Entrega 1 e o que mudou**
+
+| Apontamento da correção da E1 | O que mudou no trabalho | Por quê |
+| :--- | :--- | :--- |
+| DER sem `PECA/MATERIAL` (essencial): trocas de bateria, óleo e filtro não podiam ser registradas | Criada a entidade `Peça` (nome, descrição, valor de venda, prazos de troca em dias/horas, estoque) e os relacionamentos `usa` (com valor unitário aplicado e quantidade) e `contém` | Sem ela não há como registrar as peças usadas por manutenção nem controlar estoque |
+| DER sem `PAGAMENTO` (essencial): regra de pagamento antes/depois da execução sem onde registrar | Criada a entidade `Pagamento` (parcela, vencimento, valor, data, forma, status, valor pago), ligada a `Manutenção` (`gera`) ou a `Contrato` (`gera_mensalidade`) | Permite registrar o recebimento e aplicar as regras RN14 e RN20 |
+| Sugestão: `ORCAMENTO` | Criada `Orçamento`, ligada a `Gerador` (`solicita`) e 0..1:0..1 a `Manutenção` (`origina`) | Corretiva exige orçamento aprovado (RN10, RN11) |
+| Sugestão: `PLANO/CRONOGRAMA PREVENTIVO` ("nada no modelo sustenta a regra do cronograma") | Criada `Cronograma_Preventivo` (data e horímetro da última troca), ligada a `Gerador`, `Peça` e atualizada por `Manutenção` (`atualiza`) | Sustenta RN08/RN09 e o problema P2 |
+| Sugestão: `CONTRATO` | Criadas `Contrato` e `Aditivo_contrato`, ligadas a cliente, geradores, manutenções e pagamentos | Processo ausente na E1; resolve P3, P4 e P5 |
+| Sugestão: `FORNECEDOR` e ciclo de compras ausente | Criadas `Fornecedor`, `Compra` (com `contém` → peça) e `Contas_a_pagar` | Cobre compra de peças, recebimento/estoque e contas a pagar |
+| Escala do plantão 24h só citada como restrição | Criada `Escala` (período, turno, folga), ligada a `Técnico` (`cumpre`) | Plantão passa a ser dado do banco |
+| Atributo `servico_realizado` (texto) em `Manutenção` redundante com `utiliza` | Atributo removido; serviços ficam só no relacionamento `utiliza` | Evita redundância e perda de quantidade/valor aplicado |
+| N:N sem atributos próprios (`Manutenção`×`Serviço`) | `utiliza`, `usa` e `contém` agora têm atributos (valor unitário aplicado, quantidade, valor de custo) | O valor da manutenção é calculado a partir deles (RN15) |
+| Dicionário sem SGBD/engine, collation, versão/data, notação completa, log e LGPD | Dicionário v5.9 (08/11/2026) com ficha técnica (MySQL 8.0.16+, InnoDB, utf8mb4_unicode_ci), notação completa, seção `LOG_ACESSO` e seção `LGPD` | CPF, CNPJ e endereço são dados pessoais; a justificativa anterior estava equivocada. `Usuario` e `Log_acesso` entraram no DER |
+| Prefixos impróprios (`QT_VALOR`, `QT_VALOR_BASE`, `QT_POTENCIA`, `ID_CPF_CNPJ`) | Renomeados para `VL_*`, `MD_POTENCIA` e `NR_CPF_CNPJ`, com prefixos `VL_`, `MD_` e `NR_` explicados no dicionário | `QT_` é quantidade; valor e potência têm prefixos próprios |
+| RF falava em "mais de um serviço por cliente" | RF09 passou a ligar serviços à manutenção | O modelo liga serviço à manutenção, não ao cliente |
+| Alguns RF eram regras de unicidade | RFs reescritos como funcionalidades, com unicidades nas RNs | RF descreve o que o sistema faz; unicidade é regra |
+| Entrevista sem relato; foto não referenciada no README | Seção "Relato da entrevista" e foto referenciada | Exigência da E2 — **⚠️ conferir o texto preenchido** |
+| README só com nomes, sem RGM | Tabela de integrantes com RGM e usuário do GitHub | Identificação dos autores |
+| Possível conflito de interesse (camisa da empresa na foto) | **⚠️ PREENCHER:** declarar o vínculo na caracterização | Transparência exigida pela E2 |
 
 
 Com fins lucrativos, a empresa conta com 15 funcionários e 96 clientes fixos, somando uma média de 33 manutenções em geradores de energia por mês. 
@@ -400,13 +428,7 @@ ID/Problema	Evidência	Resposta no modelo
 - P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
 
 
-## 2. Modelo Lógico Relacional
 
-**Software utilizado:** brModelo Web (https://app.brmodeloweb.com)
-
-O modelo lógico foi construído a partir do DER conceitual revisado (seção 1.1) e segue a notação visual do brModelo para modelo lógico: cada tabela aparece com suas colunas e tipos de dados, as chaves primárias estão marcadas com `PK`, as chaves estrangeiras com `FK` (e `PK, FK` nas tabelas associativas) e as cardinalidades `(mín, máx)` estão indicadas em cada ponta dos relacionamentos.
-
-<img width="2760" height="5480" alt="empresa" src= "Modelo Logico.png">
 
 ### Tabelas do modelo
 
