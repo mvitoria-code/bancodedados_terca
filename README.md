@@ -389,6 +389,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 - **Software:** brModelo Web (<https://app.brmodeloweb.com>), modelo conceitual.
 - Identificadores como círculos preenchidos; atributos comuns como círculos vazios; atributos de relacionamento ligados ao losango; **sem chaves estrangeiras**.
+
 | Elemento | Como aparece | No nosso DER |
 | :--- | :--- | :--- |
 | **Entidade** | retângulo | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orçamento`, `Manutenção`, `Serviço`, `Técnico`, `Escala`, `Peça`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso` (17 entidades) |
