@@ -451,8 +451,11 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | Regras ausentes: compras de fornecedor cadastrado e conferência das peças | Criadas RN22 (fornecedor com CNPJ único), RN23 (compra ligada a fornecedor, com itens, quantidades e valores; o estoque só é atualizado após a confirmação do recebimento) e RN24 (contas a pagar) | Cobre o ciclo de compras que faltava |
 | Regra ausente: emissão de nota fiscal | O número da nota fiscal é guardado em `Manutenção` e em `Compra` (`numero_nota_fiscal`); a emissão da nota em si fica fora do sistema | O sistema registra a nota, não a emite |
 | Regra parcial: LGPD (só criptografia) | Seção LGPD no dicionário, trilha de auditoria (`Usuario`, `Log_acesso`, RN26) e requisitos de segurança (RNF) | CPF, CNPJ e endereço são dados pessoais |
-| Regra parcial: técnico habilitado (NR-10) | **Mantida fora do modelo.** As NRs aparecem só como restrição organizacional (REST01) | 
+| Regra parcial: técnico habilitado (NR-10) | Mantida fora do modelo; as NRs aparecem como restrição organizacional (REST01) | O sistema não controla cursos nem certificados dos técnicos; a habilitação é conferida pela empresa fora do banco |
+| Regra ausente: garantia legal do serviço (CDC) | Mantida fora do modelo | A empresa não registra garantia do serviço hoje; o assunto é tratado diretamente com o cliente |
 | Uso 2 de IA com prompt e resposta genéricos | Item 2 da seção 6 reescrito com o prompt real, o que foi aceito e o que foi rejeitado | Apontamento da correção |
+| *Trechos rejeitados ou corrigidos* | Na Entrega 1 retiramos as seções "Log de acesso" e "Conformidade com a LGPD" por achar que valiam só para dados de saúde. A correção da E1 mostrou que isso estava errado, pois o sistema guarda CPF, CNPJ e endereço, que são dados pessoais. Na Entrega 2 as duas seções voltaram ao dicionário. |
+| *Reflexão crítica* | O prompt que usamos na E1 era genérico e a resposta da IA foi igualmente genérica. Descartar partes do modelo sem verificar se se aplicavam ao nosso caso foi um erro nosso, não da IA. |
 
 ---
 
