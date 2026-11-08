@@ -45,6 +45,7 @@
 | ID | Problema (crise operacional) | Evidência | Onde o modelo o resolve |
 | :--- | :--- | :--- | :--- |
 | **P1** | Fichas em papel sujeitas a perda ou ilegibilidade | Entrevista | `Cliente`, `Gerador`, `Manutencao` (RF01, RF03, RF08) |
+| **P2** | Histórico e última troca de peças só são achados folheando relatórios | Entrevista | `Cronograma_Preventivo`, `Peca`, `Manutencao_*` (RF02, RF04, RF05) |
 
 ##  Caracterização da Organização
 
