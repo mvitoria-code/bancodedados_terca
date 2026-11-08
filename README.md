@@ -783,13 +783,14 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 | Item | Registro |
 |------|------------------|
-| Ferramenta e etapa 8 |        |
-| *Motivação* |       |
-| *Prompt(s) utilizados* |       |
-| *Resposta recebida* |          |
-| *Trechos rejeitados ou corrigidos* | 	       |
-| *Justificativa da escolha final* |       |
-| *Reflexão crítica* |             |
+| Ferramenta e etapa 8 | Claude, usado na Entrega 2 para reestruturar o README conforme o esqueleto, conferir a consistência entre README, DER, modelo lógico e dicionário, e atualizar o dicionário (tipos, versão 6.0 e seção LOG_ACESSO). |
+| *Motivação* | A ferramenta foi utilizada para identificar possíveis divergências entre os documentos e modelos do projeto, garantindo maior consistência entre as informações apresentadas nos diferentes artefatos. |
+| *Prompt(s) utilizados* | "Preciso que você realize uma análise técnica e detalhada do projeto, comparando o conteúdo do README com o Diagrama Entidade-Relacionamento (DER)." Também enviamos o esqueleto da Entrega 2, os slides do professor, o repositório e a correção da Entrega 1, e pedimos o README reestruturado e ajustes pontuais (tabela de apontamentos, tabela de notação do DER, nível de detalhe, links e seção de IA). |
+| *Resposta recebida* | A IA  apontou algumas divergências entre os artefatos:; a cardinalidade do `Log_acesso` com o `Usuario` era (0,1) no README antigo e (1,1) no DER e no dicionário; a relação Usuário–Técnico existia no README antigo mas não nos diagramas; os tipos do diagrama lógico (`FLOAT`, `VARCHAR`) eram diferentes dos do dicionário (`DECIMAL`, `ENUM`); o README dizia 15 entidades, mas o DER tem 17; a RN01 tinha ficado de fora da lista de regras. |
+| *Fontes consultadas e verificadas* | README, Diagrama Entidade-Relacionamento (DER), modelo lógico e dicionário de dados da Entrega 2. Conferimos cada divergência abrindo os arquivos. |
+| *Trechos rejeitados ou corrigidos* | Mantivemos o `Log_acesso` com cardinalidade (1,1). Mantivemos o perfil técnico sem vínculo com a tabela Técnico. Alinhamos os tipos do dicionário aos do diagrama lógico, apesar de a IA ter sugerido `DECIMAL` para valores em dinheiro. Corrigimos o total de entidades para 17 e restauramos a RN01. |
+| *Justificativa da escolha final* | A análise foi utilizada como apoio para comparar os diferentes artefatos e identificar inconsistências. As recomendações foram consideradas conforme sua compatibilidade com os requisitos e as regras de negócio do projeto, mantendo a decisão final de alteração baseada na conferência dos documentos. |
+| *Reflexão crítica* | A IA ajudou a achar divergências que passaram despercebidas, mas também cometeu erros: deixou a RN01 de fora na primeira montagem do README e o total de entidades estava errado no texto antigo.  |
 
 | Item | Registro |
 |------|------------------|
