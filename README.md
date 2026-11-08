@@ -529,7 +529,7 @@ A partir do banco de dados relacional e do monitoramento dos indicadores de dese
 ---
 ### Indicadores e Métricas Gerenciais (KPIs)
 
-**⚠️ Os códigos G/A abaixo são o plano de consultas que o `docs/script.sql` precisa conter, se mudar algo precisa ajustar os códigos se a numeração no script **
+**RETIRAR ISSO DEPOIS ⚠️ Os códigos G/A abaixo são o plano de consultas que o `docs/script.sql` precisa conter, se mudar algo precisa ajustar os códigos se a numeração no script**
 
 | KPI (Indicador) | Fórmula de Cálculo | Período de Apuração | Meta Desejada |
 | :--- | :--- | :--- | :--- |
