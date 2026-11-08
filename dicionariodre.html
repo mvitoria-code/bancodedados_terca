@@ -215,19 +215,9 @@
     <td>Chaves primárias, como ID_CLIENTE e ID_GERADOR.</td>
   </tr>
   <tr>
-    <td>BIGINT</td>
-    <td>Inteiro de faixa ampla</td>
-    <td>ID_LOG, que cresce a cada acesso.</td>
-  </tr>
-  <tr>
-    <td>BIGINT AUTO_INCREMENT</td>
-    <td>Inteiro de faixa ampla que o próprio banco numera, em sequência, a cada novo registro</td>
-    <td>ID_LOG, que cresce a cada acesso.</td>
-  </tr>
-  <tr>
-    <td>DECIMAL</td>
-    <td>Número com casas decimais, usado para valores em dinheiro ou medidas</td>
-    <td>Decimal(10,2) guarda até 10 dígitos no total, sendo 2 deles depois da vírgula.</td>
+    <td>FLOAT</td>
+    <td>Número com casas decimais, usado para valores em dinheiro e medidas</td>
+    <td>Valores como VL_MENSAL e VL_PARCELA, e medidas como MD_POTENCIA.</td>
   </tr>
   <tr>
     <td>CHAR</td>
@@ -237,7 +227,7 @@
   <tr>
     <td>VARCHAR</td>
     <td>Texto de tamanho variável, até um limite máximo</td>
-    <td>Varchar(120) guarda até 120 caracteres, usado em nomes, e-mails, telefones.</td>
+    <td>Varchar(120) guarda até 120 caracteres, usado em nomes, e-mails, telefones. As listas fechadas de valores (TP_STATUS, TP_MANUTENCAO e semelhantes) também são VARCHAR(20), com CHECK que aceita só os valores listados em “Valores permitidos”.</td>
   </tr>
   <tr>
     <td>TEXT</td>
@@ -263,11 +253,6 @@
     <td>BOOLEAN</td>
     <td>Verdadeiro ou falso</td>
     <td>IN_ATIVO só aceita TRUE ou FALSE.</td>
-  </tr>
-  <tr>
-    <td>ENUM</td>
-    <td>Só aceita um valor de uma lista fixa, definida de antemão</td>
-    <td>Enum(‘ativo’,‘em_manutencao’,‘inativo’) só permite essas três opções, nenhuma outra.</td>
   </tr>
   <tr>
     <td>PK</td>
@@ -641,7 +626,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -652,7 +637,7 @@
   <tr>
     <td>MD_POTENCIA</td>
     <td>potencia</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -663,7 +648,7 @@
   <tr>
     <td>MD_HORIMETRO</td>
     <td>horimetro</td>
-    <td>DECIMAL(10,1)</td>
+    <td>INTEGER</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -739,7 +724,7 @@
   <tr>
     <td>VL_MENSAL</td>
     <td>valor_mensal</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -750,7 +735,7 @@
   <tr>
     <td>TP_PERIODICIDADE</td>
     <td>tipo_periodicidade</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -761,7 +746,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -903,7 +888,7 @@
   <tr>
     <td>VL_ORCADO</td>
     <td>valor_orcado</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -914,7 +899,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -990,7 +975,7 @@
   <tr>
     <td>VL_BASE</td>
     <td>valor_base</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1077,7 +1062,7 @@
   <tr>
     <td>TP_MANUTENCAO</td>
     <td>tipo_manutencao</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1088,7 +1073,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1273,7 +1258,7 @@
   <tr>
     <td>TP_TURNO</td>
     <td>turno</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1284,7 +1269,7 @@
   <tr>
     <td>TP_FOLGA</td>
     <td>folga</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1349,7 +1334,7 @@
   <tr>
     <td>VL_VENDA</td>
     <td>valor_venda</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1458,7 +1443,7 @@
   <tr>
     <td>MD_HORIMETRO_ULTIMA_TROCA</td>
     <td>horimetro_ultima_troca</td>
-    <td>DECIMAL(10,1)</td>
+    <td>INTEGER</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1545,7 +1530,7 @@
   <tr>
     <td>VL_PARCELA</td>
     <td>valor_parcela</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1567,7 +1552,7 @@
   <tr>
     <td>TP_FORMA_PAGAMENTO</td>
     <td>forma</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1578,7 +1563,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1589,7 +1574,7 @@
   <tr>
     <td>VL_PAGO</td>
     <td>valor_pago</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Não</td>
     <td>Não</td>
@@ -1731,7 +1716,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1808,7 +1793,7 @@
   <tr>
     <td>VL_TOTAL</td>
     <td>valor_total</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1819,7 +1804,7 @@
   <tr>
     <td>VL_PAGO</td>
     <td>valor_pago</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1852,7 +1837,7 @@
   <tr>
     <td>TP_STATUS</td>
     <td>status</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1917,7 +1902,7 @@
   <tr>
     <td>VL_UNITARIO_APLICADO</td>
     <td>valor_unitario_aplicado</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -1983,7 +1968,7 @@
   <tr>
     <td>VL_UNITARIO_APLICADO</td>
     <td>valor_unitario_aplicado</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -2147,7 +2132,7 @@
   <tr>
     <td>VL_CUSTO</td>
     <td>valor_custo</td>
-    <td>DECIMAL(10,2)</td>
+    <td>FLOAT</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -2213,7 +2198,7 @@
   <tr>
     <td>TP_PERFIL</td>
     <td>perfil</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -2257,7 +2242,7 @@
   <tr>
     <td>ID_LOG</td>
     <td>id_log</td>
-    <td>BIGINT AUTO_INCREMENT</td>
+    <td>INTEGER AUTO_INCREMENT</td>
     <td>PK</td>
     <td>Sim</td>
     <td>Sim</td>
@@ -2290,7 +2275,7 @@
   <tr>
     <td>TP_ACAO</td>
     <td>acao</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
@@ -2323,7 +2308,7 @@
   <tr>
     <td>TP_RESULTADO</td>
     <td>resultado</td>
-    <td>ENUM</td>
+    <td>VARCHAR(20)</td>
     <td>—</td>
     <td>Sim</td>
     <td>Não</td>
