@@ -1,1 +1,2338 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicionário de Dados Conceitual</title>
+</head>
+<body>
+
+<h1>Dicionário de Dados Conceitual</h1>
+<p>Este modelo representa a empresa S. A DE LIMA, especializada em manutenção preventiva e corretiva de geradores de energia. O sistema tem como finalidade controlar os clientes e seus contratos (com aditivos), os geradores de cada cliente, os orçamentos e as manutenções realizadas, os técnicos e suas escalas, os serviços e as peças utilizados, o cronograma de manutenção preventiva, os pagamentos recebidos, as compras e as contas a pagar de fornecedores, além do controle de acesso e da auditoria dos usuários.</p>
+<p><b>Ficha técnica</b></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Item</th>
+    <th>Definição</th>
+  </tr>
+  <tr>
+    <td>SGBD</td>
+    <td>MySQL 8.0, a partir da versão 8.0.16.</td>
+  </tr>
+  <tr>
+    <td>Mecanismo de armazenamento</td>
+    <td>InnoDB, escolhido por suportar chaves estrangeiras, transações e restrições.</td>
+  </tr>
+  <tr>
+    <td>Conjunto de caracteres</td>
+    <td>utf8mb4, que cobre todo o Unicode e preserva acentos de nomes, cidades e endereços em português.</td>
+  </tr>
+  <tr>
+    <td>Collation</td>
+    <td>utf8mb4_unicode_ci, a mesma definida no CREATE DATABASE do script. Ignora acentos e diferença de maiúsculas e minúsculas, então a busca por “Sao Paulo” encontra “São Paulo”, e o número de série “abc123” não pode coexistir com “ABC123”, o que reforça a unicidade exigida. O mesmo vale para os demais campos únicos de texto (NM_SERVICO, NM_PECA, DS_LOGIN)</td>
+  </tr>
+  <tr>
+    <td>Criptografia em repouso</td>
+    <td>Requisito de segurança previsto: criptografia de tablespace do InnoDB (ENCRYPTION='Y'), que exige keyring configurado no servidor.</td>
+  </tr>
+  <tr>
+    <td>Versão do documento</td>
+    <td>5.8</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>08/11/2026</td>
+  </tr>
+  <tr>
+    <td>Notação dos modelos</td>
+    <td>brModelo, no modelo conceitual (DER) e no modelo lógico.</td>
+  </tr>
+  <tr>
+    <td>Notação deste dicionário</td>
+    <td>Formal, conforme a tabela de símbolos abaixo.</td>
+  </tr>
+  <tr>
+    <td>Nomes</td>
+    <td>Nomes de tabelas e de colunas do dicionário: maiúsculas, sem acentos, no formato PREFIXO_NOME; tabelas no singular, exceto CONTAS_A_PAGAR, que mantém o mesmo nome do DER e do modelo lógico. O script SQL não usa os nomes com prefixo: ele segue o DER e o modelo lógico, com os nomes da coluna “Atributo no DER” (por exemplo, nome, cpf_cnpj, numero_serie). Os nomes com prefixo identificam o atributo no dicionário e se correspondem um a um com os nomes do DER.</td>
+  </tr>
+</table>
+
+<p><b>Notação formal (símbolos usados neste dicionário):</b></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Símbolo</th>
+    <th>Significado</th>
+    <th>Exemplo neste dicionário</th>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>É composto de</td>
+    <td>CLIENTE = @ID_CLIENTE + NM_CLIENTE + …</td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td>E (conecta elementos obrigatórios)</td>
+    <td>NM_CLIENTE + NR_CPF_CNPJ</td>
+  </tr>
+  <tr>
+    <td>@</td>
+    <td>Identificador (chave primária)</td>
+    <td>@ID_CLIENTE</td>
+  </tr>
+  <tr>
+    <td>( )</td>
+    <td>Elemento opcional</td>
+    <td>(ID_CONTRATO)</td>
+  </tr>
+  <tr>
+    <td>{ }</td>
+    <td>Repetição (iteração); mín{ }máx indica o mínimo e o máximo de ocorrências, e n no máximo significa sem limite fixo (1{ }n = uma ou mais). Convenção de documentação, não é sintaxe SQL</td>
+    <td>1{ID_TECNICO}n</td>
+  </tr>
+  <tr>
+    <td>[ | ]</td>
+    <td>Seleção: um dos valores da lista, separados por |</td>
+    <td>[ativo | em_manutencao | inativo]</td>
+  </tr>
+</table>
+
+<p><b>Convenção de prefixos:</b></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Tipo</th>
+    <th>Significado</th>
+    <th>Exemplo no documento</th>
+  </tr>
+  <tr>
+    <td>ID_</td>
+    <td>Identificador</td>
+    <td>ID_CLIENTE, ID_GERADOR</td>
+  </tr>
+  <tr>
+    <td>NM_</td>
+    <td>Nome</td>
+    <td>NM_CLIENTE, NM_MARCA</td>
+  </tr>
+  <tr>
+    <td>DS_</td>
+    <td>Descrição ou dado textual de contato</td>
+    <td>DS_ENDERECO, DS_EMAIL, DS_TELEFONE</td>
+  </tr>
+  <tr>
+    <td>CD_</td>
+    <td>Código de domínio fixo</td>
+    <td>CD_ESTADO</td>
+  </tr>
+  <tr>
+    <td>TP_</td>
+    <td>Tipo ou situação, com lista fechada de valores</td>
+    <td>TP_STATUS, TP_MANUTENCAO.</td>
+  </tr>
+  <tr>
+    <td>QT_</td>
+    <td>Quantidade contável</td>
+    <td>QT_ESTOQUE, QT_PECA</td>
+  </tr>
+  <tr>
+    <td>DT_</td>
+    <td>Data</td>
+    <td>DT_MANUTENCAO, DT_INICIO</td>
+  </tr>
+  <tr>
+    <td>DH_</td>
+    <td>Data e hora</td>
+    <td>DH_ACESSO</td>
+  </tr>
+  <tr>
+    <td>VL_</td>
+    <td>Valor monetário</td>
+    <td>VL_BASE, VL_MENSAL</td>
+  </tr>
+  <tr>
+    <td>MD_</td>
+    <td>Medida com unidade</td>
+    <td>MD_POTENCIA (kVA), MD_HORIMETRO (h), MD_PRAZO_TROCA_DIAS (dias)</td>
+  </tr>
+  <tr>
+    <td>IN_</td>
+    <td>Indicador verdadeiro ou falso</td>
+    <td>IN_ATIVO</td>
+  </tr>
+  <tr>
+    <td>NR_</td>
+    <td>Número de documento ou de série (texto) e número de ordem (inteiro)</td>
+    <td>NR_CPF_CNPJ, NR_CPF, NR_SERIE, NR_NOTA_FISCAL, NR_PARCELA</td>
+  </tr>
+</table>
+
+<p><b>Tipos de dado:</b></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Tipo</th>
+    <th>Significado</th>
+    <th>Exemplo no documento</th>
+  </tr>
+  <tr>
+    <td>INTEGER</td>
+    <td>Número inteiro, sem casas decimais</td>
+    <td>Chaves e quantidades.</td>
+  </tr>
+  <tr>
+    <td>BIGINT</td>
+    <td>Inteiro de faixa ampla</td>
+    <td>ID_LOG, que cresce a cada acesso.</td>
+  </tr>
+  <tr>
+    <td>DECIMAL</td>
+    <td>Número com casas decimais, usado para valores em dinheiro ou medidas</td>
+    <td>Decimal(10,2) guarda até 10 dígitos no total, sendo 2 deles depois da vírgula.</td>
+  </tr>
+  <tr>
+    <td>CHAR</td>
+    <td>Texto de tamanho fixo</td>
+    <td>Char(2) sempre guarda exatamente 2 caracteres, como a sigla de um estado ("SP"),  CHAR(11) para o CPF.</td>
+  </tr>
+  <tr>
+    <td>VARCHAR</td>
+    <td>Texto de tamanho variável, até um limite máximo</td>
+    <td>Varchar(120) guarda até 120 caracteres, usado em nomes, e-mails, telefones.</td>
+  </tr>
+  <tr>
+    <td>TEXT</td>
+    <td>Texto livre e longo, sem um limite fixo de tamanho</td>
+    <td>Usado em descrições mais extensas.</td>
+  </tr>
+  <tr>
+    <td>DATE / DATETIME</td>
+    <td>Guarda uma data / hora</td>
+    <td>Dia, mês e ano / mais horário.</td>
+  </tr>
+  <tr>
+    <td>BOOLEAN</td>
+    <td>Verdadeiro ou falso</td>
+    <td>IN_ATIVO só aceita TRUE ou FALSE.</td>
+  </tr>
+  <tr>
+    <td>ENUM</td>
+    <td>Só aceita um valor de uma lista fixa, definida de antemão</td>
+    <td>Enum(‘ativo’,‘em_manutencao’,‘inativo’) só permite essas três opções, nenhuma outra.</td>
+  </tr>
+  <tr>
+    <td>PK</td>
+    <td>Chave primária</td>
+    <td>O campo que identifica aquele registro de forma única dentro da tabela; não pode existir dois registros com o mesmo valor nesse campo.</td>
+  </tr>
+  <tr>
+    <td>FK</td>
+    <td>Chave estrangeira</td>
+    <td>Um campo que “empresta” o ID de outra tabela, para ligar as duas. É assim que um gerador fica sabendo a qual cliente ele pertence.</td>
+  </tr>
+</table>
+
+<h2>Modelo conceitual</h2>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Entidade</th>
+    <th>Relaciona-se com</th>
+    <th>Cardinalidade</th>
+  </tr>
+  <tr>
+    <td>Cliente</td>
+    <td>Gerador</td>
+    <td>1:N — um cliente pode ter zero ou vários geradores (0,n); cada gerador pertence a exatamente um cliente.</td>
+  </tr>
+  <tr>
+    <td>Cliente</td>
+    <td>Contrato</td>
+    <td>1:N — um cliente pode firmar zero ou vários contratos (0,n); cada contrato é firmado por exatamente um cliente.</td>
+  </tr>
+  <tr>
+    <td>Contrato</td>
+    <td>Gerador</td>
+    <td>1:N — um contrato cobre pelo menos um gerador, e pode cobrir vários; um gerador é coberto por zero ou um contrato.</td>
+  </tr>
+  <tr>
+    <td>Contrato</td>
+    <td>Manutenção</td>
+    <td>1:N — um contrato pode enquadrar zero ou várias manutenções; cada manutenção é enquadrada em zero ou um contrato.</td>
+  </tr>
+  <tr>
+    <td>Contrato</td>
+    <td>Pagamento</td>
+    <td>1:N — um contrato pode gerar zero ou várias mensalidades; cada pagamento é gerado por zero ou um contrato.</td>
+  </tr>
+  <tr>
+    <td>Contrato</td>
+    <td>Aditivo de contrato</td>
+    <td>1:N — um contrato pode ter zero ou vários aditivos; cada aditivo pertence a exatamente um contrato.</td>
+  </tr>
+  <tr>
+    <td>Gerador</td>
+    <td>Manutenção</td>
+    <td>1:N — um gerador pode ter zero ou várias manutenções; cada manutenção é feita em exatamente um gerador.</td>
+  </tr>
+  <tr>
+    <td>Gerador</td>
+    <td>Orçamento</td>
+    <td>1:N — um gerador pode ter zero ou vários orçamentos; cada orçamento é solicitado para exatamente um gerador.</td>
+  </tr>
+  <tr>
+    <td>Gerador</td>
+    <td>Cronograma preventivo</td>
+    <td>1:N — um gerador deve ter pelo menos um cronograma, e pode ter vários (regra garantida pela aplicação no cadastro do gerador); cada cronograma pertence a exatamente um gerador.</td>
+  </tr>
+  <tr>
+    <td>Peça</td>
+    <td>Cronograma preventivo</td>
+    <td>1:N — uma peça pode definir o prazo de zero ou vários cronogramas; cada cronograma tem o prazo definido por exatamente uma peça.</td>
+  </tr>
+  <tr>
+    <td>Orçamento</td>
+    <td>Manutenção</td>
+    <td>1:1 — um orçamento pode originar zero ou uma manutenção; uma manutenção pode ser originada por zero ou um orçamento.</td>
+  </tr>
+  <tr>
+    <td>Manutenção</td>
+    <td>Cronograma preventivo</td>
+    <td>N:N — uma manutenção pode atualizar zero ou vários cronogramas; um cronograma pode ser atualizado por zero ou várias manutenções.</td>
+  </tr>
+  <tr>
+    <td>Manutenção</td>
+    <td>Peça</td>
+    <td>N:N — uma manutenção pode usar zero ou várias peças; uma peça pode ser usada em zero ou várias manutenções. Atributos da relação: valor_unitario_aplicado e quantidade.</td>
+  </tr>
+  <tr>
+    <td>Manutenção</td>
+    <td>Técnico</td>
+    <td>N:N — uma manutenção precisa de pelo menos um técnico, e pode ter vários; um técnico pode participar de zero ou várias manutenções.</td>
+  </tr>
+  <tr>
+    <td>Manutenção</td>
+    <td>Serviço</td>
+    <td>N:N — uma manutenção usa pelo menos um serviço, e pode usar vários; um serviço pode ser usado em zero ou várias manutenções. Atributos da relação: valor_unitario_aplicado e quantidade.</td>
+  </tr>
+  <tr>
+    <td>Manutenção</td>
+    <td>Pagamento</td>
+    <td>1:N — uma manutenção pode gerar zero ou vários pagamentos; cada pagamento é gerado por zero ou uma manutenção.</td>
+  </tr>
+  <tr>
+    <td>Técnico</td>
+    <td>Escala</td>
+    <td>1:N — um técnico pode cumprir zero ou várias escalas; cada escala é cumprida por exatamente um técnico.</td>
+  </tr>
+  <tr>
+    <td>Fornecedor</td>
+    <td>Compra</td>
+    <td>1:N — um fornecedor pode fornecer zero ou várias compras; cada compra é feita de exatamente um fornecedor.</td>
+  </tr>
+  <tr>
+    <td>Fornecedor</td>
+    <td>Conta a pagar</td>
+    <td>1:N — um fornecedor pode estar associado a zero ou várias contas a pagar; cada conta a pagar está associada a exatamente um fornecedor.</td>
+  </tr>
+  <tr>
+    <td>Compra</td>
+    <td>Peça</td>
+    <td>N:N — uma compra contém pelo menos uma peça, e pode conter várias; uma peça pode estar em zero ou várias compras. Atributos da relação: quantidade e valor_custo.</td>
+  </tr>
+  <tr>
+    <td>Usuário</td>
+    <td>Log de acesso</td>
+    <td>1:N — um usuário pode realizar zero ou vários acessos; cada log pertence a exatamente um usuário.</td>
+  </tr>
+</table>
+
+<h2>Fluxo de dados (visão de DFD)</h2>
+<p>Cliente é cadastrado em CLIENTE e, quando fixo, firma um CONTRATO → seus geradores são registrados em GERADOR, ligados ao cliente e, se houver, ao contrato que os cobre → cada gerador recebe um CRONOGRAMA_PREVENTIVO por peça, com o prazo definido em PECA → quando um gerador precisa de atendimento, solicita-se um ORCAMENTO (valor total estimado, sem itens) → aprovado o orçamento, ele origina uma MANUTENCAO, ligada ao gerador (e ao contrato, quando houver) → a manutenção é associada a um ou mais técnicos (MANUTENCAO_TECNICO), a um ou mais serviços do catálogo (MANUTENCAO_SERVICO) e às peças usadas (MANUTENCAO_PECA), e atualiza o cronograma preventivo (MANUTENCAO_CRONOGRAMA) → o valor da manutenção é calculado pela soma dos serviços e peças aplicados (valor unitário × quantidade), não é gravado em MANUTENCAO e pode diferir do valor orçado → quando a cobrança da manutenção é parcelada, esse valor calculado é dividido entre as parcelas de PAGAMENTO (VL_PARCELA), de modo que a soma das parcelas bata com o total → a cobrança gera um PAGAMENTO apenas quando o valor calculado da manutenção é maior que zero; a manutenção preventiva prevista em contrato não tem orçamento, é registrada com os itens a valor aplicado zero e é paga pela mensalidade, por isso não gera parcela; fora de contrato, na preventiva todas as parcelas são quitadas antes da execução, e na corretiva a execução pode ocorrer antes do pagamento somente se a manutenção estiver ligada (ID_ORCAMENTO) a um orçamento aprovado, isto é, confirmado pelo cliente; a corretiva sem orçamento aprovado segue a mesma regra da preventiva → os contratos geram cobranças periódicas em PAGAMENTO, calculadas a partir do valor mensal de referência e da periodicidade, com o valor devido de cada parcela gravado em VL_PARCELA → cada alteração nas condições de um contrato é registrada em ADITIVO_CONTRATO, que preserva as condições anteriores e nunca é excluído → do lado das compras, o FORNECEDOR fornece COMPRAS, que contêm as peças (COMPRA_PECA) e repõem o estoque em PECA → as despesas devidas a cada fornecedor são controladas em CONTAS_A_PAGAR, quitada de uma só vez, sem pagamento parcial → cada técnico cumpre suas ESCALAS de plantão → cada USUARIO, com seu perfil, realiza acessos ao sistema → todo acesso é registrado em LOG_ACESSO, inclusive as tentativas negadas de um usuário cadastrado.</p>
+<h2>Dicionário de dados por entidade</h2>
+<table border="1" cellpadding="5">
+  <tr>
+    <td>• <a href="#cliente">CLIENTE</a></td>
+    <td>• <a href="#gerador">GERADOR</a></td>
+    <td>• <a href="#contrato">CONTRATO</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#aditivo_contrato">ADITIVO_CONTRATO</a></td>
+    <td>• <a href="#orcamento">ORCAMENTO</a></td>
+    <td>• <a href="#servico">SERVICO</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#manutencao">MANUTENCAO</a></td>
+    <td>• <a href="#tecnico">TECNICO</a></td>
+    <td>• <a href="#escala">ESCALA</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#peca">PECA</a></td>
+    <td>• <a href="#cronograma_preventivo">CRONOGRAMA_PREVENTIVO</a></td>
+    <td>• <a href="#pagamento">PAGAMENTO</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#fornecedor">FORNECEDOR</a></td>
+    <td>• <a href="#compra">COMPRA</a></td>
+    <td>• <a href="#contas_a_pagar">CONTAS_A_PAGAR</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#manutencao_servico">MANUTENCAO_SERVICO</a></td>
+    <td>• <a href="#manutencao_peca">MANUTENCAO_PECA</a></td>
+    <td>• <a href="#manutencao_tecnico">MANUTENCAO_TECNICO</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#manutencao_cronograma">MANUTENCAO_CRONOGRAMA</a></td>
+    <td>• <a href="#compra_peca">COMPRA_PECA</a></td>
+    <td>• <a href="#usuario">USUARIO</a></td>
+  </tr>
+  <tr>
+    <td>• <a href="#log_acesso">LOG_ACESSO</a></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+<h3 id="cliente">CLIENTE</h3>
+<p>Pessoa física ou jurídica que contrata os serviços e possui geradores cadastrados.</p>
+<p>CLIENTE = @ID_CLIENTE + NM_CLIENTE + NR_CPF_CNPJ + DS_TELEFONE + DS_ENDERECO + DS_EMAIL + NM_CIDADE + CD_ESTADO</p>
+<p>Leitura: @ID_CLIENTE é o identificador único; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_CLIENTE</td>
+    <td>id_cliente</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do cliente no sistema; gerado automaticamente.</td>
+  </tr>
+  <tr>
+    <td>NM_CLIENTE</td>
+    <td>nome</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Nome completo (pessoa física) ou razão social (pessoa jurídica).</td>
+  </tr>
+  <tr>
+    <td>NR_CPF_CNPJ</td>
+    <td>cpf_cnpj</td>
+    <td>VARCHAR(14)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>somente dígitos: 11 (CPF) ou 14 (CNPJ)</td>
+    <td>Documento de identificação do cliente, gravado sem pontuação; não pode se repetir (RN01). Dado pessoal (quando pessoa física), com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>DS_TELEFONE</td>
+    <td>telefone</td>
+    <td>VARCHAR(20)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Telefone de contato.</td>
+  </tr>
+  <tr>
+    <td>DS_ENDERECO</td>
+    <td>endereco</td>
+    <td>VARCHAR(200)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Endereço completo (rua, número, bairro). Dado pessoal, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>DS_EMAIL</td>
+    <td>email</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>contém @</td>
+    <td>E-mail de contato.</td>
+  </tr>
+  <tr>
+    <td>NM_CIDADE</td>
+    <td>cidade</td>
+    <td>VARCHAR(80)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Cidade do cliente.</td>
+  </tr>
+  <tr>
+    <td>CD_ESTADO</td>
+    <td>estado</td>
+    <td>CHAR(2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>uma das 27 UFs</td>
+    <td>Sigla do estado (ex.: SP).</td>
+  </tr>
+</table>
+
+<p>Padrão do documento: NR_CPF_CNPJ é armazenado somente com dígitos (sem pontos, barra ou hífen); a pontuação é aplicada apenas na exibição. A aplicação remove a pontuação e valida os dígitos verificadores, e um CHECK com REGEXP garante 11 ou 14 dígitos numéricos.</p>
+<p>Índices: PK ID_CLIENTE (clusterizado); índice único em NR_CPF_CNPJ (garante a unicidade e agiliza a busca por documento).</p>
+
+<h3 id="gerador">GERADOR</h3>
+<p>Equipamento de geração de energia pertencente a um cliente e supervisionado pela empresa.</p>
+<p>GERADOR = @ID_GERADOR + ID_CLIENTE + (ID_CONTRATO) + NR_SERIE + NM_MARCA + NM_MODELO + TP_STATUS + MD_POTENCIA + MD_HORIMETRO</p>
+<p>Leitura: @ID_GERADOR é o identificador único; chaves estrangeiras: ID_CLIENTE referencia CLIENTE; ID_CONTRATO referencia CONTRATO; entre parênteses, opcionais: ID_CONTRATO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_GERADOR</td>
+    <td>id_gerador</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do gerador.</td>
+  </tr>
+  <tr>
+    <td>ID_CLIENTE</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CLIENTE</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Cliente proprietário; implementa a regra de que todo gerador pertence a um cliente (RN02).</td>
+  </tr>
+  <tr>
+    <td>ID_CONTRATO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CONTRATO</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Contrato que cobre o gerador, quando houver; deve pertencer ao mesmo cliente do gerador.</td>
+  </tr>
+  <tr>
+    <td>NR_SERIE</td>
+    <td>numero_serie</td>
+    <td>VARCHAR(30)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>letras e números</td>
+    <td>Número de série de fabricação; um gerador por número de série (RN03).</td>
+  </tr>
+  <tr>
+    <td>NM_MARCA</td>
+    <td>marca</td>
+    <td>VARCHAR(60)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Fabricante. Ex.: Cummins.</td>
+  </tr>
+  <tr>
+    <td>NM_MODELO</td>
+    <td>modelo</td>
+    <td>VARCHAR(60)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Modelo dentro da marca.</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'ativo'</td>
+    <td>[ativo | em_manutencao | inativo]</td>
+    <td>Situação atual do gerador (RN04).</td>
+  </tr>
+  <tr>
+    <td>MD_POTENCIA</td>
+    <td>potencia</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>&gt; 0</td>
+    <td>Potência nominal em kVA.</td>
+  </tr>
+  <tr>
+    <td>MD_HORIMETRO</td>
+    <td>horimetro</td>
+    <td>DECIMAL(10,1)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>0</td>
+    <td>≥ 0</td>
+    <td>Horas de operação acumuladas, em horas.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_GERADOR; índice único em NR_SERIE; índices em ID_CLIENTE (geradores de um cliente) e em ID_CONTRATO.</p>
+
+<h3 id="contrato">CONTRATO</h3>
+<p>Contrato de manutenção firmado com um cliente fixo, com cobrança periódica.</p>
+<p>CONTRATO = @ID_CONTRATO + ID_CLIENTE + DT_INICIO + (DT_FIM) + VL_MENSAL + TP_PERIODICIDADE + TP_STATUS</p>
+<p>Leitura: @ID_CONTRATO é o identificador único; chaves estrangeiras: ID_CLIENTE referencia CLIENTE; entre parênteses, opcionais: DT_FIM; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_CONTRATO</td>
+    <td>id_contrato</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do contrato.</td>
+  </tr>
+  <tr>
+    <td>ID_CLIENTE</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CLIENTE</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Cliente contratante.</td>
+  </tr>
+  <tr>
+    <td>DT_INICIO</td>
+    <td>data_inicio</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Início da vigência.</td>
+  </tr>
+  <tr>
+    <td>DT_FIM</td>
+    <td>data_fim</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>nula ou ≥ DT_INICIO; obrigatória se TP_STATUS = 'encerrado'</td>
+    <td>Fim da vigência. Nula em contrato ativo sem data final (prazo indeterminado).</td>
+  </tr>
+  <tr>
+    <td>VL_MENSAL</td>
+    <td>valor_mensal</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>&gt; 0</td>
+    <td>Valor mensal de referência do contrato; a cobrança por período é VL_MENSAL × meses da periodicidade. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>TP_PERIODICIDADE</td>
+    <td>tipo_periodicidade</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>[mensal | bimestral | trimestral | semestral | anual]</td>
+    <td>Periodicidade da cobrança do contrato (define quantos meses cada cobrança abrange).</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'ativo'</td>
+    <td>[ativo | encerrado | cancelado]</td>
+    <td>Situação do contrato.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_CONTRATO; índice em ID_CLIENTE; índice em DT_FIM (contratos a vencer).</p>
+
+<h3 id="aditivo_contrato">ADITIVO_CONTRATO</h3>
+<p>Registro de cada alteração nas condições de um contrato, preservando as condições anteriores.</p>
+<p>ADITIVO_CONTRATO = @ID_ADITIVO + ID_CONTRATO + DT_ADITIVO + DS_ALTERACAO_REALIZADA + DS_CONDICOES_ANTERIORES</p>
+<p>Leitura: @ID_ADITIVO é o identificador único; chaves estrangeiras: ID_CONTRATO referencia CONTRATO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_ADITIVO</td>
+    <td>id_aditivo</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do aditivo.</td>
+  </tr>
+  <tr>
+    <td>ID_CONTRATO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CONTRATO</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Contrato alterado.</td>
+  </tr>
+  <tr>
+    <td>DT_ADITIVO</td>
+    <td>data_aditivo</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>CURRENT_DATE</td>
+    <td>—</td>
+    <td>Data em que a alteração foi formalizada.</td>
+  </tr>
+  <tr>
+    <td>DS_ALTERACAO_REALIZADA</td>
+    <td>alteracao_realizada</td>
+    <td>VARCHAR(500)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Descrição da alteração feita nas condições do contrato.</td>
+  </tr>
+  <tr>
+    <td>DS_CONDICOES_ANTERIORES</td>
+    <td>condicoes_anteriores</td>
+    <td>VARCHAR(500)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Condições vigentes antes da alteração, preservadas para consulta do histórico.</td>
+  </tr>
+</table>
+
+<p>Exclusão: o aditivo nunca é excluído, pois preserva o histórico das condições do contrato (RN27).</p>
+<p>Índices: PK ID_ADITIVO; índice em ID_CONTRATO (aditivos de um contrato).</p>
+
+<h3 id="orcamento">ORCAMENTO</h3>
+<p>Proposta de valor para um gerador; quando aprovada, origina uma manutenção. É uma estimativa do valor total: não registra serviços nem peças previstos, e o valor final da manutenção é calculado pelos itens efetivamente aplicados, podendo diferir de VL_ORCADO.</p>
+<p>ORCAMENTO = @ID_ORCAMENTO + ID_GERADOR + DT_ORCAMENTO + VL_ORCADO + TP_STATUS + (DT_APROVACAO)</p>
+<p>Leitura: @ID_ORCAMENTO é o identificador único; chaves estrangeiras: ID_GERADOR referencia GERADOR; entre parênteses, opcionais: DT_APROVACAO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_ORCAMENTO</td>
+    <td>id_orcamento</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do orçamento.</td>
+  </tr>
+  <tr>
+    <td>ID_GERADOR</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → GERADOR</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Gerador para o qual o orçamento foi solicitado.</td>
+  </tr>
+  <tr>
+    <td>DT_ORCAMENTO</td>
+    <td>data_orcamento</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>CURRENT_DATE</td>
+    <td>—</td>
+    <td>Data de emissão.</td>
+  </tr>
+  <tr>
+    <td>VL_ORCADO</td>
+    <td>valor_orcado</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Valor total estimado, sem detalhamento de itens. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'pendente'</td>
+    <td>[pendente | aprovado | recusado]</td>
+    <td>Situação do orçamento (RN11).</td>
+  </tr>
+  <tr>
+    <td>DT_APROVACAO</td>
+    <td>data_aprovacao</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>≥ DT_ORCAMENTO; preenchida se e somente se TP_STATUS = 'aprovado'</td>
+    <td>Data da aprovação; nula em orçamento pendente ou recusado.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_ORCAMENTO; índice em ID_GERADOR.</p>
+
+<h3 id="servico">SERVICO</h3>
+<p>Catálogo de tipos de serviço que podem ser prestados em uma manutenção.</p>
+<p>SERVICO = @ID_SERVICO + NM_SERVICO + (DS_DESCRICAO) + VL_BASE</p>
+<p>Leitura: @ID_SERVICO é o identificador único; entre parênteses, opcionais: DS_DESCRICAO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_SERVICO</td>
+    <td>id_servico</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do serviço.</td>
+  </tr>
+  <tr>
+    <td>NM_SERVICO</td>
+    <td>nome_servico</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Nome do serviço (RN19). Ex.: Troca de óleo.</td>
+  </tr>
+  <tr>
+    <td>DS_DESCRICAO</td>
+    <td>descricao</td>
+    <td>TEXT</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>O que o serviço inclui.</td>
+  </tr>
+  <tr>
+    <td>VL_BASE</td>
+    <td>valor_base</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Valor de referência antes de ajustes por manutenção. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_SERVICO; índice único em NM_SERVICO.</p>
+
+<h3 id="manutencao">MANUTENCAO</h3>
+<p>Atendimento preventivo ou corretivo realizado em um gerador.</p>
+<p>MANUTENCAO = @ID_MANUTENCAO + ID_GERADOR + (ID_CONTRATO) + (ID_ORCAMENTO) + DT_MANUTENCAO + TP_MANUTENCAO + TP_STATUS + (NR_NOTA_FISCAL) + (DS_PROBLEMA) + (DT_CONCLUSAO)</p>
+<p>Leitura: @ID_MANUTENCAO é o identificador único; chaves estrangeiras: ID_GERADOR referencia GERADOR; ID_CONTRATO referencia CONTRATO; ID_ORCAMENTO referencia ORCAMENTO; entre parênteses, opcionais: ID_CONTRATO, ID_ORCAMENTO, NR_NOTA_FISCAL, DS_PROBLEMA, DT_CONCLUSAO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>id_manutencao</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>somente números</td>
+    <td>Código único e exclusivo da manutenção, gerado automaticamente pelo sistema.</td>
+  </tr>
+  <tr>
+    <td>ID_GERADOR</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → GERADOR</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Gerador atendido; toda manutenção pertence a exatamente um gerador (RN05).</td>
+  </tr>
+  <tr>
+    <td>ID_CONTRATO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CONTRATO</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Contrato em que a manutenção se enquadra.</td>
+  </tr>
+  <tr>
+    <td>ID_ORCAMENTO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → ORCAMENTO</td>
+    <td>Não</td>
+    <td>Sim</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Orçamento que originou a manutenção (relação 0,1 : 0,1).</td>
+  </tr>
+  <tr>
+    <td>DT_MANUTENCAO</td>
+    <td>data_manutencao</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Data do atendimento.</td>
+  </tr>
+  <tr>
+    <td>TP_MANUTENCAO</td>
+    <td>tipo_manutencao</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>[preventiva | corretiva]</td>
+    <td>Motivo do atendimento.</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'aberta'</td>
+    <td>[aberta | em_andamento | concluida]</td>
+    <td>Situação do atendimento (RN16). Transições permitidas: aberta → em_andamento e em_andamento → concluida; sem reabertura nem cancelamento. Serviços, peças e técnicos só mudam enquanto a manutenção não estiver concluída; depois disso, somente por usuário autorizado, com registro do histórico.</td>
+  </tr>
+  <tr>
+    <td>NR_NOTA_FISCAL</td>
+    <td>numero_nota_fiscal</td>
+    <td>VARCHAR(20)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Nota fiscal de serviço emitida.</td>
+  </tr>
+  <tr>
+    <td>DS_PROBLEMA</td>
+    <td>descricao_problema</td>
+    <td>TEXT</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Problema relatado na solicitação.</td>
+  </tr>
+  <tr>
+    <td>DT_CONCLUSAO</td>
+    <td>data_conclusao</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>≥ DT_MANUTENCAO; preenchida se e somente se TP_STATUS = 'concluida'</td>
+    <td>Data de encerramento; preenchida na passagem para concluída.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_MANUTENCAO; índice único em ID_ORCAMENTO; índices em ID_GERADOR (histórico do gerador), ID_CONTRATO e DT_MANUTENCAO (relatórios por período).</p>
+
+<h3 id="tecnico">TECNICO</h3>
+<p>Profissional responsável por executar as manutenções.</p>
+<p>TECNICO = @ID_TECNICO + NM_TECNICO + NR_CPF + DS_TELEFONE + DS_EMAIL</p>
+<p>Leitura: @ID_TECNICO é o identificador único; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_TECNICO</td>
+    <td>id_tecnico</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do técnico.</td>
+  </tr>
+  <tr>
+    <td>NM_TECNICO</td>
+    <td>nome</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Nome completo.</td>
+  </tr>
+  <tr>
+    <td>NR_CPF</td>
+    <td>cpf</td>
+    <td>CHAR(11)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>somente números, 11 dígitos</td>
+    <td>CPF; um técnico por CPF (RN17). Dado pessoal, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>DS_TELEFONE</td>
+    <td>telefone</td>
+    <td>VARCHAR(20)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Telefone de contato.</td>
+  </tr>
+  <tr>
+    <td>DS_EMAIL</td>
+    <td>email</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>contém @</td>
+    <td>E-mail de contato.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_TECNICO; índice único em NR_CPF.</p>
+
+<h3 id="escala">ESCALA</h3>
+<p>Período e turno de trabalho cumprido por um técnico (plantão 24 h).</p>
+<p>ESCALA = @ID_ESCALA + ID_TECNICO + DT_INICIO + DT_FIM + TP_TURNO + (TP_FOLGA)</p>
+<p>Leitura: @ID_ESCALA é o identificador único; chaves estrangeiras: ID_TECNICO referencia TECNICO; entre parênteses, opcionais: TP_FOLGA; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_ESCALA</td>
+    <td>id_escala</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único da escala.</td>
+  </tr>
+  <tr>
+    <td>ID_TECNICO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → TECNICO</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Técnico escalado.</td>
+  </tr>
+  <tr>
+    <td>DT_INICIO</td>
+    <td>data_inicio</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Início do período.</td>
+  </tr>
+  <tr>
+    <td>DT_FIM</td>
+    <td>data_fim</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ DT_INICIO</td>
+    <td>Fim do período (RN18).</td>
+  </tr>
+  <tr>
+    <td>TP_TURNO</td>
+    <td>turno</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>[manha | tarde | noite | integral]</td>
+    <td>Turno de trabalho.</td>
+  </tr>
+  <tr>
+    <td>TP_FOLGA</td>
+    <td>folga</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>[segunda | terca | quarta | quinta | sexta | sabado | domingo]</td>
+    <td>Dia da semana da folga do técnico nesta escala.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_ESCALA; índice em ID_TECNICO; índice em DT_INICIO.</p>
+
+<h3 id="peca">PECA</h3>
+<p>Peça de reposição (bateria, óleo, filtro de ar, tanque etc.) mantida em estoque e usada nas manutenções.</p>
+<p>PECA = @ID_PECA + NM_PECA + (DS_PECA) + VL_VENDA + (MD_PRAZO_TROCA_DIAS) + (MD_PRAZO_TROCA_HORAS) + QT_ESTOQUE</p>
+<p>Leitura: @ID_PECA é o identificador único; entre parênteses, opcionais: DS_PECA, MD_PRAZO_TROCA_DIAS e MD_PRAZO_TROCA_HORAS (ao menos um dos dois prazos deve ser informado); os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_PECA</td>
+    <td>id_peca</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único da peça.</td>
+  </tr>
+  <tr>
+    <td>NM_PECA</td>
+    <td>nome_peca</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Nome da peça.</td>
+  </tr>
+  <tr>
+    <td>DS_PECA</td>
+    <td>descricao_peca</td>
+    <td>TEXT</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Descrição da peça.</td>
+  </tr>
+  <tr>
+    <td>VL_VENDA</td>
+    <td>valor_venda</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Preço de venda. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>MD_PRAZO_TROCA_DIAS</td>
+    <td>prazo_troca_dias</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>&gt; 0; ao menos um entre MD_PRAZO_TROCA_DIAS e MD_PRAZO_TROCA_HORAS é preenchido</td>
+    <td>Prazo de troca ou limpeza, em dias; orienta o cronograma preventivo.</td>
+  </tr>
+  <tr>
+    <td>MD_PRAZO_TROCA_HORAS</td>
+    <td>prazo_troca_horas</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>&gt; 0</td>
+    <td>Prazo de troca ou limpeza, em horas de operação do gerador; vence o que for atingido primeiro, dias ou horas (RN08).</td>
+  </tr>
+  <tr>
+    <td>QT_ESTOQUE</td>
+    <td>estoque</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>0</td>
+    <td>≥ 0</td>
+    <td>Quantidade em estoque; atualizada somente por transação (RN23).</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_PECA; índice único em NM_PECA.</p>
+
+<h3 id="cronograma_preventivo">CRONOGRAMA_PREVENTIVO</h3>
+<p>Controle de troca preventiva de uma peça em um gerador; sustenta a regra de inspeção preventiva, pela qual cada gerador deve ter ao menos um cronograma, garantida pela aplicação no cadastro do gerador.</p>
+<p>CRONOGRAMA_PREVENTIVO = @ID_CRONOGRAMA + ID_GERADOR + ID_PECA + (DT_ULTIMA_TROCA) + (MD_HORIMETRO_ULTIMA_TROCA)</p>
+<p>Leitura: @ID_CRONOGRAMA é o identificador único; chaves estrangeiras: ID_GERADOR referencia GERADOR; ID_PECA referencia PECA; entre parênteses, opcionais: DT_ULTIMA_TROCA, MD_HORIMETRO_ULTIMA_TROCA; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_CRONOGRAMA</td>
+    <td>id_cronograma</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do cronograma.</td>
+  </tr>
+  <tr>
+    <td>ID_GERADOR</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → GERADOR</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Gerador acompanhado.</td>
+  </tr>
+  <tr>
+    <td>ID_PECA</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → PECA</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Peça cujo prazo define o cronograma.</td>
+  </tr>
+  <tr>
+    <td>DT_ULTIMA_TROCA</td>
+    <td>data_ultima_troca</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Data da última troca da peça neste gerador.</td>
+  </tr>
+  <tr>
+    <td>MD_HORIMETRO_ULTIMA_TROCA</td>
+    <td>horimetro_ultima_troca</td>
+    <td>DECIMAL(10,1)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>≥ 0</td>
+    <td>Horímetro do gerador, em horas, na última troca da peça; base do prazo em horas (RN09).</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_CRONOGRAMA; índice único composto (ID_GERADOR, ID_PECA): um cronograma por peça em cada gerador; índice em ID_PECA.</p>
+
+<h3 id="pagamento">PAGAMENTO</h3>
+<p>Parcela de pagamento de uma manutenção ou mensalidade de contrato.</p>
+<p>PAGAMENTO = @ID_PAGAMENTO + [ID_MANUTENCAO | ID_CONTRATO] + NR_PARCELA + DT_VENCIMENTO + VL_PARCELA + (DT_PAGAMENTO) + (TP_FORMA_PAGAMENTO) + TP_STATUS + (VL_PAGO)</p>
+<p>Leitura: @ID_PAGAMENTO é o identificador único; chaves estrangeiras: ID_MANUTENCAO referencia MANUTENCAO; ID_CONTRATO referencia CONTRATO; entre colchetes, exatamente uma das duas origens: ID_MANUTENCAO ou ID_CONTRATO; entre parênteses, opcionais: DT_PAGAMENTO, TP_FORMA_PAGAMENTO, VL_PAGO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_PAGAMENTO</td>
+    <td>id_pagamento</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do pagamento.</td>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → MANUTENCAO</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Manutenção que gerou a cobrança; ver ID_CONTRATO (a parcela tem exatamente uma origem).</td>
+  </tr>
+  <tr>
+    <td>ID_CONTRATO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → CONTRATO</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Contrato que gerou a mensalidade; exatamente um entre ID_MANUTENCAO e ID_CONTRATO é preenchido (RN20).</td>
+  </tr>
+  <tr>
+    <td>NR_PARCELA</td>
+    <td>numero_parcela</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim, por origem</td>
+    <td>1</td>
+    <td>≥ 1</td>
+    <td>Número da parcela dentro da manutenção ou do contrato; não se repete na mesma origem.</td>
+  </tr>
+  <tr>
+    <td>DT_VENCIMENTO</td>
+    <td>data_vencimento</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Vencimento.</td>
+  </tr>
+  <tr>
+    <td>VL_PARCELA</td>
+    <td>valor_parcela</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>&gt; 0</td>
+    <td>Valor devido na parcela, gravado ao gerá-la: em parcela de contrato, VL_MENSAL × meses da periodicidade; em parcela de manutenção, a fração do valor calculado da manutenção (a soma de VL_PARCELA das parcelas não canceladas é igual ao valor calculado). Permite comparar o devido com VL_PAGO e dá valor às parcelas pendentes. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>DT_PAGAMENTO</td>
+    <td>data_pagamento</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>preenchida se e somente se TP_STATUS = 'pago'</td>
+    <td>Data do pagamento efetivo.</td>
+  </tr>
+  <tr>
+    <td>TP_FORMA_PAGAMENTO</td>
+    <td>forma</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>[dinheiro | pix | boleto | cartao | transferencia]</td>
+    <td>Forma de pagamento; preenchida somente quando TP_STATUS = 'pago'.</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'pendente'</td>
+    <td>[pendente | pago | atrasado | cancelado]</td>
+    <td>Situação da parcela; define quais campos de pagamento são exigidos. Parcela cancelada por recálculo permanece no histórico; não é apagada. Parcela paga só é corrigida pelo administrador, com registro em LOG_ACESSO (ver Quitação e exclusão).</td>
+  </tr>
+  <tr>
+    <td>VL_PAGO</td>
+    <td>valor_pago</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>≥ 0</td>
+    <td>Valor efetivamente pago; pode diferir de VL_PARCELA (juros ou desconto). Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+</table>
+
+<p>Quitação e exclusão: a parcela é quitada de uma só vez (sem pagamento parcial nem saldo restante) e PAGAMENTO nunca é excluído (RN21): erros são tratados por cancelamento e nova parcela ou, em parcela já paga, por correção do administrador registrada em LOG_ACESSO.</p>
+<p>Índices: PK ID_PAGAMENTO; índice único composto (ID_MANUTENCAO, NR_PARCELA) e índice único composto (ID_CONTRATO, NR_PARCELA): como o MySQL aceita vários NULL em índice único, a linha cuja origem é nula não colide, e cada origem tem suas parcelas numeradas sem repetição; índice em DT_VENCIMENTO (contas a receber).</p>
+
+<h3 id="fornecedor">FORNECEDOR</h3>
+<p>Empresa que fornece peças.</p>
+<p>FORNECEDOR = @ID_FORNECEDOR + NM_FORNECEDOR + NR_CNPJ + DS_TELEFONE + DS_EMAIL</p>
+<p>Leitura: @ID_FORNECEDOR é o identificador único; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_FORNECEDOR</td>
+    <td>id_fornecedor</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do fornecedor.</td>
+  </tr>
+  <tr>
+    <td>NM_FORNECEDOR</td>
+    <td>nome</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Razão social ou nome.</td>
+  </tr>
+  <tr>
+    <td>NR_CNPJ</td>
+    <td>cnpj</td>
+    <td>CHAR(14)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>somente dígitos, 14</td>
+    <td>CNPJ do fornecedor, gravado sem pontuação (RN22).</td>
+  </tr>
+  <tr>
+    <td>DS_TELEFONE</td>
+    <td>telefone</td>
+    <td>VARCHAR(20)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Telefone de contato.</td>
+  </tr>
+  <tr>
+    <td>DS_EMAIL</td>
+    <td>email</td>
+    <td>VARCHAR(120)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>contém @</td>
+    <td>E-mail de contato.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_FORNECEDOR; índice único em NR_CNPJ.</p>
+
+<h3 id="compra">COMPRA</h3>
+<p>Compra de peças junto a um fornecedor.</p>
+<p>COMPRA = @ID_COMPRA + ID_FORNECEDOR + DT_COMPRA + TP_STATUS + (NR_NOTA_FISCAL)</p>
+<p>Leitura: @ID_COMPRA é o identificador único; chaves estrangeiras: ID_FORNECEDOR referencia FORNECEDOR; entre parênteses, opcionais: NR_NOTA_FISCAL; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_COMPRA</td>
+    <td>id_compra</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único da compra.</td>
+  </tr>
+  <tr>
+    <td>ID_FORNECEDOR</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → FORNECEDOR</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Fornecedor da compra.</td>
+  </tr>
+  <tr>
+    <td>DT_COMPRA</td>
+    <td>data_compra</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Data da compra.</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'pedida'</td>
+    <td>[pedida | recebida | cancelada]</td>
+    <td>Situação da compra. Transições permitidas: pedida → recebida e pedida → cancelada; recebida e cancelada são finais.</td>
+  </tr>
+  <tr>
+    <td>NR_NOTA_FISCAL</td>
+    <td>numero_nota_fiscal</td>
+    <td>VARCHAR(20)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Nota fiscal do fornecedor.</td>
+  </tr>
+</table>
+
+<p>Itens da compra: os itens (COMPRA_PECA) só podem ser alterados enquanto TP_STATUS = 'pedida'; compra recebida ou cancelada tem os itens bloqueados.</p>
+<p>Índices: PK ID_COMPRA; índices em ID_FORNECEDOR e DT_COMPRA.</p>
+
+<h3 id="contas_a_pagar">CONTAS_A_PAGAR</h3>
+<p>Despesa da empresa devida a um fornecedor, paga de uma só vez.</p>
+<p>CONTAS_A_PAGAR = @ID_CONTA_PAGAR + ID_FORNECEDOR + DS_DESCRICAO + VL_TOTAL + VL_PAGO + DT_VENCIMENTO + (NR_BOLETO) + TP_STATUS + (DT_PAGAMENTO)</p>
+<p>Leitura: @ID_CONTA_PAGAR é o identificador único; chaves estrangeiras: ID_FORNECEDOR referencia FORNECEDOR; entre parênteses, opcionais: NR_BOLETO, DT_PAGAMENTO; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_CONTA_PAGAR</td>
+    <td>id_conta_pagar</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único da conta a pagar.</td>
+  </tr>
+  <tr>
+    <td>ID_FORNECEDOR</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → FORNECEDOR</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Fornecedor a quem a conta é devida.</td>
+  </tr>
+  <tr>
+    <td>DS_DESCRICAO</td>
+    <td>descricao</td>
+    <td>VARCHAR(150)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Descrição da despesa.</td>
+  </tr>
+  <tr>
+    <td>VL_TOTAL</td>
+    <td>valor_total</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>&gt; 0</td>
+    <td>Valor total devido. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>VL_PAGO</td>
+    <td>valor_pago</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>0</td>
+    <td>0 ou igual a VL_TOTAL</td>
+    <td>Valor já pago; não há pagamento parcial, então é 0 enquanto pendente e igual a VL_TOTAL quando paga. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>DT_VENCIMENTO</td>
+    <td>data_vencimento</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Vencimento da conta.</td>
+  </tr>
+  <tr>
+    <td>NR_BOLETO</td>
+    <td>numero_boleto</td>
+    <td>VARCHAR(48)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Sim</td>
+    <td>NULL</td>
+    <td>somente dígitos</td>
+    <td>Número do boleto, quando houver; não pode se repetir (RN24).</td>
+  </tr>
+  <tr>
+    <td>TP_STATUS</td>
+    <td>status</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'pendente'</td>
+    <td>[pendente | paga]</td>
+    <td>Situação da conta; muda automaticamente para 'paga' quando VL_PAGO é igual a VL_TOTAL.</td>
+  </tr>
+  <tr>
+    <td>DT_PAGAMENTO</td>
+    <td>data_pagamento</td>
+    <td>DATE</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>preenchida se e somente se TP_STATUS = 'paga'</td>
+    <td>Data do pagamento.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_CONTA_PAGAR; índice único em NR_BOLETO (o MySQL aceita vários NULL, então contas sem boleto não colidem); índices em ID_FORNECEDOR e DT_VENCIMENTO (contas a vencer).</p>
+
+<h3 id="manutencao_servico">MANUTENCAO_SERVICO</h3>
+<p>Tabela associativa do relacionamento «utiliza» do modelo lógico (Manutenção × Serviço); guarda o valor unitário aplicado e a quantidade de cada serviço em cada manutenção.</p>
+<p>MANUTENCAO_SERVICO = @ID_MANUTENCAO + @ID_SERVICO + VL_UNITARIO_APLICADO + QT_SERVICO</p>
+<p>Leitura: os campos marcados com @ (ID_MANUTENCAO, ID_SERVICO) formam juntos a chave primária composta e são, cada um, chave estrangeira; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → MANUTENCAO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Manutenção envolvida.</td>
+  </tr>
+  <tr>
+    <td>ID_SERVICO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → SERVICO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Serviço realizado; permite mais de um por manutenção (RN07).</td>
+  </tr>
+  <tr>
+    <td>VL_UNITARIO_APLICADO</td>
+    <td>valor_unitario_aplicado</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Valor unitário do serviço nesta manutenção (não é o total da linha); o total da linha é VL_UNITARIO_APLICADO × QT_SERVICO, e o valor da manutenção soma esses totais. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>QT_SERVICO</td>
+    <td>quantidade</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>1</td>
+    <td>&gt; 0</td>
+    <td>Quantidade executada; multiplica o valor unitário aplicado.</td>
+  </tr>
+</table>
+
+<p>Bloqueio: serviços só podem ser incluídos, alterados ou removidos enquanto a manutenção não estiver concluída; depois disso, somente por autorização do administrador, registrada em LOG_ACESSO (RN16).</p>
+<p>Índices: Chave primária composta (ID_MANUTENCAO, ID_SERVICO); índice de chave estrangeira em ID_SERVICO.</p>
+
+<h3 id="manutencao_peca">MANUTENCAO_PECA</h3>
+<p>Tabela associativa do relacionamento «usa» do modelo lógico (Manutenção × Peça); guarda o valor unitário aplicado e a quantidade de cada peça usada em cada manutenção.</p>
+<p>MANUTENCAO_PECA = @ID_MANUTENCAO + @ID_PECA + VL_UNITARIO_APLICADO + QT_PECA</p>
+<p>Leitura: os campos marcados com @ (ID_MANUTENCAO, ID_PECA) formam juntos a chave primária composta e são, cada um, chave estrangeira; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → MANUTENCAO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Manutenção envolvida.</td>
+  </tr>
+  <tr>
+    <td>ID_PECA</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → PECA</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Peça utilizada.</td>
+  </tr>
+  <tr>
+    <td>VL_UNITARIO_APLICADO</td>
+    <td>valor_unitario_aplicado</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Valor unitário da peça nesta manutenção. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+  <tr>
+    <td>QT_PECA</td>
+    <td>quantidade</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>1</td>
+    <td>&gt; 0</td>
+    <td>Quantidade usada; dá baixa automática no estoque da peça (RN23).</td>
+  </tr>
+</table>
+
+<p>Bloqueio: peças só podem ser incluídas, alteradas ou removidas enquanto a manutenção não estiver concluída; depois disso, somente por autorização do administrador, registrada em LOG_ACESSO (RN16).</p>
+<p>Índices: Chave primária composta (ID_MANUTENCAO, ID_PECA); índice de chave estrangeira em ID_PECA.</p>
+
+<h3 id="manutencao_tecnico">MANUTENCAO_TECNICO</h3>
+<p>Tabela associativa do relacionamento «realizada por» do modelo lógico (Manutenção × Técnico).</p>
+<p>MANUTENCAO_TECNICO = @ID_MANUTENCAO + @ID_TECNICO</p>
+<p>Leitura: os campos marcados com @ (ID_MANUTENCAO, ID_TECNICO) formam juntos a chave primária composta e são, cada um, chave estrangeira; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → MANUTENCAO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Manutenção envolvida.</td>
+  </tr>
+  <tr>
+    <td>ID_TECNICO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → TECNICO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Técnico envolvido; permite mais de um por manutenção (RN06).</td>
+  </tr>
+</table>
+
+<p>Bloqueio: técnicos só podem ser incluídos ou removidos enquanto a manutenção não estiver concluída; depois disso, somente por autorização do administrador, registrada em LOG_ACESSO (RN16).</p>
+<p>Índices: Chave primária composta (ID_MANUTENCAO, ID_TECNICO); índice de chave estrangeira em ID_TECNICO.</p>
+
+<h3 id="manutencao_cronograma">MANUTENCAO_CRONOGRAMA</h3>
+<p>Tabela associativa do relacionamento «atualiza» do modelo lógico (Manutenção × Cronograma preventivo).</p>
+<p>MANUTENCAO_CRONOGRAMA = @ID_MANUTENCAO + @ID_CRONOGRAMA</p>
+<p>Leitura: os campos marcados com @ (ID_MANUTENCAO, ID_CRONOGRAMA) formam juntos a chave primária composta e são, cada um, chave estrangeira; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_MANUTENCAO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → MANUTENCAO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Manutenção que atualizou o cronograma.</td>
+  </tr>
+  <tr>
+    <td>ID_CRONOGRAMA</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → CRONOGRAMA_PREVENTIVO</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Cronograma atualizado.</td>
+  </tr>
+</table>
+
+<p>Índices: Chave primária composta (ID_MANUTENCAO, ID_CRONOGRAMA); índice de chave estrangeira em ID_CRONOGRAMA.</p>
+
+<h3 id="compra_peca">COMPRA_PECA</h3>
+<p>Tabela associativa do relacionamento «contem» do modelo lógico (Compra × Peça); guarda a quantidade e o custo unitário de cada peça comprada.</p>
+<p>COMPRA_PECA = @ID_COMPRA + @ID_PECA + QT_PECA + VL_CUSTO</p>
+<p>Leitura: os campos marcados com @ (ID_COMPRA, ID_PECA) formam juntos a chave primária composta e são, cada um, chave estrangeira; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_COMPRA</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → COMPRA</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Compra.</td>
+  </tr>
+  <tr>
+    <td>ID_PECA</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>PK, FK → PECA</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Peça comprada.</td>
+  </tr>
+  <tr>
+    <td>QT_PECA</td>
+    <td>quantidade</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>&gt; 0</td>
+    <td>Quantidade comprada.</td>
+  </tr>
+  <tr>
+    <td>VL_CUSTO</td>
+    <td>valor_custo</td>
+    <td>DECIMAL(10,2)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>≥ 0</td>
+    <td>Custo unitário pago ao fornecedor. Dado confidencial do negócio, com proteção prevista por criptografia em repouso.</td>
+  </tr>
+</table>
+
+<p>Bloqueio: os itens só podem ser incluídos, alterados ou removidos enquanto a compra está 'pedida'.</p>
+<p>Índices: Chave primária composta (ID_COMPRA, ID_PECA); índice de chave estrangeira em ID_PECA.</p>
+
+<h3 id="usuario">USUARIO</h3>
+<p>Conta de acesso ao sistema; define o perfil de acesso e é a origem dos registros de LOG_ACESSO.</p>
+<p>USUARIO = @ID_USUARIO + DS_LOGIN + DS_SENHA_HASH + TP_PERFIL + IN_ATIVO</p>
+<p>Leitura: @ID_USUARIO é o identificador único; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_USUARIO</td>
+    <td>id_usuario</td>
+    <td>INTEGER AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do usuário.</td>
+  </tr>
+  <tr>
+    <td>DS_LOGIN</td>
+    <td>login</td>
+    <td>VARCHAR(60)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Nome de acesso; não pode se repetir (RN25).</td>
+  </tr>
+  <tr>
+    <td>DS_SENHA_HASH</td>
+    <td>senha_hash</td>
+    <td>VARCHAR(255)</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Hash da senha, gerado pela aplicação; a senha em texto nunca é gravada.</td>
+  </tr>
+  <tr>
+    <td>TP_PERFIL</td>
+    <td>perfil</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>[administrador | atendimento | tecnico | financeiro]</td>
+    <td>Perfil que define as operações permitidas.</td>
+  </tr>
+  <tr>
+    <td>IN_ATIVO</td>
+    <td>ativo</td>
+    <td>BOOLEAN</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>TRUE</td>
+    <td>TRUE ou FALSE</td>
+    <td>Situação da conta. O usuário não é excluído: é desativado (FALSE), o que impede o acesso e preserva o histórico de LOG_ACESSO.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_USUARIO; índice único em DS_LOGIN.</p>
+
+<h3 id="log_acesso">LOG_ACESSO</h3>
+<p>Registro de cada acesso ou operação feita por um usuário no sistema.</p>
+<p>LOG_ACESSO = @ID_LOG + ID_USUARIO + DH_ACESSO + TP_ACAO + (NM_TABELA) + (ID_REGISTRO) + TP_RESULTADO + (DS_FINALIDADE)</p>
+<p>Leitura: @ID_LOG é o identificador único; chaves estrangeiras: ID_USUARIO referencia USUARIO; entre parênteses, opcionais: NM_TABELA, ID_REGISTRO, DS_FINALIDADE; os demais campos são obrigatórios e conectados por +.</p>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Atributo</th>
+    <th>Atributo no DER</th>
+    <th>Tipo físico</th>
+    <th>Chave</th>
+    <th>Obrigatório</th>
+    <th>Único</th>
+    <th>Padrão</th>
+    <th>Valores permitidos</th>
+    <th>Significado e relevância</th>
+  </tr>
+  <tr>
+    <td>ID_LOG</td>
+    <td>id_log</td>
+    <td>BIGINT AUTO_INCREMENT</td>
+    <td>PK</td>
+    <td>Sim</td>
+    <td>Sim</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Identificador único do registro.</td>
+  </tr>
+  <tr>
+    <td>ID_USUARIO</td>
+    <td>—</td>
+    <td>INTEGER</td>
+    <td>FK → USUARIO</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Usuário que realizou o acesso (relacionamento realiza).</td>
+  </tr>
+  <tr>
+    <td>DH_ACESSO</td>
+    <td>data_hora_acesso</td>
+    <td>DATETIME</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>CURRENT_TIMESTAMP</td>
+    <td>—</td>
+    <td>Data e hora do acesso.</td>
+  </tr>
+  <tr>
+    <td>TP_ACAO</td>
+    <td>acao</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>—</td>
+    <td>[login | logout | select | insert | update | delete]</td>
+    <td>Operação realizada.</td>
+  </tr>
+  <tr>
+    <td>NM_TABELA</td>
+    <td>nome_tabela</td>
+    <td>VARCHAR(64)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Tabela consultada ou alterada.</td>
+  </tr>
+  <tr>
+    <td>ID_REGISTRO</td>
+    <td>id_registro</td>
+    <td>INTEGER</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Registro afetado (sem FK, pois a tabela de origem varia).</td>
+  </tr>
+  <tr>
+    <td>TP_RESULTADO</td>
+    <td>resultado</td>
+    <td>ENUM</td>
+    <td>—</td>
+    <td>Sim</td>
+    <td>Não</td>
+    <td>'sucesso'</td>
+    <td>[sucesso | negado]</td>
+    <td>Resultado da tentativa.</td>
+  </tr>
+  <tr>
+    <td>DS_FINALIDADE</td>
+    <td>finalidade_acesso</td>
+    <td>VARCHAR(150)</td>
+    <td>—</td>
+    <td>Não</td>
+    <td>Não</td>
+    <td>NULL</td>
+    <td>—</td>
+    <td>Finalidade do tratamento, quando há acesso a dado pessoal. Também guarda a justificativa de uma alteração excepcional de itens da manutenção e de uma correção de parcela paga.</td>
+  </tr>
+</table>
+
+<p>Índices: PK ID_LOG; índices em ID_USUARIO e em DH_ACESSO. Nenhum perfil tem UPDATE nem DELETE: o log só recebe INSERT (RN26).</p>
+
+<h2>LGPD</h2>
+<p>Tratamento de dados pessoais conforme a Lei nº 13.709/2018. O controlador é a S. A DE LIMA. O modelo não armazena dados pessoais sensíveis (art. 5º, II), mas CPF, CNPJ de pessoa física, endereço, telefone e e-mail são dados pessoais.</p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Tabela</th>
+    <th>Campos</th>
+    <th>Classificação</th>
+    <th>Base legal</th>
+  </tr>
+  <tr>
+    <td>CLIENTE</td>
+    <td>NM_CLIENTE, NR_CPF_CNPJ, DS_TELEFONE, DS_ENDERECO, DS_EMAIL, NM_CIDADE, CD_ESTADO</td>
+    <td>Dado pessoal (pessoa física); NR_CPF_CNPJ e DS_ENDERECO com proteção prevista por criptografia em repouso</td>
+    <td>Execução de contrato (art. 7º, V); obrigação legal para emissão fiscal (art. 7º, II)</td>
+  </tr>
+  <tr>
+    <td>TECNICO</td>
+    <td>NM_TECNICO, NR_CPF, DS_TELEFONE, DS_EMAIL</td>
+    <td>Dado pessoal; NR_CPF com proteção prevista por criptografia em repouso.</td>
+    <td>Execução de contrato (art. 7º, V); obrigação legal (art. 7º, II)</td>
+  </tr>
+  <tr>
+    <td>FORNECEDOR</td>
+    <td>NM_FORNECEDOR, NR_CNPJ, DS_TELEFONE, DS_EMAIL</td>
+    <td>Dado pessoal somente se pessoa física ou MEI</td>
+    <td>Execução de contrato (art. 7º, V)</td>
+  </tr>
+  <tr>
+    <td>USUARIO</td>
+    <td>DS_LOGIN, DS_SENHA_HASH</td>
+    <td>Dado pessoal (identifica a pessoa que acessa o sistema)</td>
+    <td>Execução de contrato (art. 7º, V); segurança (art. 46)</td>
+  </tr>
+  <tr>
+    <td>LOG_ACESSO</td>
+    <td>ID_USUARIO, DH_ACESSO</td>
+    <td>Dado pessoal (identifica quem acessou e quando)</td>
+    <td>Obrigação legal e segurança (art. 7º, II; arts. 37 e 46)</td>
+  </tr>
+</table>
+
+<p>Finalidade: cadastro e identificação de clientes, técnicos e fornecedores, execução de contratos e manutenções, cobrança e emissão fiscal.</p>
+<p>Medidas de proteção: (1) controle de acesso por perfil: cada usuário tem um TP_PERFIL (administrador, atendimento, tecnico ou financeiro) que define as operações permitidas (RN25); (2) trilha de auditoria: LOG_ACESSO registra o usuário, a data e hora, a ação, a tabela, o registro afetado, o resultado e a finalidade, e só recebe INSERT, de modo que nenhum perfil altera ou exclui o log (RN26); (3) a senha é guardada somente como hash (DS_SENHA_HASH) e o usuário é desativado (IN_ATIVO), nunca excluído, para preservar o histórico; (4) criptografia em repouso dos dados pessoais e dos valores confidenciais, indicados como protegidos nas tabelas deste dicionário.</p>
+<p>Situação da implementação: o controle de acesso por perfil, o registro em LOG_ACESSO e o armazenamento da senha somente como hash são requisitos de segurança deste projeto e fazem parte do modelo. A criptografia em repouso usa a criptografia de tablespace do InnoDB (ENCRYPTION='Y'), que protege a tabela inteira (não colunas isoladas) e só funciona com um keyring habilitado no servidor. Por isso ela é um requisito previsto que depende dessa configuração no ambiente: sem o keyring, a proteção efetiva fica com os perfis de acesso e com o log de auditoria.</p>
+
+</body>
+</html>
 
