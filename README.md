@@ -1,4 +1,4 @@
-1## 👥 Integrantes do Grupo
+##1 👥 Integrantes do Grupo
 
 | Nome | RGM | GitHub |
 | :--- | :---: | :--- |
