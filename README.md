@@ -30,6 +30,15 @@
 ### Caracterização da organização
 
 **Nome e natureza:** S. A. de Lima, que opera como **Limas Energia Geradores** — manutenção preventiva e corretiva de geradores de energia. Empresa privada **com fins lucrativos**.
+**Contexto e porte (números):**
+
+| Indicador | Valor informado |
+| :--- | :--- |
+| Funcionários | 15 |
+| Clientes fixos | 96 |
+| Manutenções em geradores | média de 33 por mês (≈ 400 por ano) |
+| Regime de atendimento | plantão de 24 horas (emergências a qualquer hora) |
+| Controle atual dos dados | papel: fichas e relatórios físicos (clientes, atendimentos, contratos) |
 
 
 ##  Caracterização da Organização
