@@ -10,18 +10,6 @@
 | Kaylany Thayna de Oliveira de Paula | 47039035 | [`@kaayllany`](https://github.com/kaayllany) |
 | Maria Vitória Pereira Alves | 47230720 | [`@mvitoria-code`](https://github.com/mvitoria-code) |
 
-## **Índice de artefatos do repositório**
-
-| Artefato | Arquivo |
-| :--- | :--- |
-| DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
-| Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
-| Dicionário de dados (HTML, v5.9) | [`dicionariodre.html`](dicionariodre.html) |
-| Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
-| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
-| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql)  |
-| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) ** PREENCHER** |
-| Apresentação (slides) |  ** PREENCHER ** |
 
 # 1. Relatório Técnico Final
 
@@ -586,67 +574,63 @@ O histórico armazenado nas tabelas do sistema serve como base para alimentar mo
 
 ---
 
+# 2. Modelo Lógico Relacional
 
-1.1 Problemas identificados
+**Software:** brModelo Web (<https://app.brmodeloweb.com>).
 
-ID/Problema	Evidência	Resposta no modelo
-- P1	Fichas em papel sujeitas a perda ou ilegibilidade	Entrevista, Gerador (RF01, RF03)
-- P2	Histórico e última troca de peças só achados folheando relatórios	Entrevista, Cronograma_Preventivo (RF02, RF04, RF05)
-- P3	Contrato relido a cada atendimento para checar cobertura	Entrevista (RF06, RN13, RN15)
-- P4	Alterações de contrato por e-mail, sem registro garantido	Entrevista	Aditivo_contrato (RF19, RN27)
-- P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
-- P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
+![Modelo lógico](<Modelo Logico.png>)
 
- **Restrições e as regras que implementam:**
+O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total), com PK, FK e cardinalidades `(mín, máx)` nas pontas. `NOT NULL`, `UNIQUE`, `CHECK` e `DEFAULT` não aparecem no diagrama; estão no [dicionário de dados](dicionariodre.html) e no script SQL.
 
-| Restrição | Regra |
+| Grupo | Tabelas |
 | :--- | :--- |
-| `Cliente.cpf_cnpj` `UNIQUE NOT NULL` | RN01 |
-| `Gerador.id_cliente` `NOT NULL` | RN02 |
-| `Gerador.numero_serie` `UNIQUE`, alfanumérico | RN03 |
-| `Gerador.status` `ENUM('ativo','em_manutencao','inativo')` | RN04 |
-| `Manutencao.id_gerador` `NOT NULL` | RN05 |
-| Ao menos um técnico / serviço por manutenção (aplicação + consulta de auditoria) | RN06, RN07 |
-| `Manutencao.status` `ENUM('aberta','em_andamento','concluida')`, padrão `'aberta'`; `data_conclusao ≥ data_manutencao` | RN16 |
-| `Orcamento.status` `ENUM('pendente','aprovado','recusado')`; `Manutencao.id_orcamento` `UNIQUE` | RN10, RN11 |
-| `Contrato.id_cliente` `NOT NULL`; contrato do gerador do mesmo cliente (aplicação + auditoria) | RN12 |
-| `valor_unitario_aplicado ≥ 0` (zero se coberto por contrato) | RN15 |
-| `Tecnico.cpf` `CHAR(11)` `UNIQUE` | RN17 |
-| `Escala.data_fim ≥ data_inicio` | RN18 |
-| `Servico.nome_servico` `UNIQUE` | RN19 |
-| `Pagamento`: exatamente uma origem (`CHECK`); parcela única por origem; nunca excluído | RN20, RN21 |
-| `Fornecedor.cnpj` `UNIQUE` | RN22 |
-| `Peca.estoque ≥ 0`; ao menos um prazo de troca | RN23, RN08 |
-| `Contas_a_pagar.numero_boleto` `UNIQUE`; paga só se `valor_pago = valor_total` | RN24 |
-| `Usuario.login` `UNIQUE`; perfil `ENUM` | RN25 |
-| `Log_acesso` só recebe `INSERT` | RN26, RNF03 |
-| `Aditivo_contrato` nunca excluído | RN27 |
-
-- **Auditoria (RN26, RNF03):** `Log_acesso` pertence sempre a um usuário cadastrado (cardinalidade `Usuário (0,n) — realiza — (1,1) Log_acesso`) e só recebe inserções. Registra ações permitidas e negadas de usuários existentes (`resultado = 'negado'`); login com usuário inexistente não é registrado, pois não identifica ninguém e a trilha existe para rastrear quem acessou dados pessoais (LGPD).
-- **Perfil técnico (RN25):** o perfil `tecnico` existe para quem registra manutenções em campo, mas a conta de usuário não é ligada à tabela `Tecnico`. A restrição de ver apenas as próprias manutenções fica a cargo da aplicação, fora do banco de dados.
-- **Decisões arquiteturais gerais:** valor da manutenção calculado e não gravado (RN15); exclusão lógica de usuário e histórico financeiro imutável (RN21, RN25); tabela de log única para auditoria e LGPD; `utf8mb4_unicode_ci` para acentos em nomes e endereços; criptografia em repouso prevista (ver dicionário, seção LGPD).
-
-
-
-
-
-## 9. Justificativa Técnica
-- Entidades: Separamos Cliente, Gerador, Manutenção, Técnico e Serviço porque cada uma tem ciclo de vida próprio — um cliente existe sem gerador, um gerador passa por várias manutenções, um técnico atende várias manutenções, e um serviço é um catálogo reutilizável. Se juntasse manutenção e gerador ficaria duplicando dados a cada manutenção assim também como serviço é uma entidade separada para evitar repetição de dados.
-
-- Atributos: Cada atributo ficou na entidade que ele realmente descreve. Dados que variam a cada evento (data, tipo, status, valor) foram para Manutenção; dados fixos do equipamento (marca, modelo, potência) ficaram em Gerador. Os dados do técnico que não entraram direto em manutenção pra evitar que aja redundância e também possibilitar consulta de histórico de cada técnico.
-
-Cardinalidade:
-- Cliente–Gerador (0,n)-(1,1): um cliente pode ter vários geradores, mas cada gerador tem só um dono.
-  
-- Gerador-Manutenção (0,n)-(1,1): um gerador pode ter várias manutenções, mas cada manutenção é sobre um único gerador.
-  
-- Manutenção–Técnico (1,n)-(0,n): toda manutenção precisa de pelo menos um técnico, e um técnico pode atender várias manutenções.
-  
-- Manutenção–Serviço (1,n)-(0,n): toda manutenção precisa de ao menos um serviço definido no momento do registro; um serviço pode estar cadastrado no catálogo sem nunca ter sido utilizado, ou ter sido aplicado em várias manutenções.
-  
+| Relacionamento com o cliente | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador` |
+| Atendimento | `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala` |
+| Peças e preventiva | `Peca`, `Cronograma_Preventivo` |
+| Financeiro e suprimentos | `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar` |
+| Segurança | `Usuario`, `Log_acesso` |
+| Associativas (N:N) | `utiliza`, `usa`, `realizada por`, `atualiza`, `contem` |
 ---
 
-## 10. Uso de Inteligência Artificial
+# 3. Script SQL Completo
+**SGBD:** MySQL **PREENCHER**
+**Arquivo:** [`docs/script.sql`](docs/script.sql) — **⚠️ PREENCHER**
+
+---
+
+# 4. Massa de Dados
+
+| Tabela | Volume proposto | Justificativa |
+| :--- | :--- | :--- |
+| `Cliente` | 96 (ou uma amostra proporcional, ex. 30) | 96 clientes fixos |
+| `Gerador` | ≈ 120–140 | cliente pode ter mais de um gerador  |
+| `Contrato` |  (ex. 60–70) | clientes fixos têm contrato |
+| `Manutencao` | ≈ 400 (12 meses × 33) | média de 33 por mês |
+| `Pagamento` | proporcional às manutenções avulsas e às mensalidades | cobrança por parcela |
+| `Tecnico` / `Escala` | (de 15 funcionários) | plantão 24 h exige várias escalas por técnico |
+| `Peca` / `Fornecedor` / `Compra` | dezenas de peças, poucos fornecedores | bateria, óleo, filtros, tanque |
+
+---
+
+# 5. Repositório GitHub
+
+| Artefato | Arquivo |
+| :--- | :--- |
+| relatório README.md | na raiz da branch `main` |
+| Dicionário de dados (HTML, v5.9) | [`dicionariodre.html`](dicionariodre.html) |
+| Diagrama DER conceitual revisado (brModelo Web) | [`DER (1).png`](DER%20%281%29.png) |
+| Levantamento completo | [`levantamento/levantamento.md`](levantamento/levantamento.md)  |
+| Script SQL (MySQL) | [`docs/script.sql`](docs/script.sql)  |
+| Histórico de commits e colaboração |  ** PREENCHER ** |
+| Evidências fotos | [fachada](imagem%20empresa.jpg) e [entrevista](foto%20da%20entrevistas.png) |
+| Modelo lógico (brModelo Web) | [`Modelo Logico.png`](Modelo%20Logico.png) |
+| Fluxograma do atendimento | [`fluxograma.png`](fluxograma.png) |
+| Massa de dados | dentro do `docs/script.sql` (ou `docs/massa_de_dados.sql`) ** PREENCHER** |
+| Apresentação (slides) |  ** PREENCHER ** |
+
+---
+
+## 6. Uso de Inteligência Artificial
 | Item | Registro |
 |------|------------------|
 | Ferramenta e etapa 1 | Gemini Flash, usada durante a etapa de levantamento dos Requisitos Não Funcionais (RNF) do sistema de controle de geradores e manutenções.|
@@ -720,3 +704,56 @@ Cardinalidade:
 | *Trechos rejeitados ou corrigidos* | 	Não houveram rejeições, pois se tratou apenas da estética opcional da estetica do documento apresentado aqui. |
 | *Justificativa da escolha final* | Conseguimos conhecer estratégias e macetes para manter o documento mais bonito e em distribuido. |
 | *Reflexão crítica* | Nesse uso, conseguimos administrar melhor a maneira como iriamos organizar os documentos e o que seria destacado durante a leitura, para melhor entendimento. Além de deixá-lo mais limpo e organizado com prioridades.|
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 8 |        |
+| *Motivação* |       |
+| *Prompt(s) utilizados* |       |
+| *Resposta recebida* |          |
+| *Trechos rejeitados ou corrigidos* | 	       |
+| *Justificativa da escolha final* |       |
+| *Reflexão crítica* |             |
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 9 |        |
+| *Motivação* |       |
+| *Prompt(s) utilizados* |       |
+| *Resposta recebida* |          |
+| *Trechos rejeitados ou corrigidos* | 	       |
+| *Justificativa da escolha final* |       |
+| *Reflexão crítica* |             |
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 10 |        |
+| *Motivação* |       |
+| *Prompt(s) utilizados* |       |
+| *Resposta recebida* |          |
+| *Trechos rejeitados ou corrigidos* | 	       |
+| *Justificativa da escolha final* |       |
+| *Reflexão crítica* |             |
+
+| Item | Registro |
+|------|------------------|
+| Ferramenta e etapa 11 |        |
+| *Motivação* |       |
+| *Prompt(s) utilizados* |       |
+| *Resposta recebida* |          |
+| *Trechos rejeitados ou corrigidos* | 	       |
+| *Justificativa da escolha final* |       |
+| *Reflexão crítica* |             |
+
+
+---
+
+# 7. Apresentação Corporativa Final
+
+Pitch de 8 minutos: problema → solução → modelo lógico → SQL rodando → consultas G/A → BI e IA → benefícios. ** PREENCHER:** link/arquivo dos slides.
+
+---
+
+
+
+
