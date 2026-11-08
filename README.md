@@ -88,6 +88,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 - **Nova visita (Entrega 2):**
 - **Levantamento completo:** [`levantamento/levantamento.md`](levantamento/levantamento.md)
 
+---
 
 ### Processos de negócio
 
@@ -110,6 +111,8 @@ Processos mapeados (a correção da E1 apontou cobertura de 63%; os processos de
 | 13 | Controle de pagamentos (contas a receber) | `Pagamento` |
 | 14 | Contas a pagar | `Contas_a_pagar` |
 | 15 | Controle de acesso e auditoria | `Usuario`, `Log_acesso` |
+
+---
 
 ## Fluxograma do atendimento:
 <img width="2760" height="5480" alt="fluxograma" src="fluxograma.png" />
@@ -242,6 +245,7 @@ Dados:
 - Regras: perfis administrador, atendimento, técnico e financeiro; o usuário nunca é excluído; o log só recebe inserções, inclusive de tentativas negadas.
 - Resultado: acessos rastreáveis e permissões por perfil.
 
+---
 
 ###  Requisitos do Sistema
 
@@ -416,6 +420,7 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 | README só com nomes, sem RGM | Tabela de integrantes com RGM e usuário do GitHub | Identificação dos autores |
 | Possível conflito de interesse (camisa da empresa na foto) | **⚠️ PREENCHER:** declarar o vínculo na caracterização | Transparência exigida pela E2 |
 
+---
 
 ## 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
@@ -437,8 +442,50 @@ RN27 – Alterações contratuais: As alterações nas condições dos contratos
 
 - **Generalização/especialização:** o DER **não tem** generalização. O perfil do usuário (administrador, atendimento, técnico, financeiro) é um `ENUM`, e não subtipos, porque os perfis não têm atributos diferentes.
 
+---
 
+## 1.3 Definição de Chaves Primárias e Estrangeiras
 
+| Tabela | Chave primária | Chaves estrangeiras |
+| :--- | :--- | :--- |
+| `Cliente` | `id_cliente` | — |
+| `Contrato` | `id_contrato` | `id_cliente` → `Cliente` |
+| `Aditivo_contrato` | `id_aditivo` | `id_contrato` → `Contrato` |
+| `Gerador` | `id_gerador` | `id_cliente` → `Cliente`; `id_contrato` → `Contrato` (opcional) |
+| `Orcamento` | `id_orcamento` | `id_gerador` → `Gerador` |
+| `Manutencao` | `id_manutencao` | `id_gerador` → `Gerador`; `id_contrato` → `Contrato` (opc.); `id_orcamento` → `Orcamento` (opc., único) |
+| `Servico` | `id_servico` | — |
+| `Tecnico` | `id_tecnico` | — |
+| `Escala` | `id_escala` | `id_tecnico` → `Tecnico` |
+| `Peca` | `id_peca` | — |
+| `Cronograma_Preventivo` | `id_cronograma` | `id_gerador` → `Gerador`; `id_peca` → `Peca` |
+| `Pagamento` | `id_pagamento` | `id_manutencao` → `Manutencao` (opc.); `id_contrato` → `Contrato` (opc.) |
+| `Fornecedor` | `id_fornecedor` | — |
+| `Compra` | `id_compra` | `id_fornecedor` → `Fornecedor` |
+| `Contas_a_pagar` | `id_conta_pagar` | `id_fornecedor` → `Fornecedor` |
+| `Usuario` | `id_usuario` | — |
+| `Log_acesso` | `id_log` | `id_usuario` → `Usuario` |
+| `utiliza` | (`id_manutencao`, `id_servico`) | ambas → `Manutencao`, `Servico` |
+| `usa` | (`id_manutencao`, `id_peca`) | ambas → `Manutencao`, `Peca` |
+| `realizada por` | (`id_manutencao`, `id_tecnico`) | ambas → `Manutencao`, `Tecnico` |
+| `atualiza` | (`id_manutencao`, `id_cronograma`) | ambas → `Manutencao`, `Cronograma_Preventivo` |
+| `contem` | (`id_compra`, `id_peca`) | ambas → `Compra`, `Peca` |
+
+---
+
+## 1.4 Processo de Normalização (1FN, 2FN e 3FN)
+
+- **1FN (sem grupos repetitivos nem multivalorados):** a manutenção tem vários serviços, peças e técnicos. Se fossem colunas ou listas dentro de `Manutencao` haveria grupos repetitivos; por isso viraram as tabelas `utiliza`, `usa` e `realizada por`, com uma linha por item. O texto `servico_realizado` da E1 foi removido pelo mesmo motivo. Cada gerador tem várias peças acompanhadas: virou `Cronograma_Preventivo`, uma linha por peça. As parcelas de pagamento são linhas de `Pagamento`, não colunas "parcela1, parcela2".
+- **2FN (sem dependências parciais):** nas tabelas com chave composta, todo atributo depende da chave inteira. Em `utiliza`, `valor_unitario_aplicado` e `quantidade` dependem do par (manutenção, serviço) — o mesmo serviço tem valor diferente em manutenções diferentes. Nome, descrição e valor-base do serviço ficam em `Servico`, e não repetidos em `utiliza`. O mesmo vale para `usa` (dados da peça ficam em `Peca`) e `contem`.
+- **3FN (sem dependências transitivas):** os dados do cliente não se repetem em `Gerador` ou `Manutencao` (basta `id_cliente`); os dados do fornecedor ficam fora de `Compra` e `Contas_a_pagar`; o prazo de troca fica em `Peca`, não em `Cronograma_Preventivo`. O **valor total da manutenção não é gravado** (seria dependente de itens), é calculado por consulta. Exceção consciente: `Cliente` mantém `cidade` e `estado` juntos (a cidade determina o estado); não se criou tabela de cidades porque o ganho seria pequeno para 96 clientes e os valores seguem um domínio fechado (`CHAR(2)` no estado). 
+- **Justificativa do processo:** a 1FN era necessária porque o atendimento combina muitos itens; a 2FN, porque os valores praticados variam por manutenção; a 3FN, para que uma alteração de cadastro (telefone do cliente, preço-base do serviço) seja feita em um só lugar, o que resolve a inconsistência das fichas em papel (P1).
+
+## 1.5 Justificativas Técnicas das Decisões
+
+- **Chaves primárias:** inteiros `AUTO_INCREMENT` (substitutas) em todas as entidades, pois os identificadores naturais (CPF/CNPJ, número de série) são sensíveis, longos ou podem mudar. Os naturais ficam com `UNIQUE`. Em associativas, PK composta impede repetir o mesmo item na mesma manutenção. `Log_acesso` usa `BIGINT`, pois cresce a cada acesso.
+- **Chaves estrangeiras:** implementam os relacionamentos da seção 1.3, com `InnoDB` para garantir a integridade referencial (RNF04). Colunas opcionais (`Gerador.id_contrato`, `Manutencao.id_contrato`, `Manutencao.id_orcamento`) correspondem às cardinalidades mínimas 0 do DER.
+
+---
 
 1.1 Problemas identificados
 
@@ -450,525 +497,39 @@ ID/Problema	Evidência	Resposta no modelo
 - P5	Capacidade de óleo do gerador não registrada (já houve troca com menos óleo que o exigido)	Entrevista	Gerador, novo atributo capacidade_oleo_litros
 - P6	Faturamento estimado e reajustes refeitos à mão	Entrevista	Contrato, Aditivo_contrato, Pagamento (KPI Receita por Contrato)
 
+ **Restrições e as regras que implementam:**
+
+| Restrição | Regra |
+| :--- | :--- |
+| `Cliente.cpf_cnpj` `UNIQUE NOT NULL` | RN01 |
+| `Gerador.id_cliente` `NOT NULL` | RN02 |
+| `Gerador.numero_serie` `UNIQUE`, alfanumérico | RN03 |
+| `Gerador.status` `ENUM('ativo','em_manutencao','inativo')` | RN04 |
+| `Manutencao.id_gerador` `NOT NULL` | RN05 |
+| Ao menos um técnico / serviço por manutenção (aplicação + consulta de auditoria) | RN06, RN07 |
+| `Manutencao.status` `ENUM('aberta','em_andamento','concluida')`, padrão `'aberta'`; `data_conclusao ≥ data_manutencao` | RN16 |
+| `Orcamento.status` `ENUM('pendente','aprovado','recusado')`; `Manutencao.id_orcamento` `UNIQUE` | RN10, RN11 |
+| `Contrato.id_cliente` `NOT NULL`; contrato do gerador do mesmo cliente (aplicação + auditoria) | RN12 |
+| `valor_unitario_aplicado ≥ 0` (zero se coberto por contrato) | RN15 |
+| `Tecnico.cpf` `CHAR(11)` `UNIQUE` | RN17 |
+| `Escala.data_fim ≥ data_inicio` | RN18 |
+| `Servico.nome_servico` `UNIQUE` | RN19 |
+| `Pagamento`: exatamente uma origem (`CHECK`); parcela única por origem; nunca excluído | RN20, RN21 |
+| `Fornecedor.cnpj` `UNIQUE` | RN22 |
+| `Peca.estoque ≥ 0`; ao menos um prazo de troca | RN23, RN08 |
+| `Contas_a_pagar.numero_boleto` `UNIQUE`; paga só se `valor_pago = valor_total` | RN24 |
+| `Usuario.login` `UNIQUE`; perfil `ENUM` | RN25 |
+| `Log_acesso` só recebe `INSERT` | RN26, RNF03 |
+| `Aditivo_contrato` nunca excluído | RN27 |
+
+- **Auditoria (RN26, RNF03):** `Log_acesso` pertence sempre a um usuário cadastrado (cardinalidade `Usuário (0,n) — realiza — (1,1) Log_acesso`) e só recebe inserções. Registra ações permitidas e negadas de usuários existentes (`resultado = 'negado'`); login com usuário inexistente não é registrado, pois não identifica ninguém e a trilha existe para rastrear quem acessou dados pessoais (LGPD).
+- **Perfil técnico (RN25):** o perfil `tecnico` existe para quem registra manutenções em campo, mas a conta de usuário não é ligada à tabela `Tecnico`. A restrição de ver apenas as próprias manutenções fica a cargo da aplicação, fora do banco de dados.
+- **Decisões arquiteturais gerais:** valor da manutenção calculado e não gravado (RN15); exclusão lógica de usuário e histórico financeiro imutável (RN21, RN25); tabela de log única para auditoria e LGPD; `utf8mb4_unicode_ci` para acentos em nomes e endereços; criptografia em repouso prevista (ver dicionário, seção LGPD).
 
 
 
-### Tabelas do modelo
 
-O modelo é composto por **15 tabelas de entidades** e **5 tabelas associativas** (resultantes dos relacionamentos N:N):
 
-| Grupo | Tabelas |
-| :---- | :---- |
-| Relacionamento com o cliente | `Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador` |
-| Atendimento | `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala` |
-| Peças e preventiva | `Peca`, `Cronograma_Preventivo` |
-| Financeiro e suprimentos | `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar` |
-| Segurança | `Usuario`, `Log_acesso` |
-| Tabelas associativas (N:N) | `utiliza` (Manutenção × Serviço), `realizada por` (Manutenção × Técnico), `usa` (Manutenção × Peça), `contem` (Compra × Peça), `atualiza` (Manutenção × Cronograma) |
-
-### Restrições de integridade
-
-As demais restrições (`NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`) não aparecem no diagrama do brModelo. Elas estão documentadas no [Dicionário de Dados](docs/dicionario_dados.html) (seção 5) e implementadas no [script SQL](docs/script.sql) (seção 3).
-
-
-
-
-
-
-## 6. Modelagem Conceitual (Entidades, Atributos, Relacionamentos)
-
-A modelagem conceitual foi elaborada a partir dos processos de negócio, requisitos funcionais e regras de negócio levantados na empresa S. A DE LIMA. O modelo representa os clientes e seus contratos, os geradores, os orçamentos e as manutenções (com técnicos, serviços e peças), o cronograma de manutenção preventiva, o controle financeiro (pagamentos), o abastecimento de peças (fornecedores e compras), a escala dos técnicos e o controle de acesso ao sistema.
-
-## 6.1 Entidades reconhecidas
-
-Foram identificadas quinze entidades, organizadas em cinco grupos.
-
-## Relacionamento com o cliente
-
-### Cliente:
-pessoa física ou jurídica que contrata os serviços da empresa.
-Contrato: acordo firmado com um cliente fixo, com cobrança periódica e vigência definida.
-Gerador: equipamento de geração de energia de propriedade do cliente e supervisionado pela empresa.
-
-## Atendimento
-
-### Orçamento:
-proposta de valor total estimado para um gerador; quando aprovada, origina uma manutenção.
-
-### Manutenção: 
-atendimento preventivo ou corretivo realizado em um gerador.
-
-### Serviço: 
-catálogo de serviços que podem ser prestados em uma manutenção.
-
-### Técnico: 
-profissional que executa as manutenções.
-
-### Escala:
-período e turno de plantão cumprido por um técnico.
-
-
-## Peças e manutenção preventiva
-
-### Peça:
-item de reposição (bateria, óleo, filtro de ar, tanque etc.) mantido em estoque.
-
-### Cronograma_Preventivo:
-controle da troca preventiva de uma peça em um gerador específico.
-
-
-## Financeiro e suprimentos
-
-### Pagamento: 
-parcela de cobrança, originada de uma manutenção ou da mensalidade de um contrato.
-
-### Fornecedor: 
-empresa que fornece peças.
-
-### Compra: 
-aquisição de peças junto a um fornecedor.
-
-
-## Segurança
-
-### Usuário: 
-conta de acesso ao sistema, com perfil de permissões.
-
-### Log_acesso:
-registro de cada acesso e operação realizada no sistema.
-
-### 6.2 Atributos e classificações
-
-Os atributos foram definidos de acordo com as informações necessárias para identificar e controlar cada entidade.
-
-Cliente
-
-| Atributo | Classificação |
-|---|---|
-| `id_cliente` | Identificador |
-| `nome` | Descritivo |
-| `cpf_cnpj` | Identificação / único |
-| `telefone` | Contato |
-| `endereco` | Localização |
-| `email` | Contato |
-| `cidade` | Localização |
-| `estado` | Localização |
-
-O id_cliente identifica exclusivamente cada cliente. O cpf_cnpj deve ser único e obrigatório. Essas informações já estão definidas no dicionário de dados do projeto.
-
-
-Contrato
-
-| Atributo | Classificação |
-|---|---|
-| `id_contrato` | Identificador |
-| `data_inicio` | Temporal |
-| `data_fim` | Temporal |
-| `valor_mensal` | Quantitativo |
-| `tipo_periodicidade` | Classificação |
-| `status` | Classificação |
-
-A data_fim é opcional, pois um contrato ativo pode ter prazo indeterminado. O tipo_periodicidade define quantos meses cada cobrança abrange (mensal, bimestral, trimestral, semestral ou anual).
-
-Gerador
-
-| Atributo | Classificação |
-|---|---|
-| `id_gerador` | Identificador |
-| `numero_serie` | Identificação / único |
-| `marca` | Descritivo |
-| `modelo` | Descritivo |
-| `status` | Classificação |
-| `potencia` | Quantitativo |
-| `horimetro` | Quantitativo |
-
-O numero_serie é um identificador único do equipamento. A potencia é medida em kVA e o horimetro registra as horas de operação acumuladas.
-
-Orçamento
-
-| Atributo | Classificação |
-|---|---|
-| `id_orcamento` | Identificador |
-| `data_orcamento` | Temporal |
-| `valor_orcado` | Quantitativo |
-| `status` | Classificação |
-| `data_aprovacao` | Temporal |
-
-O valor_orcado é uma estimativa do valor total, sem detalhar serviços e peças. A data_aprovacao só é preenchida quando o orçamento é aprovado.
-
-Manutenção
-
-| Atributo | Classificação |
-|---|---|
-| `id_manutencao` | Identificador |
-| `data_manutencao` | Temporal |
-| `tipo_manutencao` | Classificação |
-| `status` | Classificação |
-| `numero_nota_fiscal` | Identificação |
-| `descricao_problema` | Descritivo |
-| `data_conclusao` | Temporal |
-
-A entidade registra o atendimento realizado em um gerador e permite diferenciar manutenções preventivas e corretivas. O valor da manutenção não é armazenado: ele é calculado pela soma dos serviços e peças aplicados.
-
-Serviço
-
-| Atributo | Classificação |
-|---|---|
-| `id_servico` | Identificador |
-| `nome_servico` | Descritivo / único |
-| `descricao` | Descritivo |
-| `valor_base` | Quantitativo |
-
-Os atributos permitem identificar o serviço, explicar o que será realizado e estabelecer seu valor de referência.
-
-Técnico
-
-| Atributo | Classificação |
-|---|---|
-| `id_tecnico` | Identificador |
-| `nome` | Descritivo |
-| `cpf` | Identificação / único |
-| `telefone` | Contato |
-| `email` | Contato |
-
-O cpf é único para cada técnico, conforme a regra estabelecida para o sistema.
-
-Escala
-
-| Atributo | Classificação |
-|---|---|
-| `id_escala` | Identificador |
-| `data_inicio` | Temporal |
-| `data_fim` | Temporal |
-| `turno` | Classificação |
-
-O turno pode ser manhã, tarde, noite ou integral, e a data_fim não pode ser anterior à data_inicio.
-
-Peça
-
-| Atributo | Classificação |
-|---|---|
-| `id_peca` | Identificador |
-| `nome_peca` | Descritivo / único |
-| `descricao_peca` | Descritivo |
-| `valor_venda` | Quantitativo |
-| `prazo_troca_dias` | Quantitativo |
-| `estoque` | Quantitativo |
-
-O prazo_troca_dias indica a cada quantos dias a peça deve ser trocada ou limpa e orienta o cronograma preventivo.
-
-Cronograma_Preventivo
-
-| Atributo | Classificação |
-|---|---|
-| `id_cronograma` | Identificador |
-| `data_ultima_troca` | Temporal |
-
-Cada gerador tem no máximo um cronograma por peça. A data_ultima_troca é opcional, pois a peça pode ainda não ter sido trocada.
-
-Pagamento
-
-| Atributo | Classificação |
-|---|---|
-| `id_pagamento` | Identificador |
-| `numero_parcela` | Identificação |
-| `data_vencimento` | Temporal |
-| `valor_previsto` | Quantitativo |
-| `data_pagamento` | Temporal |
-| `forma` | Classificação |
-| `status` | Classificação |
-| `valor_pago` | Quantitativo |
-
-O valor_previsto é o valor devido na parcela e o valor_pago é o efetivamente quitado, podendo diferir por juros ou desconto. A data_pagamento, a forma e o valor_pago só são preenchidos quando a parcela é paga.
-
-Fornecedor
-
-| Atributo | Classificação |
-|---|---|
-| `id_fornecedor` | Identificador |
-| `nome` | Descritivo |
-| `cnpj` | Identificação / único |
-| `telefone` | Contato |
-| `email` | Contato |
-
-O cnpj é único para cada fornecedor e é gravado somente com números.
-
-Compra
-
-| Atributo | Classificação |
-|---|---|
-| `id_compra` | Identificador |
-| `data_compra` | Temporal |
-| `status` | Classificação |
-| `numero_nota_fiscal` | Identificação |
-
-O status da compra pode ser pedida, recebida ou cancelada, e a nota fiscal é opcional.
-
-Usuário
-
-| Atributo | Classificação |
-|---|---|
-| `id_usuario` | Identificador |
-| `login` | Identificação / único |
-| `perfil` | Classificação |
-| `status` | Classificação |
-
-O perfil pode ser administrador, atendimento, técnico ou financeiro. O usuário não é excluído, e sim desativado, para preservar o histórico.
-
-Log_acesso
-
-| Atributo | Classificação |
-|---|---|
-| `id_log` | Identificador |
-| `data_hora_acesso` | Temporal |
-| `acao` | Classificação |
-| `nome_tabela` | Descritivo |
-| `numero_registro` | Referência |
-| `resultado` | Classificação |
-| `finalidade_acesso` | Descritivo |
-| `login_informado` | Descritivo |
-| `ip_origem` | Localização |
-
-O log só recebe inserções. O login_informado é usado quando a tentativa de acesso não identifica um usuário cadastrado, e a finalidade_acesso registra o motivo do acesso a dado pessoal.
-
-Atributos dos relacionamentos
-
-| Relacionamento | Atributos |
-|---|---|
-| Manutenção utiliza Serviço | `valor_aplicado`, `quantidade` |
-| Manutenção usa Peça | `valor_unitario_aplicado`, `quantidade` |
-| Compra contém Peça | `quantidade`, `valor_custo` |
-
-Esses atributos pertencem à ligação entre as entidades, e não a uma delas isoladamente.
-
-
-### 6.3 Relacionamentos pertinentes
-
-Foram identificados vinte relacionamentos entre as entidades.
-
-# Cliente — possui — Gerador
-
-Cardinalidade: 1:N
-
-Um cliente pode possuir zero ou vários geradores, enquanto cada gerador pertence obrigatoriamente a um único cliente.
-
-CLIENTE (0,n) ─── possui ─── (1,1) GERADOR
-
-Essa relação representa a regra de negócio de que todo gerador cadastrado deve estar vinculado a um cliente.
-
-# Cliente — firma — Contrato
-
-Cardinalidade: 1:N
-
-Um cliente pode firmar zero ou vários contratos, enquanto cada contrato é firmado por um único cliente.
-
-CLIENTE (0,n) ─── firma ─── (1,1) CONTRATO
-
-Essa relação permite manter o histórico contratual de cada cliente.
-
-# Contrato — cobre — Gerador
-
-Cardinalidade: 1:N
-
-Um contrato cobre pelo menos um gerador e pode cobrir vários, enquanto um gerador é coberto por zero ou um contrato.
-
-CONTRATO (1,n) ─── cobre ─── (0,1) GERADOR
-
-O contrato que cobre o gerador deve pertencer ao mesmo cliente do gerador.
-
-# Contrato — enquadra — Manutenção
-
-Cardinalidade: 1:N
-
-Um contrato pode enquadrar zero ou várias manutenções, enquanto cada manutenção se enquadra em zero ou um contrato.
-
-CONTRATO (0,n) ─── enquadra ─── (0,1) MANUTENÇÃO
-
-Nem toda manutenção ocorre dentro de um contrato, como as corretivas avulsas.
-
-# Contrato — gera_mensalidade — Pagamento
-
-Cardinalidade: 1:N
-
-Um contrato pode gerar zero ou várias mensalidades, enquanto cada pagamento é gerado por zero ou um contrato.
-
-CONTRATO (0,n) ─── gera_mensalidade ─── (0,1) PAGAMENTO
-
-O lado (0,1) existe porque a parcela pode, em vez disso, ter origem em uma manutenção.
-
-# Gerador — solicita — Orçamento
-
-Cardinalidade: 1:N
-
-Um gerador pode ter zero ou vários orçamentos, enquanto cada orçamento é solicitado para um único gerador.
-
-GERADOR (0,n) ─── solicita ─── (1,1) ORÇAMENTO
-
-Essa relação permite guardar o histórico de propostas feitas para cada equipamento.
-
-# Gerador — recebe — Manutenção
-
-Cardinalidade: 1:N
-
-Um gerador pode receber zero ou várias manutenções durante sua utilização. Cada manutenção, entretanto, deve estar obrigatoriamente relacionada a um único gerador.
-
-GERADOR (0,n) ─── recebe ─── (1,1) MANUTENÇÃO
-
-Essa relação permite manter o histórico de atendimentos realizados em cada equipamento.
-
-# Gerador — tem — Cronograma_Preventivo
-
-Cardinalidade: 1:N
-
-Um gerador pode ter zero ou vários cronogramas, um para cada peça acompanhada, enquanto cada cronograma pertence a um único gerador.
-
-GERADOR (0,n) ─── tem ─── (1,1) CRONOGRAMA_PREVENTIVO
-
-Essa relação representa a regra de que os geradores precisam ter um cronograma de inspeção preventiva.
-
-# Peça — define prazo — Cronograma_Preventivo
-
-Cardinalidade: 1:N
-
-Uma peça pode definir o prazo de zero ou vários cronogramas, enquanto cada cronograma tem o prazo definido por uma única peça.
-
-PEÇA (0,n) ─── define prazo ─── (1,1) CRONOGRAMA_PREVENTIVO
-
-O prazo de troca da peça orienta quando a próxima troca preventiva deve ocorrer.
-
-# Orçamento — origina — Manutenção
-
-Cardinalidade: 1:1
-
-Um orçamento pode originar zero ou uma manutenção, e uma manutenção pode ter sido originada por zero ou um orçamento.
-
-ORÇAMENTO (0,1) ─── origina ─── (0,1) MANUTENÇÃO
-
-Um orçamento recusado não gera manutenção, e uma emergência pode ser atendida sem orçamento prévio.
-
-# Manutenção — atualiza — Cronograma_Preventivo
-
-Cardinalidade: N:N
-
-Uma manutenção pode atualizar zero ou vários cronogramas, e um cronograma pode ser atualizado por zero ou várias manutenções.
-
-MANUTENÇÃO (0,n) ─── atualiza ─── (0,n) CRONOGRAMA_PREVENTIVO
-
-Ao trocar uma peça, a manutenção atualiza a data da última troca no cronograma correspondente.
-
-# Manutenção — usa — Peça
-
-Cardinalidade: N:N
-
-Uma manutenção pode usar zero ou várias peças, e uma peça pode ser usada em zero ou várias manutenções.
-
-MANUTENÇÃO (0,n) ─── usa ─── (0,n) PEÇA
-
-Atributos da relação: valor_unitario_aplicado e quantidade.
-
-# Manutenção — realizada por — Técnico
-
-Cardinalidade: N:N
-
-Uma manutenção pode envolver um ou vários técnicos, enquanto um técnico pode participar de zero ou várias manutenções.
-
-MANUTENÇÃO (1,n) ─── realizada por ─── (0,n) TÉCNICO
-
-A cardinalidade foi definida dessa forma porque o sistema deve permitir que uma mesma manutenção tenha mais de um técnico vinculado.
-
-# Manutenção — utiliza — Serviço
-
-Cardinalidade: N:N
-
-Uma manutenção pode utilizar um ou vários serviços, enquanto um serviço pode ser utilizado em zero ou várias manutenções.
-
-MANUTENÇÃO (1,n) ─── utiliza ─── (0,n) SERVIÇO
-
-Essa relação foi definida porque uma manutenção pode envolver mais de um serviço e o valor final pode ser composto pelos serviços realizados. Atributos da relação: valor_aplicado e quantidade.
-
-# Manutenção — gera — Pagamento
-
-Cardinalidade: 1:N
-
-Uma manutenção pode gerar zero ou várias parcelas de pagamento, enquanto cada pagamento é gerado por zero ou uma manutenção.
-
-MANUTENÇÃO (0,n) ─── gera ─── (0,1) PAGAMENTO
-
-Cada parcela tem exatamente uma origem: uma manutenção ou um contrato.
-
-# Técnico — cumpre — Escala
-
-Cardinalidade: 1:N
-
-Um técnico pode cumprir zero ou várias escalas, enquanto cada escala é cumprida por um único técnico.
-
-TÉCNICO (0,n) ─── cumpre ─── (1,1) ESCALA
-
-Essa relação apoia o plantão de 24 horas da empresa.
-
-# Fornecedor — fornece — Compra
-
-Cardinalidade: 1:N
-
-Um fornecedor pode fornecer zero ou várias compras, enquanto cada compra é feita de um único fornecedor.
-
-FORNECEDOR (0,n) ─── fornece ─── (1,1) COMPRA
-
-Essa relação permite rastrear de quem cada peça foi comprada.
-
-# Compra — contém — Peça
-
-Cardinalidade: N:N
-
-Uma compra contém uma ou várias peças, e uma peça pode estar em zero ou várias compras.
-
-COMPRA (1,n) ─── contém ─── (0,n) PEÇA
-
-Atributos da relação: quantidade e valor_custo. As compras recebidas repõem o estoque das peças.
-
-# Usuário — realiza — Log_acesso
-
-Cardinalidade: 1:N
-
-Um usuário pode realizar zero ou vários acessos, enquanto cada log pertence a zero ou um usuário.
-
-USUÁRIO (0,n) ─── realiza ─── (0,1) LOG_ACESSO
-
-O lado (0,1) existe porque tentativas de login negadas podem não identificar um usuário cadastrado.
-
-# Usuário — vincula-se a — Técnico
-
-Cardinalidade: 1:1
-
-Um usuário com perfil técnico é vinculado a exatamente um técnico, e um técnico pode ter zero ou uma conta de usuário.
-
-USUÁRIO (0,1) ─── vincula-se a ─── (0,1) TÉCNICO
-
-Essa relação permite aplicar a permissão de acesso apenas às manutenções em que o técnico está alocado.
-### 6.4 Restrições e políticas organizacionais
-
-O modelo conceitual considera as principais regras de negócio identificadas durante o levantamento da empresa.
-
-Todo gerador deve estar vinculado a um cliente.
-Toda manutenção deve estar vinculada a um gerador.
-O número de série do gerador deve ser único.
-O CPF do técnico deve ser único.
-Uma manutenção deve possuir pelo menos um técnico.
-Uma manutenção deve possuir pelo menos um serviço.
-Uma manutenção pode possuir vários técnicos.
-Uma manutenção pode possuir vários serviços.
-O sistema deve manter o histórico das manutenções realizadas nos geradores.
-O tipo de manutenção pode ser preventiva ou corretiva.
-Os geradores devem possuir um cronograma de inspeção preventiva.
-O atendimento não deve possuir limitação de horário devido ao plantão de 24 horas da empresa.
-
----
-
-## 7. Diagrama Entidade-Relacionamento (DER)
-
-<img width="2048" height="920" alt="image" src="DER (1).png" />
-
----
 
 ## 8. Proposta de Arquitetura Analítica para BI e IA
 
