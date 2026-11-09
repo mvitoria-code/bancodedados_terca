@@ -339,21 +339,21 @@ Dados:
 
 As regras de negócio estabelecem os critérios, procedimentos e restrições que deverão ser respeitados pelo sistema de gerenciamento de manutenções preventivas e corretivas de grupos geradores da empresa S. A. de Lima.
 
-RN01 – Identificação de clientes: Cada cliente deverá possuir um CPF ou CNPJ único no sistema, não sendo permitido cadastrar documentos duplicados.
+- RN01 – Identificação de clientes: Cada cliente deverá possuir um CPF ou CNPJ único no sistema, não sendo permitido cadastrar documentos duplicados.
 
-RN02 – Vinculação de geradores: Todo gerador cadastrado deverá estar obrigatoriamente vinculado a um único cliente.
+- RN02 – Vinculação de geradores: Todo gerador cadastrado deverá estar obrigatoriamente vinculado a um único cliente.
 
-RN03 – Identificação de geradores: Cada gerador deverá possuir um número de série único, composto por caracteres alfanuméricos.
+- RN03 – Identificação de geradores: Cada gerador deverá possuir um número de série único, composto por caracteres alfanuméricos.
 
-RN04 – Situação cadastral dos geradores: Cada gerador deverá possuir uma situação cadastral que permita identificar sua condição, podendo ser classificado como ativo, em manutenção ou inativo.
+- RN04 – Situação cadastral dos geradores: Cada gerador deverá possuir uma situação cadastral que permita identificar sua condição, podendo ser classificado como ativo, em manutenção ou inativo.
 
-RN05 – Vinculação de manutenções: Toda manutenção deverá estar vinculada a exatamente um gerador.
+- RN05 – Vinculação de manutenções: Toda manutenção deverá estar vinculada a exatamente um gerador.
 
-RN06 – Responsabilidade técnica: Toda manutenção deverá possuir pelo menos um técnico responsável, podendo contar com a participação de vários técnicos.
+- RN06 – Responsabilidade técnica: Toda manutenção deverá possuir pelo menos um técnico responsável, podendo contar com a participação de vários técnicos.
 
-RN07 – Serviços realizados: Toda manutenção deverá possuir pelo menos um serviço associado, podendo conter vários serviços e peças utilizadas. Os serviços e as peças deverão ser registrados individualmente.
+- RN07 – Serviços realizados: Toda manutenção deverá possuir pelo menos um serviço associado, podendo conter vários serviços e peças utilizadas. Os serviços e as peças deverão ser registrados individualmente.
 
-RN08 – Matriz de manutenção preventiva: O cronograma de manutenção preventiva deverá considerar os intervalos de utilização e o tempo de vida útil dos componentes do gerador, respeitando os seguintes critérios de referência:
+- RN08 – Matriz de manutenção preventiva: O cronograma de manutenção preventiva deverá considerar os intervalos de utilização e o tempo de vida útil dos componentes do gerador, respeitando os seguintes critérios de referência:
 - Óleo lubrificante: troca, em média, a cada 150 horas de funcionamento ou 12 meses desde a última troca, prevalecendo o critério atingido primeiro.
 - Filtros de óleo e combustível: substituição durante a realização da troca de óleo lubrificante.
 - Filtro de ar: substituição a cada 200 horas de funcionamento.
@@ -361,43 +361,43 @@ RN08 – Matriz de manutenção preventiva: O cronograma de manutenção prevent
 - Tanque de combustível: limpeza e inspeção a cada 12 meses.
 Os intervalos deverão considerar as recomendações do fabricante, quando disponíveis, e poderão ser ajustados conforme as condições de operação do gerador.
 
-RN09 – Atualização do cronograma: Após a realização de uma manutenção ou substituição de componente, deverão ser atualizados os registros da data da última intervenção e do horímetro correspondente para cada componente, permitindo calcular os próximos prazos de manutenção preventiva.
+- RN09 – Atualização do cronograma: Após a realização de uma manutenção ou substituição de componente, deverão ser atualizados os registros da data da última intervenção e do horímetro correspondente para cada componente, permitindo calcular os próximos prazos de manutenção preventiva.
 
-RN10 – Elaboração e aprovação de orçamentos: Toda manutenção corretiva deverá possuir um orçamento elaborado e apresentado ao cliente, vinculado ao respectivo cliente e gerador. A execução somente poderá ser iniciada após a aprovação do orçamento pelo cliente, inclusive em situações de emergência.
+- RN10 – Elaboração e aprovação de orçamentos: Toda manutenção corretiva deverá possuir um orçamento elaborado e apresentado ao cliente, vinculado ao respectivo cliente e gerador. A execução somente poderá ser iniciada após a aprovação do orçamento pelo cliente, inclusive em situações de emergência.
 
-RN11 – Situação dos orçamentos: Cada orçamento deverá possuir um status que identifique sua situação, podendo ser classificado como pendente, aprovado ou recusado. Somente orçamentos aprovados poderão autorizar a execução de manutenções corretivas.
+- RN11 – Situação dos orçamentos: Cada orçamento deverá possuir um status que identifique sua situação, podendo ser classificado como pendente, aprovado ou recusado. Somente orçamentos aprovados poderão autorizar a execução de manutenções corretivas.
 
-RN12 – Vinculação de contratos: Cada contrato deverá estar vinculado a um único cliente e poderá abranger um ou mais geradores pertencentes a esse mesmo cliente.
+- RN12 – Vinculação de contratos: Cada contrato deverá estar vinculado a um único cliente e poderá abranger um ou mais geradores pertencentes a esse mesmo cliente.
 
-RN13 – Abrangência contratual: Os serviços e componentes incluídos na manutenção preventiva deverão ser definidos individualmente em cada contrato. Os itens que não estiverem contemplados poderão ser cobrados separadamente.
+- RN13 – Abrangência contratual: Os serviços e componentes incluídos na manutenção preventiva deverão ser definidos individualmente em cada contrato. Os itens que não estiverem contemplados poderão ser cobrados separadamente.
 
-RN14 – Condições de cobrança e pagamento: As manutenções preventivas contempladas pelo contrato serão cobradas conforme as condições estabelecidas no próprio contrato. Os serviços e componentes não incluídos poderão gerar cobranças adicionais. As manutenções preventivas realizadas fora de contrato deverão ser pagas antes da execução. Nas manutenções corretivas, a execução poderá ocorrer antes da confirmação do pagamento, desde que o orçamento tenha sido previamente aprovado pelo cliente.
+- RN14 – Condições de cobrança e pagamento: As manutenções preventivas contempladas pelo contrato serão cobradas conforme as condições estabelecidas no próprio contrato. Os serviços e componentes não incluídos poderão gerar cobranças adicionais. As manutenções preventivas realizadas fora de contrato deverão ser pagas antes da execução. Nas manutenções corretivas, a execução poderá ocorrer antes da confirmação do pagamento, desde que o orçamento tenha sido previamente aprovado pelo cliente.
 
-RN15 – Cálculo do valor da manutenção: O valor final de uma manutenção deverá ser calculado com base na soma dos serviços realizados e das peças utilizadas, considerando suas respectivas quantidades e valores aplicados. Itens cobertos pelo contrato poderão possuir valor aplicado igual a zero.
+- RN15 – Cálculo do valor da manutenção: O valor final de uma manutenção deverá ser calculado com base na soma dos serviços realizados e das peças utilizadas, considerando suas respectivas quantidades e valores aplicados. Itens cobertos pelo contrato poderão possuir valor aplicado igual a zero.
 
-RN16 – Situação da manutenção: Uma manutenção deverá seguir as etapas de abertura, execução e conclusão. Os serviços e componentes registrados poderão ser alterados enquanto a manutenção estiver aberta ou em execução. Após a conclusão, alterações deverão ser realizadas somente por usuários autorizados, preservando o histórico das modificações.
+- RN16 – Situação da manutenção: Uma manutenção deverá seguir as etapas de abertura, execução e conclusão. Os serviços e componentes registrados poderão ser alterados enquanto a manutenção estiver aberta ou em execução. Após a conclusão, alterações deverão ser realizadas somente por usuários autorizados, preservando o histórico das modificações.
 
-RN17 – Identificação de técnicos: Cada técnico deverá possuir um CPF único, composto por 11 dígitos numéricos.
+- RN17 – Identificação de técnicos: Cada técnico deverá possuir um CPF único, composto por 11 dígitos numéricos.
 
-RN18 – Escalas de trabalho: Cada escala deverá estar vinculada a um técnico, e sua data de término não poderá ser anterior à data de início.
+- RN18 – Escalas de trabalho: Cada escala deverá estar vinculada a um técnico, e sua data de término não poderá ser anterior à data de início.
 
-RN19 – Cadastro de serviços: Cada serviço deverá possuir um nome único, descrição e valor-base cadastrado. O valor aplicado poderá variar conforme as condições da manutenção ou do contrato.
+- RN19 – Cadastro de serviços: Cada serviço deverá possuir um nome único, descrição e valor-base cadastrado. O valor aplicado poderá variar conforme as condições da manutenção ou do contrato.
 
-RN20 – Registro de pagamentos: Cada pagamento deverá estar relacionado a uma única origem de cobrança, podendo ser referente a uma manutenção ou a um contrato. Quando houver parcelamento, a soma das parcelas deverá corresponder ao valor total devido após a quitação integral.
+- RN20 – Registro de pagamentos: Cada pagamento deverá estar relacionado a uma única origem de cobrança, podendo ser referente a uma manutenção ou a um contrato. Quando houver parcelamento, a soma das parcelas deverá corresponder ao valor total devido após a quitação integral.
 
-RN21 – Histórico financeiro: Os registros de pagamentos não deverão ser excluídos fisicamente. Em caso de erro, deverão ser cancelados ou corrigidos por um usuário autorizado, mantendo o histórico da alteração.
+- RN21 – Histórico financeiro: Os registros de pagamentos não deverão ser excluídos fisicamente. Em caso de erro, deverão ser cancelados ou corrigidos por um usuário autorizado, mantendo o histórico da alteração.
 
-RN22 – Cadastro de fornecedores: Cada fornecedor deverá possuir um CNPJ único no sistema.
+- RN22 – Cadastro de fornecedores: Cada fornecedor deverá possuir um CNPJ único no sistema.
 
-RN23 – Compra de peças e controle de estoque: Toda compra deverá estar vinculada a um fornecedor cadastrado e registrar os itens adquiridos, suas respectivas quantidades e valores. Após a confirmação do recebimento físico da compra, o sistema deverá atualizar automaticamente a quantidade disponível em estoque, impedindo que a mesma compra gere entradas duplicadas. A utilização de peças em manutenções deverá gerar automaticamente a baixa da quantidade correspondente no estoque. O sistema deverá impedir movimentações que resultem em saldo negativo. Ajustes manuais somente poderão ser realizados por usuários autorizados, com registro no histórico de auditoria.
+- RN23 – Compra de peças e controle de estoque: Toda compra deverá estar vinculada a um fornecedor cadastrado e registrar os itens adquiridos, suas respectivas quantidades e valores. Após a confirmação do recebimento físico da compra, o sistema deverá atualizar automaticamente a quantidade disponível em estoque, impedindo que a mesma compra gere entradas duplicadas. A utilização de peças em manutenções deverá gerar automaticamente a baixa da quantidade correspondente no estoque. O sistema deverá impedir movimentações que resultem em saldo negativo. Ajustes manuais somente poderão ser realizados por usuários autorizados, com registro no histórico de auditoria.
 
-RN24 – Contas a pagar: Cada conta a pagar deve possuir um identificador único de boleto, quando aplicável. O pagamento deve corresponder ao valor total da conta, e seu status deve ser atualizado para "Paga" após a quitação integral.
+- RN24 – Contas a pagar: Cada conta a pagar deve possuir um identificador único de boleto, quando aplicável. O pagamento deve corresponder ao valor total da conta, e seu status deve ser atualizado para "Paga" após a quitação integral.
 
-RN25 – Controle de usuários: Cada usuário deverá possuir um login único, credenciais próprias e um perfil de acesso definido conforme sua função no sistema.
+- RN25 – Controle de usuários: Cada usuário deverá possuir um login único, credenciais próprias e um perfil de acesso definido conforme sua função no sistema.
 
-RN26 – Auditoria: As ações realizadas pelos usuários deverão ser registradas em histórico de auditoria, permitindo identificar quem realizou cada operação e quando ela ocorreu.
+- RN26 – Auditoria: As ações realizadas pelos usuários deverão ser registradas em histórico de auditoria, permitindo identificar quem realizou cada operação e quando ela ocorreu.
 
-RN27 – Alterações contratuais: As alterações nas condições dos contratos deverão ser registradas por meio de aditivos contratuais, preservando o histórico das condições anteriormente estabelecidas e permitindo identificar as modificações realizadas.
+- RN27 – Alterações contratuais: As alterações nas condições dos contratos deverão ser registradas por meio de aditivos contratuais, preservando o histórico das condições anteriormente estabelecidas e permitindo identificar as modificações realizadas.
 
 ---
 
