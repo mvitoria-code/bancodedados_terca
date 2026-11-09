@@ -814,13 +814,16 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 
 | Item | Registro |
 |------|------------------|
-| Ferramenta e etapa 9 |        |
-| *Motivação* |       |
-| *Prompt(s) utilizados* |       |
-| *Resposta recebida* |          |
-| *Trechos rejeitados ou corrigidos* | 	       |
-| *Justificativa da escolha final* |       |
-| *Reflexão crítica* |             |
+| Ferramenta e etapa 9 | Claude, conferência das cardinalidades do DER conceitual contra o modelo lógico gerado no brModelo.       |
+| *Motivação* | Garantir que a conversão do conceitual para o lógico não perdeu nem alterou cardinalidades, chaves estrangeiras ou entidades associativas.      |
+| *Prompt(s) utilizados* |[Problema]: Conferir se alguma cardinalidade foi alterada, ou se algum atributo foi adicionado ou ficou faltando, na conversão do DER conceitual para o modelo lógico.
+[Condição]: Anotar apenas o que mudou de um modelo para o outro.
+[Desafio]: Verificar todos os atributos, cardinalidades e relacionamentos.
+[Tarefa]: Montar uma lista do que foi identificado como diferente entre os dois modelos.       |
+| *Resposta recebida* |A IA devolveu uma lista com as divergências encontradas entre o DER conceitual e o modelo lógico (cardinalidades, atributos e relacionamentos).      |
+| *Trechos rejeitados ou corrigidos* |Rejeitei algumas sugestões da IA sobre FKs opcionais, mantendo-as como estavam no modelo, pois a opcionalidade segue a cardinalidade mínima definida no DER conceitual e as regras de negócio da empresa. 	       |
+| *Justificativa da escolha final* |Aceitei apenas as correções que faziam sentido para o modelo e adaptei o que precisava de ajuste, mantendo o que já estava coerente com o DER conceitual e as regras de negócio da empresa. A decisão final foi do grupo, e não apenas da IA.       |
+| *Reflexão crítica* |A IA é muito útil para conferir detalhes mínimos que passariam despercebidos numa revisão manual, como atributos faltando ou cardinalidades diferentes entre os modelos. Porém, ela não conhece as regras de negócio da empresa e sugeriu mudanças que não faziam sentido (como as FKs opcionais). Por isso é importante não confiar só nela: cada apontamento precisou ser validado pelo grupo antes de ser aplicado.             |
 
 | Item | Registro |
 |------|------------------|
