@@ -835,16 +835,6 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | *Justificativa da escolha final* |       |
 | *Reflexão crítica* |             |
 
-| Item | Registro |
-|------|------------------|
-| Ferramenta e etapa 11 |        |
-| *Motivação* |       |
-| *Prompt(s) utilizados* |       |
-| *Resposta recebida* |          |
-| *Trechos rejeitados ou corrigidos* | 	       |
-| *Justificativa da escolha final* |       |
-| *Reflexão crítica* |             |
-
 
 ---
 
