@@ -17,7 +17,7 @@
 | Formato | Entrevista presencial no ambiente da organização |
 | Presentes pelo grupo | Kauan José da Silva (trabalha na empresa e é sobrinho do entrevistado, vínculo declarado no README) |
 | Não presentes | Kauê Romaneto Machado, Kaylany Thayna de Oliveira de Paula e Maria Vitória Pereira Alves. Trabalharam a partir do relato e do levantamento do Kauan |
-| Comprovação | [Foto da entrevista](../foto%20da%20entrevistas.png) e [foto da empresa](../imagem%20empresa.jpg) |
+| Comprovação | [Foto da entrevista](evidencias/foto-nova-visita.jpeg) e [foto da empresa](evidencias/foto-empresa.jpeg) |
 
 ---
 
@@ -61,9 +61,9 @@ Hoje a empresa não tem controle digital. Os dados de clientes, atendimentos e c
 
 | ID | Problema (crise operacional) | Evidência | Onde o modelo o resolve |
 | :--- | :--- | :--- | :--- |
-| P1 | Fichas em papel sujeitas a perda ou ilegibilidade | Entrevista (item 1) e fotos [ficha](../ficha-cliente.jpg) e [arquivo](../arquivo-fichas.jpg) | `Cliente`, `Gerador`, `Manutencao` (RF01, RF02, RF03, RF08, RN01–RN03) |
-| P2 | Histórico e última troca de peças só são achados folheando relatórios | Entrevista (item 2) e foto dos [relatórios](../relatorios-pecas.jpg) | `Cronograma_Preventivo`, `Peca`, `Manutencao`, `atualiza` (RF02, RF04, RF05, RN08, RN09) |
-| P3 | Contrato relido a cada atendimento para checar cobertura | Entrevista (item 3) e foto do [contrato](../contrato-papel.jpg) | `Contrato`, `Gerador.id_contrato`, `Manutencao.id_contrato` (RF06, RN12–RN15) |
+| P1 | Fichas em papel sujeitas a perda ou ilegibilidade | Entrevista (item 1) e fotos [ficha](evidencias/ficha-cliente.jpeg) | `Cliente`, `Gerador`, `Manutencao` (RF01, RF02, RF03, RF08, RN01–RN03) |
+| P2 | Histórico e última troca de peças só são achados folheando relatórios | Entrevista (item 2) e foto dos [relatórios](evidencias/relatorios-pecas.jpeg) | `Cronograma_Preventivo`, `Peca`, `Manutencao`, `atualiza` (RF02, RF04, RF05, RN08, RN09) |
+| P3 | Contrato relido a cada atendimento para checar cobertura | Entrevista (item 3) e foto do [contrato](evidencias/contratoo-papel.jpeg) | `Contrato`, `Gerador.id_contrato`, `Manutencao.id_contrato` (RF06, RN12–RN15) |
 | P4 | Alterações de contrato por e-mail, sem registro garantido | Entrevista (item 4) | `Aditivo_contrato` (RF19, RN27) |
 | P5 | Faturamento estimado e reajustes refeitos à mão | Entrevista (item 5) | `Contrato`, `Aditivo_contrato`, `Pagamento` (RF14, RF19, RN20, RN21) |
 | P6 | Não se sabe se a peça existe em estoque, é preciso ficar procurando e já houve compra de peça que já se tinha | Entrevista (item 7) | `Peca` (atributo `estoque`), `Compra`, relacionamento `contem` entre `Compra` e `Peca` (RF15, RF16, RN23) |
