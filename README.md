@@ -79,7 +79,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
 ### **O que foi levantado (resumo):**
 - **Achados da observação presencial (separados do que foi dito):**
 - **Nova visita (Entrega 2):**
-- **Levantamento completo:** [`levantamento/levantamento.md`](levantamento/levantamento.md)
+- **Levantamento completo:** ['levantamento.md`](levantamento.md)
 
 ---
 
