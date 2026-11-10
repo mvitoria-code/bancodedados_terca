@@ -37,6 +37,9 @@
 | **P3** | Contrato relido a cada atendimento para checar cobertura | Entrevista | `Contrato`, `Gerador.id_contrato`, `Manutencao.id_contrato` (RF06, RN12–RN15) |
 | **P4** | Alterações de contrato por e-mail, sem registro garantido | Entrevista | `Aditivo_contrato` (RF19, RN27) |
 | **P5** | Faturamento estimado e reajustes refeitos à mão | Entrevista | `Contrato`, `Aditivo_contrato`, `Pagamento` (RF14, RF19) |
+| **P6** | Não se sabe se a peça existe em estoque, é preciso ficar procurando e já houve compra de peça que já se tinha | Entrevista | `Peca` (atributo `estoque`), `Compra`, relacionamento `contem` (RF15, RF16, RN23) |
+| **P7** | Dados de fornecedores em documentos impressos, sujeitos a deterioração | Entrevista | `Fornecedor`, `Compra`, `Peca` (RF16) |
+
 
 Nos dias atuais, a empresa não tem um controle digital para a organização dos seus dados em geral: os dados são mantidos de maneira física, em fichas e papéis. Desde as informações dos atendimentos, até às informações dos clientes. 
 Com um banco de dados adequado, essas informações ficarão muito mais seguras, além de estarem organizadas e reservadas somente num lugar, facilitando as buscas, consultas e alterações.
