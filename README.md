@@ -662,11 +662,10 @@ Resultado vazio = dados consistentes com a regra.
 | A04 | Há manutenção em andamento ou concluída sem técnico? | RN06 |
 | A05 | Há corretiva iniciada sem orçamento aprovado? | RN10, RN11 |
 | A06 | Há contrato "Ativo" com data de fim já vencida? | Processo 3 |
-| A07 | Há conta a pagar vencida ainda como "Pendente"? | RN24 |
-| A08 | Há acesso registrado de usuário inativo? | RN25, RN26 |
-| A09 | Há técnico com escalas sobrepostas? | RN18 |
-| A10 | O status do gerador é coerente com as manutenções abertas? | RN04 |
-| A11 | Há contrato sem nenhum gerador vinculado? | RN12 |
+| A07 | Há acesso registrado de usuário inativo? | RN25, RN26 |
+| A08 | Há técnico com escalas sobrepostas? | RN18|
+| A09 | O status do gerador é coerente com as manutenções abertas? | RN04 |
+| A10 | Há contrato sem nenhum gerador vinculado? | RN12 |
 
 Não há consulta de auditoria para a RN07 (manutenção sem serviço), que fica a cargo da aplicação. A RN16 (conclusão exige `data_conclusao`) e a RN23 (estoque negativo) são impedidas pelo próprio banco, por `CHECK`.
 
