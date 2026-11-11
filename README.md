@@ -467,7 +467,7 @@ O grupo manteve fora do modelo a garantia do serviço e a habilitação NR-10, p
 ## 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
 - **Entidades → Tabelas:** cada uma das 17 entidades do DER virou uma tabela com o mesmo nome (`Cliente`, `Contrato`, `Aditivo_contrato`, `Gerador`, `Orcamento`, `Manutencao`, `Servico`, `Tecnico`, `Escala`, `Peca`, `Cronograma_Preventivo`, `Pagamento`, `Fornecedor`, `Compra`, `Contas_a_pagar`, `Usuario`, `Log_acesso`). O DER final tem **17 entidades**, mais **5 relacionamentos N:N** que viraram tabelas associativas, totalizando **22 tabelas**.
-- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. Os tipos do diagrama e do dicionário são os mesmos (`INT`, `DECIMAL`, `VARCHAR`, `CHAR`, `DATE`, `DATETIME`); o dicionário acrescenta os tamanhos (por exemplo `VARCHAR(120)`, `CHAR(11)`). Listas fechadas de valores (status, tipo, turno, perfil etc.) são `VARCHAR(20)` com `CHECK ... IN (...)`.
+- **Atributos → Colunas:** cada atributo virou coluna; o identificador virou `PK` com `AUTO_INCREMENT`. Atributos de relacionamento foram para a tabela associativa. O dicionário e o script usam os mesmos tipos e tamanhos (INT, DECIMAL(10,2) para valores em dinheiro, DECIMAL(8,2) para potência, VARCHAR, CHAR, DATE, DATETIME); exemplos de tamanho: VARCHAR(120), CHAR(11). Listas fechadas de valores (status, tipo, turno, perfil etc.) são `VARCHAR(20)` com `CHECK ... IN (...)`.
 - **Relacionamentos → Chaves:**
   - **1:N** — a chave do lado "1" vai como `FK` para a tabela do lado "N" (ex.: `Gerador.id_cliente`, `Manutencao.id_gerador`, `Compra.id_fornecedor`, `Escala.id_tecnico`).
   - **0,1 : 0,1** (`Orçamento` origina `Manutenção`) — `FK` opcional `Manutencao.id_orcamento` com índice `UNIQUE`, para que um orçamento origine no máximo uma manutenção.
@@ -709,7 +709,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | `Pagamento` | 1.091 | mensalidades e manutenções avulsas |
 | `Tecnico` / `Escala` | 10 / 130 | 10 técnicos entre os 15 funcionários; escalas semanais |
 | `Peca` / `Fornecedor` / `Compra` | 11 / 6 / 33 | bateria, óleo, filtros, tanque etc. |
-| `Usuario` / `Log_acesso` | 16 (1 inativo) / 300 | 15 funcionários + conta extra; logs de usuários cadastrados |
+| `Usuario` / `Log_acesso` | 16 (1 inativo) / 294 | 15 funcionários + conta extra; logs de usuários cadastrados |
 
 ---
 
@@ -720,7 +720,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | Relatório (README) | `README.md`, na raiz da branch `main` |
 | Dicionário de dados (HTML, v6.0) | [dicionariodre.html](dicionariodre.html) |
 | Diagrama DER conceitual revisado (brModelo Web) | [DER (1).png](DER%20%281%29.png) |
-| Levantamento completo | [levantamento/levantamento.md](levantamento/levantamento.md) **PREENCHER** |
+| Levantamento completo | [levantamento/levantamento.md](levantamento/levantamento.md) |
 | Script SQL (MySQL) | [docs/script.sql](docs/script.sql) |
 | Consultas gerenciais e de auditoria | [docs/03_consultas_.sql](docs/03_consultas_.sql) |
 | Histórico de commits e colaboração | [Ver commits](../../commits/main) |
