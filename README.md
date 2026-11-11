@@ -724,7 +724,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | Script SQL (MySQL) | [docs/script.sql](docs/script.sql) |
 | Consultas gerenciais e de auditoria | [docs/03_consultas_.sql](docs/03_consultas_.sql) |
 | Histórico de commits e colaboração | [Ver commits](../../commits/main) |
-| Evidências (fotos) | [imagem empresa](imagem%20empresa.jpg) e [entrevista](foto%20da%20entrevistas.png) |
+| Evidências (fotos) | [imagem empresa](foto_empresa.jpeg) e [entrevista](evidencias/foto-nova-visita.jpeg) |
 | Modelo lógico (brModelo Web) | [Modelo Logico.png](Modelo%20Logico.png) |
 | Fluxograma do atendimento | [fluxograma.png](fluxograma.png) |
 | Massa de dados | [docs/02_massa_dados.sql](docs/massa_de_dados.sql) |
