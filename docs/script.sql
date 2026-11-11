@@ -38,7 +38,8 @@ CREATE TABLE Cliente (
     cidade VARCHAR(80) NOT NULL,
     estado CHAR(2) NOT NULL,
     CONSTRAINT uq_cliente_cpf_cnpj UNIQUE (cpf_cnpj),                         -- RN01
-    CONSTRAINT chk_cliente_estado CHECK (CHAR_LENGTH(estado) = 2),
+    CONSTRAINT chk_cliente_doc CHECK (cpf_cnpj REGEXP '^([0-9]{11}|[0-9]{14})$'),   -- 11 (CPF) ou 14 (CNPJ) digitos
+    CONSTRAINT chk_cliente_estado CHECK (estado IN ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
     CONSTRAINT chk_cliente_email CHECK (email LIKE '%@%')
 ) ENGINE=InnoDB;
 
