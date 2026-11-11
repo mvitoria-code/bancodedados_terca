@@ -677,6 +677,7 @@ Não há consulta de auditoria para a RN07 (manutenção sem serviço), que fica
 **Software:** brModelo Web (<https://app.brmodeloweb.com>).
 
 ![Modelo lógico](<Modelo Logico.png>)
+Observação sobre os tipos no diagrama. O brModelo Web não tem o tipo DECIMAL, então o modelo lógico (PNG) mostra FLOAT nas colunas de valor monetário e de potência. No script SQL esses campos foram implementados como DECIMAL(10,2) (valores em dinheiro) e DECIMAL(8,2) (potência em kVA), porque FLOAT é aproximado e pode gerar erros de arredondamento em cálculos financeiros. Da mesma forma, os tamanhos de VARCHAR e CHAR não aparecem no diagrama. O script e o dicionário de dados são a referência oficial dos tipos.
 
 O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total), com PK, FK e cardinalidades `(mín, máx)` nas pontas. `NOT NULL`, `UNIQUE`, `CHECK` e `DEFAULT` não aparecem no diagrama; estão no [dicionário de dados](dicionariodre.html) e no script SQL.
 
@@ -709,7 +710,7 @@ O modelo tem **17 tabelas de entidades e 5 tabelas associativas** (22 no total),
 | `Pagamento` | 1.091 | mensalidades e manutenções avulsas |
 | `Tecnico` / `Escala` | 10 / 130 | 10 técnicos entre os 15 funcionários; escalas semanais |
 | `Peca` / `Fornecedor` / `Compra` | 11 / 6 / 33 | bateria, óleo, filtros, tanque etc. |
-| `Usuario` / `Log_acesso` | 16 (1 inativo) / 294 | 15 funcionários + conta extra; logs de usuários cadastrados |
+| `Usuario` / `Log_acesso` | 16 (1 inativo) / 293 | 15 funcionários + conta extra; logs de usuários cadastrados |
 
 ---
 
