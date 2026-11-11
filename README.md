@@ -82,7 +82,7 @@ A organização foi escolhida de acordo com as dificuldades relatadas. A partir 
   - Notas fiscais (DANFE) e boletos em pilhas sobre a mesa e em prancheta, misturados, sem sistema para consulta (P6, P7).
   - Orçamento em papel com carimbo "ORÇAMENTO" e anotações à caneta.
   - Contrato de prestação de serviço em papel, com visita preventiva mensal, valor mensal e o roteiro de manutenção preventiva como anexo (P3).
-- **Nova visita (Entrega 2):** 07/11/2026, na sede da empresa. Foram fotografados os documentos de compras e fornecedores (notas fiscais e boletos), o orçamento em papel, o contrato e a gaveta de arquivo. O que foi conversado com o Sandro: [preencher].
+- **Nova visita (Entrega 2):** 07/11/2026, na sede da empresa. Foram fotografados os documentos de compras e fornecedores (notas fiscais e boletos), o orçamento em papel, o contrato e a gaveta de arquivo. O que foi conversado com o Sandro: A empresa ainda utiliza muitos registros em papel, o que dificulta a organização e a consulta das informações. Por isso, vimos a necessidade de criar um banco de dados para facilitar o controle das manutenções, clientes, geradores e demais processos da empresa.
 - **Levantamento completo:** [`levantamento.md`](levantamento.md)
 ---
 
